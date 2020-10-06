@@ -1,26 +1,26 @@
 resource "aws_s3_bucket_object" "script" {
-  count = var.create_admin_console_script ? 1 : 0
+  count  = var.create_admin_console_script ? 1 : 0
   bucket = module.dbt_cloud_app_bucket.this_s3_bucket_id
   key    = "terraform/config_script.sh"
   source = local_file.script.0.filename
 }
 
 resource "aws_s3_bucket_object" "config" {
-  count = var.create_admin_console_script ? 1 : 0
+  count  = var.create_admin_console_script ? 1 : 0
   bucket = module.dbt_cloud_app_bucket.this_s3_bucket_id
   key    = "terraform/config.yaml"
   source = local_file.config.0.filename
 }
 
 resource "random_password" "secret_key" {
-  count = var.create_admin_console_script ? 1 : 0
+  count            = var.create_admin_console_script ? 1 : 0
   length           = 20
   special          = true
   override_special = "/@$"
 }
 
 resource "local_file" "script" {
-  count = var.create_admin_console_script ? 1 : 0
+  count    = var.create_admin_console_script ? 1 : 0
   filename = "./dbt_config.sh"
   content  = <<EOT
 aws configure --profile dbt-cloud-${var.namespace}-${var.environment} set aws_access_key_id ${var.aws_access_key_id}
@@ -36,7 +36,7 @@ EOT
 
 
 resource "local_file" "config" {
-  count = var.create_admin_console_script ? 1 : 0
+  count    = var.create_admin_console_script ? 1 : 0
   filename = "./config.yaml"
   content  = <<EOT
 apiVersion: kots.io/v1beta1

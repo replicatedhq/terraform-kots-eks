@@ -1,37 +1,42 @@
 resource "aws_s3_bucket_object" "script" {
+  count = var.create_admin_console_script ? 1 : 0
   bucket = module.dbt_cloud_app_bucket.this_s3_bucket_id
   key    = "terraform/config_script.sh"
-  source = local_file.script.filename
+  source = local_file.script.0.filename
 }
 
 resource "aws_s3_bucket_object" "config" {
+  count = var.create_admin_console_script ? 1 : 0
   bucket = module.dbt_cloud_app_bucket.this_s3_bucket_id
   key    = "terraform/config.yaml"
-  source = local_file.config.filename
+  source = local_file.config.0.filename
 }
 
 resource "random_password" "secret_key" {
+  count = var.create_admin_console_script ? 1 : 0
   length           = 20
   special          = true
   override_special = "/@$"
 }
 
 resource "local_file" "script" {
+  count = var.create_admin_console_script ? 1 : 0
   filename = "./dbt_config.sh"
   content  = <<EOT
-aws configure --profile dbt-cloud-${var.namespace}-${var.environment} set aws_access_key_id ${var.AWS_ACCESS_KEY_ID}
-aws configure --profile dbt-cloud-${var.namespace}-${var.environment} set aws_secret_access_key ${var.AWS_SECRET_ACCESS_KEY}
+aws configure --profile dbt-cloud-${var.namespace}-${var.environment} set aws_access_key_id ${var.aws_access_key_id}
+aws configure --profile dbt-cloud-${var.namespace}-${var.environment} set aws_secret_access_key ${var.aws_secret_access_key}
 aws configure --profile dbt-cloud-${var.namespace}-${var.environment} set region ${var.region}
 aws eks update-kubeconfig --profile dbt-cloud-${var.namespace}-${var.environment} --name ${var.namespace}-${var.environment} --role-arn ${var.creation_role_arn}
 kubectl config set-context --current --namespace=dbt-cloud-${var.namespace}-${var.environment}
 curl https://kots.io/install | bash
-kubectl kots install dbt-cloud-v1${var.release_channel} --namespace dbt-cloud-${var.namespace}-${var.environment} --shared-password ${var.admin_console_password} --config-values ${local_file.config.filename}
+kubectl kots install dbt-cloud-v1${var.release_channel} --namespace dbt-cloud-${var.namespace}-${var.environment} --shared-password ${var.admin_console_password} --config-values ${local_file.config.0.filename}
 EOT
 }
 
 
 
 resource "local_file" "config" {
+  count = var.create_admin_console_script ? 1 : 0
   filename = "./config.yaml"
   content  = <<EOT
 apiVersion: kots.io/v1beta1
@@ -48,9 +53,9 @@ spec:
     artifacts_s3_bucket:
       value: ${local.s3_bucket_names.1}
     aws_access_key_id:
-      value: ${var.AWS_ACCESS_KEY_ID}
+      value: ${var.aws_access_key_id}
     aws_secret_access_key:
-      value: ${var.AWS_SECRET_ACCESS_KEY}
+      value: ${var.aws_secret_access_key}
     azure_storage_connection_string: {}
     database_dbname:
       value: ${var.namespace}${var.environment}
@@ -78,7 +83,7 @@ spec:
     django_debug_mode:
       value: "0"
     django_secret_key:
-      value: ${random_password.secret_key.result}
+      value: ${random_password.secret_key.0.result}
     django_superuser_password:
       value: ${var.superuser_password}
     enable_okta:

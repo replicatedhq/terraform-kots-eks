@@ -6,20 +6,6 @@ data "aws_eks_cluster_auth" "cluster" {
   name = module.eks.cluster_id
 }
 
-resource "kubernetes_namespace" "dbt_cloud" {
-  metadata {
-    name = "dbt-cloud-${var.namespace}-${var.environment}"
-  }
-}
-
-provider "kubernetes" {
-  host                   = data.aws_eks_cluster.cluster.endpoint
-  cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority.0.data)
-  token                  = data.aws_eks_cluster_auth.cluster.token
-  load_config_file       = false
-  version                = "~> 1.9"
-}
-
 data "aws_ami" "eks_worker_ami_1_15" {
   filter {
     name   = "name"
@@ -43,81 +29,6 @@ locals {
     "arn:aws:iam::aws:policy/CloudWatchFullAccess",
     "arn:aws:iam::aws:policy/AmazonS3FullAccess",
   ]
-}
-
-module "eks" {
-  source  = "terraform-aws-modules/eks/aws"
-  version = "12.2.0"
-
-  create_eks = true
-
-  cluster_version = "1.15"
-  cluster_name    = "${var.namespace}-${var.environment}"
-  vpc_id          = var.vpc_id
-  subnets         = var.private_subnets
-
-  worker_groups_launch_template = [
-    {
-      name = "primary-worker-group-1-${var.k8s_node_size}"
-
-      # override ami_id for this launch template
-      ami_id = data.aws_ami.eks_worker_ami_1_15.id
-
-      instance_type        = var.k8s_node_size
-      asg_desired_capacity = var.k8s_node_count
-      asg_min_size         = var.k8s_node_count
-      asg_max_size         = var.k8s_node_count
-
-      suspended_processes = ["AZRebalance"]
-
-      key_name                      = "${var.namespace}-${var.environment}"
-      additional_security_group_ids = [aws_security_group.internal.id]
-      kubelet_extra_args            = local.kubelet_extra_args
-      pre_userdata                  = local.bionic_1_15_node_userdata
-
-      enabled_metrics = [
-        "GroupStandbyInstances",
-        "GroupTotalInstances",
-        "GroupPendingInstances",
-        "GroupTerminatingInstances",
-        "GroupDesiredCapacity",
-        "GroupInServiceInstances",
-        "GroupMinSize",
-        "GroupMaxSize",
-      ]
-    },
-  ]
-
-  workers_role_name           = "${var.namespace}-${var.environment}-workers-role"
-  workers_additional_policies = local.aws_worker_policy_arns
-
-  cluster_log_retention_in_days = 0
-  cluster_enabled_log_types = [
-    "api",
-    "audit",
-    "authenticator",
-    "controllerManager",
-    "scheduler",
-  ]
-
-  cluster_endpoint_private_access = true
-
-  manage_aws_auth = true
-  map_roles = [
-    {
-      rolearn  = "arn:aws:iam::850607893674:role/${var.namespace}-${var.environment}-workers-role"
-      username = "system:node:{{EC2PrivateDNSName}}"
-      groups   = ["system:masters", "system:bootstrappers"]
-    },
-  ]
-
-  write_kubeconfig = false
-
-  tags = map(
-    "Name", "eks",
-    "Stack", "${var.namespace}-${var.environment}",
-    "Customer", var.namespace
-  )
 }
 
 locals {
@@ -189,4 +100,41 @@ VANTA_KEY="dmz1px6yc5mh8tkw2rkh1zq871pwhfeadxju8n5xgg3e0haepe90" \
     "$(curl -L https://raw.githubusercontent.com/VantaInc/vanta-agent-scripts/257eb25381a96a5544fa8c7c3374fb55071b965e/install-linux.sh)"
 
 USERDATA
+}
+
+resource "aws_iam_policy" "nodes_kubernetes" {
+  name   = "nodes.kubernetes.${var.namespace}-${var.environment}"
+  policy = data.aws_iam_policy_document.nodes_kubernetes.json
+}
+
+data "aws_iam_policy_document" "nodes_kubernetes" {
+  statement {
+    actions = [
+      "ec2:Describe*",
+    ]
+
+    resources = ["*"]
+  }
+
+  statement {
+    actions = ["route53:GetChange"]
+
+    resources = ["arn:aws:route53:::change/*"]
+  }
+
+  statement {
+    sid = "kmsAllow"
+
+    actions = [
+      "kms:Encrypt*",
+      "kms:Decrypt*",
+      "kms:Describe*",
+      "kms:Get*",
+      "kms:List*",
+    ]
+
+    resources = [
+      "*"
+    ]
+  }
 }

@@ -23,11 +23,15 @@ variable "load_balancer_source_ranges" {
 }
 
 # optional admin console script vars
-variable "AWS_ACCESS_KEY_ID" {
+variable "create_admin_console_script" {
+  default = false
+}
+
+variable "aws_access_key_id" {
   default = "<ENTER_AWS_ACCESS_KEY>"
 }
 
-variable "AWS_SECRET_ACCESS_KEY" {
+variable "aws_secret_access_key" {
   default = "<ENTER_AWS_SECRET_KEY>"
 }
 
@@ -52,7 +56,7 @@ variable "hostname_suffix" {
 }
 
 variable "release_channel" {
-  default = "/edge"
+  default = ""
 }
 
 variable "app_memory" {

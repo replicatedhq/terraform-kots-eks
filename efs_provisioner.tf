@@ -101,7 +101,7 @@ resource "kubernetes_config_map" "efs_provisioner" {
 
   data = {
     "file.system.id"   = module.efs.id
-    "aws.region"       = "us-east-1"
+    "aws.region"       = var.region
     "provisioner.name" = "example.com/aws-efs"
     "dns.name"         = ""
   }

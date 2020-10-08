@@ -6,5 +6,4 @@
 *.tfstate.*
 
 # asdf tool-versions
-.tool-versions
-./examples/standard/.tool-versions
+*.tool-versions

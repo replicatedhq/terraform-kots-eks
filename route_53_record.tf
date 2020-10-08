@@ -3,7 +3,7 @@ data "aws_route53_zone" "selected" {
 }
 
 resource "aws_route53_record" "getdbt_com" {
-  count = var.create_loadbalancer ? 1 : 0
+  count   = var.create_loadbalancer ? 1 : 0
   zone_id = data.aws_route53_zone.selected.zone_id
   name    = "${var.environment}.${var.hosted_zone_name}"
   type    = "CNAME"

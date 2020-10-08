@@ -29,8 +29,8 @@ module "single_tenant_staging" {
 
   # (optional) fill out with Admin console script values before applying or delete if not used
   create_admin_console_script = true
-  aws_access_key_id      = "<ENTER_AWS_ACCESS_KEY>"
-  aws_secret_access_key  = "<ENTER_AWS_SECRET_KEY>"
-  superuser_password     = "<ENTER_SUPERUSER_PASSWORD"
-  admin_console_password = "<ENTER_ADMIN_CONSOLE_PASSWORD>"
+  aws_access_key_id           = "<ENTER_AWS_ACCESS_KEY>"
+  aws_secret_access_key       = "<ENTER_AWS_SECRET_KEY>"
+  superuser_password          = "<ENTER_SUPERUSER_PASSWORD"
+  admin_console_password      = "<ENTER_ADMIN_CONSOLE_PASSWORD>"
 }

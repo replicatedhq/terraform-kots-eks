@@ -44,87 +44,87 @@ variable "hosted_zone_name" {
 
 # optional variables
 variable "enable_ses" {
-  type = bool
+  type    = bool
   default = false
 }
 variable "ses_email" {
-  type = string
+  type    = string
   default = ""
 }
 variable "load_balancer_source_ranges" {
-  type = list(string)
+  type    = list(string)
   default = []
 }
 variable "create_admin_console_script" {
-  type = bool
+  type    = bool
   default = false
 }
 variable "aws_access_key_id" {
-  type = string
+  type    = string
   default = "<ENTER_AWS_ACCESS_KEY>"
 }
 variable "aws_secret_access_key" {
-  type = string
+  type    = string
   default = "<ENTER_AWS_SECRET_KEY>"
 }
 variable "creation_role_arn" {
-  type = string
+  type    = string
   default = "<ENTER_CREATION_ROLE_ARN>"
 }
 variable "admin_console_password" {
-  type = string
+  type    = string
   default = "<ENTER_ADMIN_CONSOLE_PASSWORD>"
 }
 variable "datadog_enabled" {
-  type = bool
+  type    = bool
   default = false
 }
 variable "superuser_password" {
-  type = string
+  type    = string
   default = "<ENTER_SUPER_USER_PASSWORD>"
 }
 variable "hostname_suffix" {
-  type = string
+  type    = string
   default = ""
 }
 variable "release_channel" {
-  type = string
+  type    = string
   default = ""
 }
 variable "app_memory" {
-  type = string
+  type    = string
   default = "1Gi"
 }
 variable "app_replicas" {
-  type = number
+  type    = number
   default = 2
 }
 variable "nginx_memory" {
-  type = string
+  type    = string
   default = "500mi"
 }
 variable "scheduler_memory" {
-  type = string
+  type    = string
   default = "1Gi"
 }
 variable "set_additional_k8s_user_data" {
-  type = bool
+  type    = bool
   default = false
 }
 variable "additional_k8s_user_data" {
-  type = string
+  type    = string
   default = ""
 }
 variable "create_efs_provisioner" {
-  type = bool
+  type    = bool
   default = true
 }
 variable "ide_storage_class" {
-  type = string
+  type    = string
   default = "aws-efs"
 }
 variable "create_loadbalancer" {
-  type = bool
+  type    = bool
   default = true
 }
 

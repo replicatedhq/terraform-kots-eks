@@ -93,12 +93,6 @@ EOF
 
 systemctl daemon-reload
 
-
-# INSTALL VANTA
-VANTA_KEY="dmz1px6yc5mh8tkw2rkh1zq871pwhfeadxju8n5xgg3e0haepe90" \
-  bash -c \
-    "$(curl -L https://raw.githubusercontent.com/VantaInc/vanta-agent-scripts/257eb25381a96a5544fa8c7c3374fb55071b965e/install-linux.sh)"
-
 USERDATA
 }
 

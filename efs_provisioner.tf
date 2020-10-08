@@ -1,4 +1,5 @@
 resource "kubernetes_service_account" "efs_provisioner" {
+  count = var.create_efs_provisioner ? 1 : 0
   metadata {
     name      = "efs-provisioner"
     namespace = kubernetes_namespace.dbt_cloud.metadata.0.name
@@ -8,6 +9,7 @@ resource "kubernetes_service_account" "efs_provisioner" {
 }
 
 resource "kubernetes_cluster_role" "efs_provisioner_runner" {
+  count = var.create_efs_provisioner ? 1 : 0
   metadata {
     name = "efs-provisioner-runner"
   }
@@ -44,6 +46,7 @@ resource "kubernetes_cluster_role" "efs_provisioner_runner" {
 }
 
 resource "kubernetes_cluster_role_binding" "run_efs_provisioner" {
+  count = var.create_efs_provisioner ? 1 : 0
   metadata {
     name = "run-efs-provisioner"
   }
@@ -60,6 +63,7 @@ resource "kubernetes_cluster_role_binding" "run_efs_provisioner" {
 }
 
 resource "kubernetes_role" "leader_locking_efs_provisioner" {
+  count = var.create_efs_provisioner ? 1 : 0
   metadata {
     name      = "leader-locking-efs-provisioner"
     namespace = kubernetes_namespace.dbt_cloud.metadata.0.name
@@ -72,6 +76,7 @@ resource "kubernetes_role" "leader_locking_efs_provisioner" {
 }
 
 resource "kubernetes_role_binding" "leader_locking_efs_provisioner" {
+  count = var.create_efs_provisioner ? 1 : 0
   metadata {
     name      = "leader-locking-efs-provisioner"
     namespace = kubernetes_namespace.dbt_cloud.metadata.0.name
@@ -94,6 +99,7 @@ resource "kubernetes_role_binding" "leader_locking_efs_provisioner" {
 }
 
 resource "kubernetes_config_map" "efs_provisioner" {
+  count = var.create_efs_provisioner ? 1 : 0
   metadata {
     name      = "efs-provisioner"
     namespace = kubernetes_namespace.dbt_cloud.metadata.0.name
@@ -108,6 +114,7 @@ resource "kubernetes_config_map" "efs_provisioner" {
 }
 
 resource "kubernetes_deployment" "efs_provisioner" {
+  count = var.create_efs_provisioner ? 1 : 0
   metadata {
     name      = "efs-provisioner"
     namespace = kubernetes_namespace.dbt_cloud.metadata.0.name
@@ -201,6 +208,7 @@ resource "kubernetes_deployment" "efs_provisioner" {
 }
 
 resource "kubernetes_storage_class" "aws_efs" {
+  count = var.create_efs_provisioner ? 1 : 0
   metadata {
     name = "aws-efs"
   }
@@ -208,10 +216,11 @@ resource "kubernetes_storage_class" "aws_efs" {
 }
 
 resource "kubernetes_persistent_volume_claim" "efs" {
+  count = var.create_efs_provisioner ? 1 : 0
   metadata {
     name = "efs"
     annotations = {
-      "volume.beta.kubernetes.io/storage-class" = kubernetes_storage_class.aws_efs.metadata.0.name
+      "volume.beta.kubernetes.io/storage-class" = kubernetes_storage_class.aws_efs.0.metadata.0.name
     }
     namespace = kubernetes_namespace.dbt_cloud.metadata.0.name
   }

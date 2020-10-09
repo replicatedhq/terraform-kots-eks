@@ -12,13 +12,6 @@ resource "aws_s3_bucket_object" "config" {
   source = local_file.config.0.filename
 }
 
-resource "random_password" "secret_key" {
-  count            = var.create_admin_console_script ? 1 : 0
-  length           = 20
-  special          = true
-  override_special = "/@$"
-}
-
 resource "local_file" "script" {
   count    = var.create_admin_console_script ? 1 : 0
   filename = "./dbt_config.sh"
@@ -32,8 +25,6 @@ curl https://kots.io/install | bash
 kubectl kots install dbt-cloud-v1${var.release_channel} --namespace dbt-cloud-${var.namespace}-${var.environment} --shared-password ${var.admin_console_password} --config-values ${local_file.config.0.filename}
 EOT
 }
-
-
 
 resource "local_file" "config" {
   count    = var.create_admin_console_script ? 1 : 0
@@ -82,8 +73,6 @@ spec:
       value: "0"
     django_debug_mode:
       value: "0"
-    django_secret_key:
-      value: ${random_password.secret_key.0.result}
     django_superuser_password:
       value: ${var.superuser_password}
     enable_okta:

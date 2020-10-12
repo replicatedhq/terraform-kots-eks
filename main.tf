@@ -131,7 +131,7 @@ module "eks" {
       key_name                      = "${var.namespace}-${var.environment}"
       additional_security_group_ids = [aws_security_group.internal.id]
       kubelet_extra_args            = local.kubelet_extra_args
-      pre_userdata                  = local.bionic_1_15_node_userdata
+      pre_userdata                  = "${local.bionic_1_15_node_userdata}${var.set_additional_k8s_user_data ? var.additional_k8s_user_data : ""}"
 
       enabled_metrics = [
         "GroupStandbyInstances",

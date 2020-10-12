@@ -7,4 +7,7 @@
 
 # asdf tool-versions
 .tool-versions
-./examples/standard/.tool-versions
+
+# generated dbt config files
+dbt_config.sh
+config.yaml

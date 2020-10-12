@@ -12,13 +12,6 @@ resource "aws_s3_bucket_object" "config" {
   source = local_file.config.0.filename
 }
 
-resource "random_password" "secret_key" {
-  count            = var.create_admin_console_script ? 1 : 0
-  length           = 20
-  special          = true
-  override_special = "/@$"
-}
-
 resource "local_file" "script" {
   count    = var.create_admin_console_script ? 1 : 0
   filename = "./dbt_config.sh"
@@ -32,8 +25,6 @@ curl https://kots.io/install | bash
 kubectl kots install dbt-cloud-v1${var.release_channel} --namespace dbt-cloud-${var.namespace}-${var.environment} --shared-password ${var.admin_console_password} --config-values ${local_file.config.0.filename}
 EOT
 }
-
-
 
 resource "local_file" "config" {
   count    = var.create_admin_console_script ? 1 : 0
@@ -74,7 +65,7 @@ spec:
     database_user:
       value: "${var.namespace}${var.environment}"
     datadog_enabled:
-      value: "${var.datadog_enabled}"
+      value: "${var.datadog_enabled == true ? 1 : 0}"
     db_type:
       default: external
       value: external
@@ -82,8 +73,6 @@ spec:
       value: "0"
     django_debug_mode:
       value: "0"
-    django_secret_key:
-      value: ${random_password.secret_key.0.result}
     django_superuser_password:
       value: ${var.superuser_password}
     enable_okta:
@@ -136,17 +125,21 @@ spec:
     smtp_auth_enabled:
       value: "1"
     smtp_enabled:
-      value: "0"
-    smtp_host: {}
-    smtp_password: {}
+      value: "${var.enable_ses ? 1 : 0}"
+    smtp_host:
+      value: ${var.enable_ses ? "email-smtp.us-east-1.amazonaws.com" : ""}
+    smtp_password:
+      value: "${var.enable_ses ? aws_iam_access_key.ses_key.0.ses_smtp_password_v4 : ""}"
     smtp_port:
-      value: "25"
+      value: "587"
     smtp_tls_enabled:
       value: "1"
-    smtp_username: {}
+    smtp_username:
+      value: ${var.enable_ses ? aws_iam_access_key.ses_key.0.id : ""}
     storage_method:
       default: s3
-    system_from_email_address: {}
+    system_from_email_address:
+      value: "${var.enable_ses ? var.ses_email : ""}"
 status: {}
 EOT
 }

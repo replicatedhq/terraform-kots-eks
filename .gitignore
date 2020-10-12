@@ -6,4 +6,8 @@
 *.tfstate.*
 
 # asdf tool-versions
-*.tool-versions
+.tool-versions
+
+# generated dbt config files
+dbt_config.sh
+config.yaml

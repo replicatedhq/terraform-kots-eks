@@ -40,7 +40,7 @@ spec:
     app_memory:
       value: ${var.app_memory}
     app_replicas:
-      value: "${tostring(var.app_replicas)}"
+      value: "${var.app_replicas}"
     artifacts_s3_bucket:
       value: ${local.s3_bucket_names.1}
     aws_access_key_id:
@@ -65,7 +65,7 @@ spec:
     database_user:
       value: "${var.namespace}${var.environment}"
     datadog_enabled:
-      value: "${var.datadog_enabled == true ? "1" : "0"}"
+      value: "${var.datadog_enabled == true ? 1 : 0}"
     db_type:
       default: external
       value: external
@@ -125,11 +125,11 @@ spec:
     smtp_auth_enabled:
       value: "1"
     smtp_enabled:
-      value: ${var.enable_ses ? "1" : "0"}
+      value: "${var.enable_ses ? 1 : 0}"
     smtp_host:
       value: ${var.enable_ses ? "email-smtp.us-east-1.amazonaws.com" : ""}
     smtp_password:
-      value: ${var.enable_ses ? aws_iam_access_key.ses_key.0.ses_smtp_password_v4 : ""}
+      value: "${var.enable_ses ? aws_iam_access_key.ses_key.0.ses_smtp_password_v4 : ""}"
     smtp_port:
       value: "587"
     smtp_tls_enabled:
@@ -139,7 +139,7 @@ spec:
     storage_method:
       default: s3
     system_from_email_address:
-      value: ${var.enable_ses ? var.ses_email : ""}
+      value: "${var.enable_ses ? var.ses_email : ""}"
 status: {}
 EOT
 }

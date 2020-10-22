@@ -109,9 +109,9 @@ spec:
     run_logs_s3_bucket:
       value: ${local.s3_bucket_names.0}
     s3_endpoint_url:
-      default: https://s3.us-east-1.amazonaws.com
+      value: https://s3.${var.region}.amazonaws.com
     s3_region:
-      default: ${var.region}
+      value: ${var.region}
     saml_private_key: {}
     saml_public_cert: {}
     scaling_settings_type:
@@ -127,7 +127,7 @@ spec:
     smtp_enabled:
       value: "${var.enable_ses ? 1 : 0}"
     smtp_host:
-      value: ${var.enable_ses ? "email-smtp.us-east-1.amazonaws.com" : ""}
+      value: ${var.enable_ses ? "email-smtp.${var.region}.amazonaws.com" : ""}
     smtp_password:
       value: "${var.enable_ses ? aws_iam_access_key.ses_key.0.ses_smtp_password_v4 : ""}"
     smtp_port:
@@ -139,7 +139,7 @@ spec:
     storage_method:
       default: s3
     system_from_email_address:
-      value: "${var.enable_ses ? var.ses_email : ""}"
+      value: "${var.enable_ses ? "${var.ses_header} <${var.ses_email}>" : ""}"
 status: {}
 EOT
 }

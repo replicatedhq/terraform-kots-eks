@@ -51,6 +51,10 @@ variable "ses_email" {
   type    = string
   default = ""
 }
+variable "ses_header" {
+  type    = string
+  default = ""
+}
 variable "load_balancer_source_ranges" {
   type    = list(string)
   default = []

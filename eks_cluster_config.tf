@@ -5,7 +5,7 @@ data "aws_eks_cluster" "cluster" {
 data "aws_eks_cluster_auth" "cluster" {
   name = module.eks.cluster_id
 }
-
+# remove after upgrade
 data "aws_ami" "eks_worker_ami_1_15" {
   filter {
     name   = "name"
@@ -17,6 +17,22 @@ data "aws_ami" "eks_worker_ami_1_15" {
 
   tags = map(
     "Name", "eks_worker_ami_1_15",
+    "Stack", "${var.namespace}-${var.environment}",
+    "Customer", var.namespace
+  )
+}
+
+data "aws_ami" "eks_worker_ami_1_16" {
+  filter {
+    name   = "name"
+    values = ["ubuntu-eks/k8s_1.16/images/*"]
+  }
+
+  most_recent = true
+  owners      = ["099720109477"]
+
+  tags = map(
+    "Name", "eks_worker_ami_1_16",
     "Stack", "${var.namespace}-${var.environment}",
     "Customer", var.namespace
   )
@@ -94,6 +110,10 @@ EOF
 systemctl daemon-reload
 
 USERDATA
+
+  # no changes to userdata, but provide a separate var in case this changes
+  # in the future
+  bionic_1_16_node_userdata = local.bionic_1_15_node_userdata
 }
 
 resource "aws_iam_policy" "nodes_kubernetes" {

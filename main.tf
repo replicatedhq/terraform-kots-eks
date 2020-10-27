@@ -112,7 +112,7 @@ module "eks" {
 
   create_eks = true
 
-  cluster_version = "1.15"
+  cluster_version = "1.16"
   cluster_name    = "${var.namespace}-${var.environment}"
   vpc_id          = var.vpc_id
   subnets         = var.private_subnets
@@ -122,7 +122,10 @@ module "eks" {
       name = "primary-worker-group-1-${var.k8s_node_size}"
 
       # override ami_id for this launch template
-      ami_id = data.aws_ami.eks_worker_ami_1_15.id
+      # ami_id = data.aws_ami.eks_worker_ami_1_15.id
+      # pin AMI ID to prevent node upgrade until planned
+      # (see https://github.com/fishtown-analytics/dbt-cloud-infra-terraform/issues/66)
+      ami_id = "ami-02d7471e04467b8de"
 
       instance_type        = var.k8s_node_size
       asg_desired_capacity = var.k8s_node_count
@@ -147,6 +150,37 @@ module "eks" {
         "GroupMaxSize",
       ]
     },
+    # {
+    #   name = "primary-worker-group-1-16-${var.k8s_node_size}"
+
+    #   # override ami_id for this launch template
+    #   # ami_id = data.aws_ami.eks_worker_ami_1_15.id
+    #   # pin AMI ID to prevent node upgrade until planned
+    #   ami_id = data.aws_ami.eks_worker_ami_1_16.id
+
+    #   instance_type        = var.k8s_node_size
+    #   asg_desired_capacity = var.k8s_node_count
+    #   asg_min_size         = var.k8s_node_count
+    #   asg_max_size         = var.k8s_node_count
+
+    #   suspended_processes = ["AZRebalance"]
+
+    #   key_name                      = "${var.namespace}-${var.environment}"
+    #   additional_security_group_ids = [aws_security_group.internal.id]
+    #   kubelet_extra_args            = local.kubelet_extra_args
+    #   pre_userdata                  = "${local.bionic_1_16_node_userdata}${var.set_additional_k8s_user_data ? var.additional_k8s_user_data : ""}"
+
+    #   enabled_metrics = [
+    #     "GroupStandbyInstances",
+    #     "GroupTotalInstances",
+    #     "GroupPendingInstances",
+    #     "GroupTerminatingInstances",
+    #     "GroupDesiredCapacity",
+    #     "GroupInServiceInstances",
+    #     "GroupMinSize",
+    #     "GroupMaxSize",
+    #   ]
+    # },
   ]
 
   workers_role_name           = "${var.namespace}-${var.environment}-workers-role"

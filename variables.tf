@@ -131,6 +131,10 @@ variable "create_loadbalancer" {
   type    = bool
   default = true
 }
+variable "rds_backup_retention_period" {
+  type = number
+  default = 7
+}
 
 # locals
 data "aws_caller_identity" "current" {}

@@ -54,4 +54,7 @@ module "single_tenant_staging" {
 
   # pass a list of CIDR blocks to restrict traffic through load balancer
   load_balancer_source_ranges = ["100.68.0.0/18", "100.67.0.0/18"]
+
+  # by default the RDS backup retention is set to 7 days, setting to 0 will disable automated backups
+  rds_backup_retention_period = 0
 }

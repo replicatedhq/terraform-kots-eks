@@ -132,7 +132,7 @@ variable "create_loadbalancer" {
   default = true
 }
 variable "rds_backup_retention_period" {
-  type = number
+  type    = number
   default = 7
 }
 

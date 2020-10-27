@@ -77,6 +77,9 @@ resource "aws_db_instance" "backend_postgres" {
   skip_final_snapshot = true
   deletion_protection = true
 
+  backup_retention_period  = var.rds_backup_retention_period
+  delete_automated_backups = false
+
   lifecycle {
     ignore_changes = [password]
   }

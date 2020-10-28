@@ -128,9 +128,9 @@ module "eks" {
       ami_id = "ami-02d7471e04467b8de"
 
       instance_type        = var.k8s_node_size
-      asg_desired_capacity = var.k8s_node_count
-      asg_min_size         = var.k8s_node_count
-      asg_max_size         = var.k8s_node_count
+      asg_desired_capacity = 0
+      asg_min_size         = 0
+      asg_max_size         = 0
 
       suspended_processes = ["AZRebalance"]
 

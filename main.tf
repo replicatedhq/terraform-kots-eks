@@ -118,38 +118,38 @@ module "eks" {
   subnets         = var.private_subnets
 
   worker_groups_launch_template = [
-    {
-      name = "primary-worker-group-1-${var.k8s_node_size}"
+    # {
+    #   name = "primary-worker-group-1-${var.k8s_node_size}"
 
-      # override ami_id for this launch template
-      # ami_id = data.aws_ami.eks_worker_ami_1_15.id
-      # pin AMI ID to prevent node upgrade until planned
-      # (see https://github.com/fishtown-analytics/dbt-cloud-infra-terraform/issues/66)
-      ami_id = "ami-02d7471e04467b8de"
+    #   # override ami_id for this launch template
+    #   # ami_id = data.aws_ami.eks_worker_ami_1_15.id
+    #   # pin AMI ID to prevent node upgrade until planned
+    #   # (see https://github.com/fishtown-analytics/dbt-cloud-infra-terraform/issues/66)
+    #   ami_id = "ami-02d7471e04467b8de"
 
-      instance_type        = var.k8s_node_size
-      asg_desired_capacity = 0
-      asg_min_size         = 0
-      asg_max_size         = 0
+    #   instance_type        = var.k8s_node_size
+    #   asg_desired_capacity = 0
+    #   asg_min_size         = 0
+    #   asg_max_size         = 0
 
-      suspended_processes = ["AZRebalance"]
+    #   suspended_processes = ["AZRebalance"]
 
-      key_name                      = "${var.namespace}-${var.environment}"
-      additional_security_group_ids = [aws_security_group.internal.id]
-      kubelet_extra_args            = local.kubelet_extra_args
-      pre_userdata                  = "${local.bionic_1_15_node_userdata}${var.set_additional_k8s_user_data ? var.additional_k8s_user_data : ""}"
+    #   key_name                      = "${var.namespace}-${var.environment}"
+    #   additional_security_group_ids = [aws_security_group.internal.id]
+    #   kubelet_extra_args            = local.kubelet_extra_args
+    #   pre_userdata                  = "${local.bionic_1_15_node_userdata}${var.set_additional_k8s_user_data ? var.additional_k8s_user_data : ""}"
 
-      enabled_metrics = [
-        "GroupStandbyInstances",
-        "GroupTotalInstances",
-        "GroupPendingInstances",
-        "GroupTerminatingInstances",
-        "GroupDesiredCapacity",
-        "GroupInServiceInstances",
-        "GroupMinSize",
-        "GroupMaxSize",
-      ]
-    },
+    #   enabled_metrics = [
+    #     "GroupStandbyInstances",
+    #     "GroupTotalInstances",
+    #     "GroupPendingInstances",
+    #     "GroupTerminatingInstances",
+    #     "GroupDesiredCapacity",
+    #     "GroupInServiceInstances",
+    #     "GroupMinSize",
+    #     "GroupMaxSize",
+    #   ]
+    # },
     {
       name = "primary-worker-group-1-16-${var.k8s_node_size}"
 

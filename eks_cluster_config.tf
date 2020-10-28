@@ -6,17 +6,17 @@ data "aws_eks_cluster_auth" "cluster" {
   name = module.eks.cluster_id
 }
 
-data "aws_ami" "eks_worker_ami_1_15" {
+data "aws_ami" "eks_worker_ami_1_16" {
   filter {
     name   = "name"
-    values = ["ubuntu-eks/k8s_1.15/images/*"]
+    values = ["ubuntu-eks/k8s_1.16/images/*"]
   }
 
   most_recent = true
   owners      = ["099720109477"]
 
   tags = map(
-    "Name", "eks_worker_ami_1_15",
+    "Name", "eks_worker_ami_1_16",
     "Stack", "${var.namespace}-${var.environment}",
     "Customer", var.namespace
   )
@@ -41,7 +41,7 @@ locals {
 DATA
 
 
-  bionic_1_15_node_userdata = <<USERDATA
+  bionic_1_16_node_userdata = <<USERDATA
 #!/bin/bash -xe
 
 # IMPORTANT NODE CONFIGURATION

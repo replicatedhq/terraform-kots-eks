@@ -125,12 +125,12 @@ module "eks" {
       # ami_id = data.aws_ami.eks_worker_ami_1_15.id
       # pin AMI ID to prevent node upgrade until planned
       # (see https://github.com/fishtown-analytics/dbt-cloud-infra-terraform/issues/66)
-      ami_id = "ami-0d3dd0a90d88054ac"
+      ami_id = "ami-0d3dd0a90d88054ac" #CAMBIA
 
       instance_type        = var.k8s_node_size
-      asg_desired_capacity = var.k8s_node_count
-      asg_min_size         = var.k8s_node_count
-      asg_max_size         = var.k8s_node_count
+      asg_desired_capacity = 0
+      asg_min_size         = 0
+      asg_max_size         = 0
 
       suspended_processes = ["AZRebalance"]
 

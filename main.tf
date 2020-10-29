@@ -119,7 +119,7 @@ module "eks" {
 
   worker_groups_launch_template = [
     {
-      name = "primary-worker-group-1-${var.k8s_node_size}"
+      name = "primary-worker-group-1-16-${var.k8s_node_size}"
 
       # override ami_id for this launch template
       ami_id = data.aws_ami.eks_worker_ami_1_16.id

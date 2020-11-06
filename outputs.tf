@@ -14,7 +14,7 @@ output "efs_id" {
 }
 
 output "instance_url" {
-  value       = "${var.hostname_suffix == "" ? var.environment : var.hostname_suffix}.${var.hosted_zone_name}"
+  value       = "${var.hostname_affix == "" ? var.environment : var.hostname_affix}.${var.hosted_zone_name}"
   description = "The URL where the dbt Cloud instance can be accessed."
 }
 

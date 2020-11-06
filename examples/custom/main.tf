@@ -21,7 +21,6 @@ module "single_tenant_staging" {
   vpc_id                  = module.vpc.vpc_id
   private_subnets         = module.vpc.private_subnets
   key_admins              = var.key_admins
-  key_users               = var.key_users
   hosted_zone_name        = "singletenant.getdbt.com"
   creation_role_arn       = var.creation_role_arn
   # fill out with secure password before applying
@@ -29,14 +28,13 @@ module "single_tenant_staging" {
 
   # (optional) fill out with Admin console script values before applying or delete if not used
   create_admin_console_script = true
-  aws_access_key_id           = ""
-  aws_secret_access_key       = ""
-  superuser_password          = ""
-  admin_console_password      = ""
+  aws_access_key_id           = "<ENTER_AWS_ACCESS_KEY>"
+  aws_secret_access_key       = "<ENTER_AWS_SECRET_KEY>"
+  superuser_password          = "<ENTER_SUPERUSER_PASSWORD>"
+  admin_console_password      = "<ENTER_ADMIN_CONSOLE_PASSWORD>"
 
   # allows user to set custom k8s user data
-  set_additional_k8s_user_data = true
-  additional_k8s_user_data     = <<-EOT
+  additional_k8s_user_data = <<-EOT
   # Custom user data
   EOT
 

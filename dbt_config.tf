@@ -95,7 +95,7 @@ spec:
     google_settings_type:
       default: defaults
     hostname:
-      value: ${var.hostname_suffix == "" ? var.environment : var.hostname_suffix}.${var.hosted_zone_name}
+      value: ${var.hostname_affix == "" ? var.environment : var.hostname_affix}.${var.hosted_zone_name}
     ide_storage_class:
       value: ${var.ide_storage_class}
     imageRegistry:

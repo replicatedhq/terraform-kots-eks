@@ -47,7 +47,7 @@ After creating the infrastructure by running `terraform apply` the following ste
 
 After the environment configuration is complete the dbt Cloud application can be configured and installed via the Replicated (KOTS) admin console. If the optional 'create_admin_console_script' variable was set to true then a script and corresponding config file will be created to automatically install the KOTS admin console will pre-filled values populated from other related optional variables and the infrastructure build by Terraform (such as RDS hostname). This script can simply by ran from the shell with `./dbt_config.sh`. Once the admin console is installed it can be accessed via localhost:8800. After entering the password and a valid license, the deployment engineer will be redirected to the config page with all values prepopulated. These values should be double checked before continuing to deploy the latest channel version of dbt Cloud.
 
-If the 'create_admin_console_script' was not set to true, the KOTS admin console can be manually configured using the following steps below.
+If the `create_admin_console_script` variable was not set to true, the KOTS admin console can be manually configured using the following steps below.
 
 ### Setting up the Kubernetes context
 

@@ -81,32 +81,32 @@ variable "load_balancer_source_ranges" {
 variable "create_admin_console_script" {
   type        = bool
   default     = false
-  description = "If set to true will generate a script to automatically spin up the KOTS admin console with desired values and outputs from the module. The relevant variables below are suffixed with '(Optional) Admin Console Script' in their descriptions. These variables can also be left blank and manually entered into the script after applying if desired."
+  description = "If set to true will generate a script to automatically spin up the KOTS admin console with desired values and outputs from the module. The relevant variables below are suffixed with 'Admin Console Script' in their descriptions. These variables can also be left blank and manually entered into the script after applying if desired."
 }
 variable "aws_access_key_id" {
   type        = string
   default     = "<ENTER_AWS_ACCESS_KEY>"
-  description = "(Optional) Admin Console Script - The AWS access key for an IAM identity with admin access that will be used for encryption. This is added to the config that is automatically uploaded to the KOTS admin console via the script."
+  description = "Admin Console Script - The AWS access key for an IAM identity with admin access that will be used for encryption. This is added to the config that is automatically uploaded to the KOTS admin console via the script."
 }
 variable "aws_secret_access_key" {
   type        = string
   default     = "<ENTER_AWS_SECRET_KEY>"
-  description = "(Optional) Admin Console Script - The AWS secret key for an IAM identity with admin access that will be used for encryption. This is added to the config that is automatically uploaded to the KOTS admin console via the script."
+  description = "Admin Console Script - The AWS secret key for an IAM identity with admin access that will be used for encryption. This is added to the config that is automatically uploaded to the KOTS admin console via the script."
 }
 variable "creation_role_arn" {
   type        = string
   default     = "<ENTER_CREATION_ROLE_ARN>"
-  description = "(Optional) Admin Console Script - The ARN of the Terraform Creation Role. This is added to the script and used when setting the K8s context."
+  description = "Admin Console Script - The ARN of the Terraform Creation Role. This is added to the script and used when setting the K8s context."
 }
 variable "admin_console_password" {
   type        = string
   default     = "<ENTER_ADMIN_CONSOLE_PASSWORD>"
-  description = "(Optional) Admin Console Script - The desired password for the KOTS admin console. This is added to the script and used when spinning the admin console."
+  description = "Admin Console Script - The desired password for the KOTS admin console. This is added to the script and used when spinning the admin console."
 }
 variable "superuser_password" {
   type        = string
   default     = "<ENTER_SUPER_USER_PASSWORD>"
-  description = "(Optional) Admin Console Script - The superuser password for the dbt Cloud application. This is added to the config that is automatically uploaded to the KOTS admin console via the script."
+  description = "Admin Console Script - The superuser password for the dbt Cloud application. This is added to the config that is automatically uploaded to the KOTS admin console via the script."
 }
 variable "datadog_enabled" {
   type        = bool
@@ -121,27 +121,27 @@ variable "hostname_affix" {
 variable "release_channel" {
   type        = string
   default     = ""
-  description = "(Optional) Admin Console Script - The license channel for customer deployment. This should be left unset unless instructed by Fishtown Analytics."
+  description = "Admin Console Script - The license channel for customer deployment. This should be left unset unless instructed by Fishtown Analytics."
 }
 variable "app_memory" {
   type        = string
   default     = "1Gi"
-  description = "(Optional) Admin Console Script - The memory dedicated to the application pods for dbt Cloud. This is added to the config that is automatically uploaded to the KOTS admin console via the script. This value should never be set to less than default. It is recommended that you reach out to Fishtown Analytics to complete the capacity planning exercise prior to modifying this."
+  description = "Admin Console Script - The memory dedicated to the application pods for dbt Cloud. This is added to the config that is automatically uploaded to the KOTS admin console via the script. This value should never be set to less than default. It is recommended that you reach out to Fishtown Analytics to complete the capacity planning exercise prior to modifying this."
 }
 variable "app_replicas" {
   type        = number
   default     = 2
-  description = "(Optional) Admin Console Script - The number of application pods for dbt Cloud. This is added to the config that is automatically uploaded to the KOTS admin console via the script. This value should never be set to less than default. It is recommended that you reach out to Fishtown Analytics to complete the capacity planning exercise prior to modifying this."
+  description = "Admin Console Script - The number of application pods for dbt Cloud. This is added to the config that is automatically uploaded to the KOTS admin console via the script. This value should never be set to less than default. It is recommended that you reach out to Fishtown Analytics to complete the capacity planning exercise prior to modifying this."
 }
 variable "nginx_memory" {
   type        = string
   default     = "500mi"
-  description = "(Optional) Admin Console Script - The amount of memory dedicated to nginx for dbt Cloud. This is added to the config that is automatically uploaded to the KOTS admin console via the script. This value should never be set to less than default. It is recommended that you reach out to Fishtown Analytics to complete the capacity planning exercise prior to modifying this."
+  description = "Admin Console Script - The amount of memory dedicated to nginx for dbt Cloud. This is added to the config that is automatically uploaded to the KOTS admin console via the script. This value should never be set to less than default. It is recommended that you reach out to Fishtown Analytics to complete the capacity planning exercise prior to modifying this."
 }
 variable "scheduler_memory" {
   type        = string
   default     = "1Gi"
-  description = "(Optional) Admin Console Script - The amount of memory dedicated to the scheduler for dbt Cloud. This is added to the config that is automatically uploaded to the KOTS admin console via the script. This value should never be set to less than default. It is recommended that you reach out to Fishtown Analytics to complete the capacity planning exercise prior to modifying this."
+  description = "Admin Console Script - The amount of memory dedicated to the scheduler for dbt Cloud. This is added to the config that is automatically uploaded to the KOTS admin console via the script. This value should never be set to less than default. It is recommended that you reach out to Fishtown Analytics to complete the capacity planning exercise prior to modifying this."
 }
 variable "additional_k8s_user_data" {
   type        = string
@@ -156,7 +156,7 @@ variable "create_efs_provisioner" {
 variable "ide_storage_class" {
   type        = string
   default     = "aws-efs"
-  description = "(Optional) Admin Console Script - The EFS provisioner storage class name used for the IDE. Only change if creating a custom EFS provisioner."
+  description = "Admin Console Script - The EFS provisioner storage class name used for the IDE. Only change if creating a custom EFS provisioner."
 }
 variable "create_loadbalancer" {
   type        = bool

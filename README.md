@@ -27,7 +27,7 @@ It is highly recommended that the environment infrastructure be created by assum
 }
 ```
 
-Once created the role arn should be entered in the "creation_role_arn" variable in the /vars file for each environment directory. The role is assumed by Terraform in the aws provider for each environment. Note that this role will be needed again when installing dbt Cloud.
+Once created the role arn should be entered in the "creation_role_arn" variable in the `vars.tf` file for each environment directory. The role is assumed by Terraform in the aws provider for each environment. Note that this role will be needed again when installing dbt Cloud.
 
 ### VPC Creation
 

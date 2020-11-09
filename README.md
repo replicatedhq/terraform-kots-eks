@@ -35,7 +35,7 @@ The infrastructure needed to host the dbt Cloud application in AWS must live in 
 
 ### Domain Name Setup
 
-In order to host the dbt Cloud application, a valid domain name must be set in the `domain_name" variable in the (root)/vars file and each of the "hosted_zone_name" fields in the respective environment declarations of the single_tenant module. This domain name should either be established in the corresponding AWS account for the deployment, or appropriate DNS records should be created to forward traffic to the URL if the domain is managed in a separate account.
+In order to host the dbt Cloud application, a valid domain name must be set in the `domain_name` variable in the (root)/vars file and each of the "hosted_zone_name" fields in the respective environment declarations of the single_tenant module. This domain name should either be established in the corresponding AWS account for the deployment, or appropriate DNS records should be created to forward traffic to the URL if the domain is managed in a separate account.
 
 Note: When running `terraform apply` for the first time, the module may fail to validate the ACM certificate as this uses [DNS to validate domain ownvership](https://docs.aws.amazon.com/acm/latest/userguide/gs-acm-validate-dns.html).
 

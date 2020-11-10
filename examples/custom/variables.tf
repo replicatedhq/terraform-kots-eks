@@ -28,10 +28,6 @@ variable "key_admins" {
   ]
 }
 
-variable "key_users" {
-  default = []
-}
-
 variable "cidr_block" {
   default = "10.192.0.0/16"
   type    = string

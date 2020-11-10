@@ -21,7 +21,6 @@ module "single_tenant_staging" {
   vpc_id                  = module.vpc.vpc_id
   private_subnets         = module.vpc.private_subnets
   key_admins              = var.key_admins
-  key_users               = var.key_users
   hosted_zone_name        = "singletenant.getdbt.com"
   creation_role_arn       = var.creation_role_arn
   # fill out with secure password before applying

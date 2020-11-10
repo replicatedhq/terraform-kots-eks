@@ -101,40 +101,52 @@ Note that the `kubectl kots install` will prompt the user for a password for the
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| namespace | Used as an identifier for various infrastructure components within the module. Usually single word that or the name of the organization. For exmaple: `fishtownanalytics` | `string` | n/a | yes |
-| environment | The name of the environment for the deployment. For example: `dev`, `prod`, `uat`, `standard`, etc | `string` | n/a | yes |
-| k8s_node_count | The number of Kubernetes nodes that will be created for the EKS worker group. Generally 2 nodes are recommended but it is recommended that you reach out to Fishtown Analytics to complete the capacity planning exercise prior to setting this. | `number` | n/a | yes |
-| k8s_node_size | The [EC2 instance type](https://aws.amazon.com/ec2/instance-types/) of the Kubernetes nodes that will be created for the EKS worker group. It is recommended that you reach out to Fishtown Analytics to complete the capacity planning exercise prior to setting this. | `string` | n/a | yes |
-| region | The AWS region where the infrastructure will be deployed. For example `us-east-1`. | `string` | n/a | yes |
-| postgres_instance_class | The [RDS Postgres instance type](https://aws.amazon.com/rds/instance-types/). It is recommended that you reach out to Fishtown Analytics to complete the capacity planning exercise prior to setting this. | `string` | n/a | yes |
-| postgres_storage | The amount of storage allocated to the RDS database in GB. Generally 100 GB is standard but it is recommended that you reach out to Fishtown Analytics to complete the capacity planning exercise prior to setting this. | `string` | n/a | yes |
-| cidr_block | The CIDR block of the VPC that the infrastructure will be deployed in. | `string` | n/a | yes |
-| key_admins | Required list of admin users for KMS key creation. This list should include at least one valid admin user for the AWS account. | `list(string)`| n/a | yes |
-| rds_password | Password for RDS database. It is highly recommended that a secure password be generated and stored in a vault. | `string` | n/a | yes |
-| vpc_id | The ID of the VPC that the infrastructure will be deployed in. | `string` | n/a | yes |
-| private_subnets | The list of private subnets for the VPC that the infrastructure will be deployed in. | `list(string)` | n/a | yes |
-| hosted_zone_name | The root domain name of the hosted zone that will resolve to the dbt Cloud deployment. This should be a valid domain name that you own. | `string` | n/a | yes |
-| key_users | List of key users for the KMS key creation. This can be left as an empty list unless adding users to KMS key is desired. | `list(string)` | [] | no |
-| enable_ses | If set to 'true' this will attempt to create an key pair for AWS Simple Email Service. If set to `true` a valid from email address must be set in the 'ses_email' variable. | `bool` | `false` | no |
-| ses_email | A valid from email address to be used for AWS SES. This address will receive a validation email from AWS upon apply. | `string` | `""` | no |
-| ses_header | The email header for notifications sent via SES. If left blank the header will simply display as the address set in the `ses_email` variable. | `string` | `""` | no |
-| load_balancer_source_ranges | A list of IP ranges in CIDR notation that will be whitelisted by the loadbalancer. If unset will default to allow all traffic. | `list(string)` | `[]` | no |
-| create_admin_console_script | If set to true will generate a script to automatically spin up the KOTS admin console with desired values and outputs from the module. The relevant variables below are suffixed with `Admin Console Script` in their descriptions. These variables can also be left blank and manually entered into the script after applying if desired. | `bool` | `false` | no |
-| aws_access_key_id | Admin Console Script - The AWS access key for an IAM identity with admin access that will be used for encryption. This is added to the config that is automatically uploaded to the KOTS admin console via the script. | `string` | `"<ENTER_AWS_ACCESS_KEY>"` | no |
-| aws_secret_access_key | Admin Console Script - The AWS secret key for an IAM identity with admin access that will be used for encryption. This is added to the config that is automatically uploaded to the KOTS admin console via the script. | `string` | `<ENTER_AWS_SECRET_KEY>` | no |
-| creation_role_arn | Admin Console Script - The ARN of the Terraform Creation Role. This is added to the script and used when setting the K8s context. | `string` | `"<ENTER_CREATION_ROLE_ARN>"` | no |
-| admin_console_password | Admin Console Script - The desired password for the KOTS admin console. This is added to the script and used when spinning the admin console. | `string` | `"<ENTER_ADMIN_CONSOLE_PASSWORD>"` | no |
-| superuser_password | Admin Console Script - The superuser password for the dbt Cloud application. This is added to the config that is automatically uploaded to the KOTS admin console via the script. | `string` | `"<ENTER_SUPER_USER_PASSWORD>"` | no |
-| datadog_enabled | If set to `true` this will enable dbt Cloud to send metrics to Datadog. Note that this requires the installation of a Datadog Agent in the K8s cluster where dbt Cloud is deployed. | `bool` | `false` | no |
-| hostname_affix | The affix of the URL, affixed to the `hosted_zone_name` variable, that the dbt Cloud deployment will resolve to. If left blank the affix will default to the value of the `environment` variable. | `string` | `""` | no |
-| release_channel | Admin Console Script - The license channel for customer deployment. This should be left unset unless instructed by Fishtown Analytics. | `string` | `""` | no |
-| app_memory | Admin Console Script - The memory dedicated to the application pods for dbt Cloud. This is added to the config that is automatically uploaded to the KOTS admin console via the script. This value should never be set to less than default. It is recommended that you reach out to Fishtown Analytics to complete the capacity planning exercise prior to modifying this. | `string` | `"1Gi"` | no |
-| app_replicas | Admin Console Script - The number of application pods for dbt Cloud. This is added to the config that is automatically uploaded to the KOTS admin console via the script. This value should never be set to less than default. It is recommended that you reach out to Fishtown Analytics to complete the capacity planning exercise prior to modifying this. | `number` | `2` | no |
-| nginx_memory | Admin Console Script - The amount of memory dedicated to nginx for dbt Cloud. This is added to the config that is automatically uploaded to the KOTS admin console via the script. This value should never be set to less than default. It is recommended that you reach out to Fishtown Analytics to complete the capacity planning exercise prior to modifying this. | `string` | `"500mi"` | no |
-| scheduler_memory | Admin Console Script - The amount of memory dedicated to the scheduler for dbt Cloud. This is added to the config that is automatically uploaded to the KOTS admin console via the script. This value should never be set to less than default. It is recommended that you reach out to Fishtown Analytics to complete the capacity planning exercise prior to modifying this. | `string` | `"1Gi"` | no |
-| set_additional_k8s_user_data | Set to true to add additional user data for K8s worker nodes using the `additional_k8s_user_data` variable. | `bool` | `false` | no |
-| additional_k8s_user_data | Any additonal user data for K8s worker nodes. For example a curl script to install auditing software. | `string` | `""` | no |
-| create_efs_provisioner | Set to `false` if creating a custom EFS provisioner storage class for the IDE. | `bool` | `true` | no |
-| ide_storage_class | dmin Console Script - The EFS provisioner storage class name used for the IDE. Only change if creating a custom EFS provisioner. | `string` | `"aws-efs"` | no |
-| create_loadbalancer | Set to `false` if creating a customer load balancer or other networking device to route traffic within the cluster. | `bool` | `true` | no |
-| rds_backup_retention_period | The number of days for RDS to create automated snapshot backups. Set to a max of 35 or set to 0 to disable automated backups. | `number` | `7` | no|
+| additional\_k8s\_user\_data | Any additonal user data for K8s worker nodes. For example a curl script to install auditing software. | `string` | `""` | no |
+| admin\_console\_password | Admin Console Script - The desired password for the KOTS admin console. This is added to the script and used when spinning the admin console. | `string` | `"<ENTER_ADMIN_CONSOLE_PASSWORD>"` | no |
+| app\_memory | Admin Console Script - The memory dedicated to the application pods for dbt Cloud. This is added to the config that is automatically uploaded to the KOTS admin console via the script. This value should never be set to less than default. It is recommended that you reach out to Fishtown Analytics to complete the capacity planning exercise prior to modifying this. | `string` | `"1Gi"` | no |
+| app\_replicas | Admin Console Script - The number of application pods for dbt Cloud. This is added to the config that is automatically uploaded to the KOTS admin console via the script. This value should never be set to less than default. It is recommended that you reach out to Fishtown Analytics to complete the capacity planning exercise prior to modifying this. | `number` | `2` | no |
+| aws\_access\_key\_id | Admin Console Script - The AWS access key for an IAM identity with admin access that will be used for encryption. This is added to the config that is automatically uploaded to the KOTS admin console via the script. | `string` | `"<ENTER_AWS_ACCESS_KEY>"` | no |
+| aws\_secret\_access\_key | Admin Console Script - The AWS secret key for an IAM identity with admin access that will be used for encryption. This is added to the config that is automatically uploaded to the KOTS admin console via the script. | `string` | `"<ENTER_AWS_SECRET_KEY>"` | no |
+| cidr\_block | The CIDR block of the VPC that the infrastructure will be deployed in. | `string` | n/a | yes |
+| create\_admin\_console\_script | If set to true will generate a script to automatically spin up the KOTS admin console with desired values and outputs from the module. The relevant variables below are suffixed with 'Admin Console Script' in their descriptions. These variables can also be left blank and manually entered into the script after applying if desired. | `bool` | `false` | no |
+| create\_efs\_provisioner | Set to false if creating a custom EFS provisioner storage class for the IDE. | `bool` | `true` | no |
+| create\_eks\_cluster | n/a | `bool` | `true` | no |
+| create\_loadbalancer | Set to false if creating a customer load balancer or other networking device to route traffic within the cluster. | `bool` | `true` | no |
+| creation\_role\_arn | Admin Console Script - The ARN of the Terraform Creation Role. This is added to the script and used when setting the K8s context. | `string` | `"<ENTER_CREATION_ROLE_ARN>"` | no |
+| custom\_namespace | n/a | `string` | `""` | no |
+| datadog\_enabled | If set to true this will enable dbt Cloud to send metrics to Datadog. Note that this requires the installation of a Datadog Agent in the K8s cluster where dbt Cloud is deployed. | `bool` | `false` | no |
+| enable\_ses | If set to 'true' this will attempt to create an key pair for AWS Simple Email Service. If set to 'true' a valid from email address must be set in the 'ses\_email' variable. | `bool` | `false` | no |
+| environment | The name of the environment for the deployment. For example: 'dev', 'prod', 'uat', 'standard', 'etc' | `string` | n/a | yes |
+| hosted\_zone\_name | The root domain name of the hosted zone that will resolve to the dbt Cloud deployment. This should be a valid domain name that you own. | `string` | n/a | yes |
+| hostname\_affix | The affix of the URL, affixed to the 'hosted\_zone\_name' variable, that the dbt Cloud deployment will resolve to. If left blank the affix will default to the value of the 'environment' variable. | `string` | `""` | no |
+| ide\_storage\_class | Admin Console Script - The EFS provisioner storage class name used for the IDE. Only change if creating a custom EFS provisioner. | `string` | `"aws-efs"` | no |
+| k8s\_node\_count | The number of Kubernetes nodes that will be created for the EKS worker group. Generally 2 nodes are recommended but it is recommended that you reach out to Fishtown Analytics to complete the capacity planning exercise prior to setting this. | `number` | n/a | yes |
+| k8s\_node\_size | The EC2 instance type of the Kubernetes nodes that will be created for the EKS worker group. It is recommended that you reach out to Fishtown Analytics to complete the capacity planning exercise prior to setting this. | `string` | n/a | yes |
+| key\_admins | Required list of admin users for KMS key creation. This list should include at least one valid admin user for the AWS account. | `list(string)` | n/a | yes |
+| key\_users | List of key users for the KMS key creation. This can be left as an empty list unless adding users to KMS key is desired. | `list(string)` | `[]` | no |
+| load\_balancer\_source\_ranges | A list of IP ranges in CIDR notation that will be whitelisted by the loadbalancer. If unset will default to allow all traffic. | `list(string)` | `[]` | no |
+| namespace | Used as an identifier for various infrastructure components within the module. Usually single word that or the name of the organization. For exmaple: 'fishtownanalytics' | `string` | n/a | yes |
+| nginx\_memory | Admin Console Script - The amount of memory dedicated to nginx for dbt Cloud. This is added to the config that is automatically uploaded to the KOTS admin console via the script. This value should never be set to less than default. It is recommended that you reach out to Fishtown Analytics to complete the capacity planning exercise prior to modifying this. | `string` | `"500mi"` | no |
+| postgres\_instance\_class | The RDS Postgres instance type. It is recommended that you reach out to Fishtown Analytics to complete the capacity planning exercise prior to setting this. | `string` | n/a | yes |
+| postgres\_storage | The amount of storage allocated to the RDS database in GB. Generally 100 GB is standard but it is recommended that you reach out to Fishtown Analytics to complete the capacity planning exercise prior to setting this. | `string` | n/a | yes |
+| private\_subnets | The list of private subnets for the VPC that the infrastructure will be deployed in. | `list(string)` | n/a | yes |
+| rds\_backup\_retention\_period | The number of days for RDS to create automated snapshot backups. Set to a max of 35 or set to 0 to disable automated backups. | `number` | `7` | no |
+| rds\_password | Password for RDS database. It is highly recommended that a secure password be generated and stored in a vault. | `string` | n/a | yes |
+| region | The AWS region where the infrastructure will be deployed. For example 'us-east-1'. | `string` | n/a | yes |
+| release\_channel | Admin Console Script - The license channel for customer deployment. This should be left unset unless instructed by Fishtown Analytics. | `string` | `""` | no |
+| scheduler\_memory | Admin Console Script - The amount of memory dedicated to the scheduler for dbt Cloud. This is added to the config that is automatically uploaded to the KOTS admin console via the script. This value should never be set to less than default. It is recommended that you reach out to Fishtown Analytics to complete the capacity planning exercise prior to modifying this. | `string` | `"1Gi"` | no |
+| ses\_email | A valid from email address to be used for AWS SES. This address will receive a validation email from AWS upon apply. | `string` | `""` | no |
+| ses\_header | The email header for notifications sent via SES. If left blank the header will simply display as the address set in the 'ses\_email' variable. | `string` | `""` | no |
+| superuser\_password | Admin Console Script - The superuser password for the dbt Cloud application. This is added to the config that is automatically uploaded to the KOTS admin console via the script. | `string` | `"<ENTER_SUPER_USER_PASSWORD>"` | no |
+| use\_custom\_namespace | n/a | `bool` | `false` | no |
+| vpc\_id | The ID of the VPC that the infrastructure will be deployed in. | `string` | n/a | yes |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| database\_hostname | The hostname (address) of the RDS database generated. This is required to be entered manually in the configuration console if not using the generated script. |
+| efs\_dns\_name | The DNS name generated for the EFS instance. This may be required if creating a custom EFS provisioner. |
+| efs\_id | The ID generated for the EFS instance. This may be required if creating a custom EFS provisioner. |
+| instance\_url | The URL where the dbt Cloud instance can be accessed. |
+| kms\_key\_arn | The ARN of the KMS key created. May be manually entered for encryption in the configuration console if not using the generated script. |

@@ -72,7 +72,7 @@ Note that the `kubectl kots install` will prompt the user for a password for the
 
 | Name | Version |
 |------|---------|
-| terraform | >= 0.12.0 |
+| terraform | >= 0.13.0 |
 | aws | >= 2.0 |
 | local | >= 1.2 |
 | null | >= 2.0 |
@@ -83,7 +83,7 @@ Note that the `kubectl kots install` will prompt the user for a password for the
 |------|---------|
 | hashicorp/aws | >= 2.0 |
 | hashicorp/random | >= 3.0.0 |
-| hashicorp/kubernetes | >= 1.13.0 |
+| hashicorp/kubernetes | >= 1.9 |
 | hashicorp/tls | >= 3.0.0 |
 
 ## Module Dependencies
@@ -91,11 +91,11 @@ Note that the `kubectl kots install` will prompt the user for a password for the
 | Name | Version |
 |------|---------|
 | terraform-aws-modules/acm/aws | 2.12.0 |
-| terraform-aws-modules/s3-bucket/aws | 1.8.0 |
-| cloudposse/efs/aws | 0.16.0 |
+| terraform-aws-modules/s3-bucket/aws | 1.16.0 |
+| cloudposse/efs/aws | 0.22.0 |
 | terraform-aws-modules/eks/aws | 12.2.0 |
-| terraform-aws-modules/key-pair/aws | 0.4.0 |
-| cloudposse/kms-key/aws | 0.5.0 |
+| terraform-aws-modules/key-pair/aws | 0.5.0 |
+| cloudposse/kms-key/aws | 0.7.0 |
 
 ## Inputs
 

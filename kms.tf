@@ -60,7 +60,7 @@ data "aws_iam_policy_document" "kms_key_policy" {
 
 module "kms_key" {
   source  = "cloudposse/kms-key/aws"
-  version = "0.5.0"
+  version = "0.7.0"
 
   namespace               = var.namespace
   environment             = var.environment

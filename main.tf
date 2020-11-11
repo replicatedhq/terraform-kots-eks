@@ -30,7 +30,7 @@ resource "aws_security_group" "internal" {
 
 module "efs" {
   source  = "cloudposse/efs/aws"
-  version = "0.16.0"
+  version = "0.22.0"
 
   namespace   = var.namespace
   environment = var.environment

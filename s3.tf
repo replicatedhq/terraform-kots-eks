@@ -43,7 +43,7 @@ resource "aws_s3_bucket_public_access_block" "block_public_access" {
 
 module "dbt_cloud_app_bucket" {
   source  = "terraform-aws-modules/s3-bucket/aws"
-  version = "1.8.0"
+  version = "1.16.0"
 
   bucket = "com.getdbt.cloud.${var.namespace}-${var.environment}.app"
   acl    = "private"
@@ -74,7 +74,7 @@ module "dbt_cloud_app_bucket" {
 
 module "dbt_cloud_per_branch_app_bucket" {
   source  = "terraform-aws-modules/s3-bucket/aws"
-  version = "1.8.0"
+  version = "1.16.0"
 
   bucket = "com.getdbt.cloud.${var.namespace}-${var.environment}.per-branch.app"
   acl    = "private"

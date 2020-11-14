@@ -1,12 +1,13 @@
 data "aws_eks_cluster" "cluster" {
-  name = module.eks.cluster_id
+  name = var.create_eks_cluster ? module.eks.0.cluster_id : var.cluster_name
 }
 
 data "aws_eks_cluster_auth" "cluster" {
-  name = module.eks.cluster_id
+  name = var.create_eks_cluster ? module.eks.0.cluster_id : var.cluster_name
 }
 
 data "aws_ami" "eks_worker_ami_1_16" {
+  count = var.create_eks_cluster ? 1 : 0
   filter {
     name   = "name"
     values = ["ubuntu-eks/k8s_1.16/images/*"]
@@ -97,11 +98,13 @@ USERDATA
 }
 
 resource "aws_iam_policy" "nodes_kubernetes" {
+  count  = var.create_eks_cluster ? 1 : 0
   name   = "nodes.kubernetes.${var.namespace}-${var.environment}"
-  policy = data.aws_iam_policy_document.nodes_kubernetes.json
+  policy = data.aws_iam_policy_document.nodes_kubernetes.0.json
 }
 
 data "aws_iam_policy_document" "nodes_kubernetes" {
+  count = var.create_eks_cluster ? 1 : 0
   statement {
     actions = [
       "ec2:Describe*",

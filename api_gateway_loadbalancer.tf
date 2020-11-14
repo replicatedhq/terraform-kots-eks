@@ -2,7 +2,7 @@ resource "kubernetes_service" "api_gateway_loadbalancer" {
   count = var.create_loadbalancer ? 1 : 0
   metadata {
     name      = "api-gateway-loadbalancer"
-    namespace = kubernetes_namespace.dbt_cloud.metadata.0.name
+    namespace = var.existing_namespace ? var.custom_namespace : kubernetes_namespace.dbt_cloud.0.metadata.0.name
     labels = {
       name = "api-gateway-loadbalancer"
     }

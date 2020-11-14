@@ -61,7 +61,7 @@ variable "key_users" {
 variable "enable_ses" {
   type        = bool
   default     = false
-  description = "If set to 'true' this will attempt to create an key pair for AWS Simple Email Service. If set to 'true' a valid from email address must be set in the 'ses_email' variable."
+  description = "If set to `true` this will attempt to create an key pair for AWS Simple Email Service. If set to `true` a valid from email address must be set in the `ses_email` variable."
 }
 variable "ses_email" {
   type        = string
@@ -71,7 +71,7 @@ variable "ses_email" {
 variable "ses_header" {
   type        = string
   default     = ""
-  description = "The email header for notifications sent via SES. If left blank the header will simply display as the address set in the 'ses_email' variable."
+  description = "The email header for notifications sent via SES. If left blank the header will simply display as the address set in the `ses_email` variable."
 }
 variable "load_balancer_source_ranges" {
   type        = list(string)
@@ -111,12 +111,12 @@ variable "superuser_password" {
 variable "datadog_enabled" {
   type        = bool
   default     = false
-  description = "If set to true this will enable dbt Cloud to send metrics to Datadog. Note that this requires the installation of a Datadog Agent in the K8s cluster where dbt Cloud is deployed."
+  description = "If set to `true` this will enable dbt Cloud to send metrics to Datadog. Note that this requires the installation of a Datadog Agent in the K8s cluster where dbt Cloud is deployed."
 }
 variable "hostname_affix" {
   type        = string
   default     = ""
-  description = "The affix of the URL, affixed to the 'hosted_zone_name' variable, that the dbt Cloud deployment will resolve to. If left blank the affix will default to the value of the 'environment' variable."
+  description = "The affix of the URL, affixed to the `hosted_zone_name` variable, that the dbt Cloud deployment will resolve to. If left blank the affix will default to the value of the `environment` variable."
 }
 variable "release_channel" {
   type        = string
@@ -151,7 +151,7 @@ variable "additional_k8s_user_data" {
 variable "create_efs_provisioner" {
   type        = bool
   default     = true
-  description = "Set to false if creating a custom EFS provisioner storage class for the IDE."
+  description = "Set to `false` if creating a custom EFS provisioner storage class for the IDE."
 }
 variable "ide_storage_class" {
   type        = string
@@ -161,12 +161,37 @@ variable "ide_storage_class" {
 variable "create_loadbalancer" {
   type        = bool
   default     = true
-  description = "Set to false if creating a customer load balancer or other networking device to route traffic within the cluster."
+  description = "Set to `false` if creating a customer load balancer or other networking device to route traffic within the cluster."
 }
 variable "rds_backup_retention_period" {
   type        = number
   default     = 7
   description = "The number of days for RDS to create automated snapshot backups. Set to a max of 35 or set to 0 to disable automated backups."
+}
+variable "create_eks_cluster" {
+  type        = bool
+  default     = true
+  description = "Set to `false` if installing dbt Cloud into an existing EKS cluster."
+}
+variable "custom_namespace" {
+  type        = string
+  default     = ""
+  description = "If set this variable will create a custom K8s namespace for dbt Cloud. If not set the created namespace defaults to `dbt-cloud-<namespace>-<environment>`."
+}
+variable "cluster_name" {
+  type        = string
+  default     = ""
+  description = "Name of the cluster dbt Cloud will be installed into. Must be set if `create_eks_cluster` is set to `false`."
+}
+variable "existing_namespace" {
+  type        = bool
+  default     = false
+  description = "If set to `true`this will install dbt Cloud components into an existing namespace denoted by the `custom_namespace` field. This is not recommended as it is preferred to install dbt Cloud into a dedicated namespace."
+}
+variable "custom_internal_security_group_id" {
+  type        = string
+  default     = ""
+  description = "The ID of an existing custom security group attached to an existing K8s cluster. This security group enables communication between the EKS worker nodes, RDS database, and EFS file system. It should be modeled after the `aws_security_group.internal` resource in this module. "
 }
 
 # locals

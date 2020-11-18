@@ -19,10 +19,10 @@ resource "local_file" "script" {
 aws configure --profile dbt-cloud-${var.namespace}-${var.environment} set aws_access_key_id ${var.aws_access_key_id}
 aws configure --profile dbt-cloud-${var.namespace}-${var.environment} set aws_secret_access_key ${var.aws_secret_access_key}
 aws configure --profile dbt-cloud-${var.namespace}-${var.environment} set region ${var.region}
-aws eks update-kubeconfig --profile dbt-cloud-${var.namespace}-${var.environment} --name ${var.namespace}-${var.environment} --role-arn ${var.creation_role_arn}
-kubectl config set-context --current --namespace=dbt-cloud-${var.namespace}-${var.environment}
+aws eks update-kubeconfig --profile dbt-cloud-${var.namespace}-${var.environment} --name ${var.create_eks_cluster ? module.eks.0.cluster_id : var.cluster_name} --role-arn ${var.creation_role_arn}
+kubectl config set-context --current --namespace=${var.existing_namespace ? var.custom_namespace : kubernetes_namespace.dbt_cloud.0.metadata.0.name}
 curl https://kots.io/install | bash
-kubectl kots install dbt-cloud-v1${var.release_channel} --namespace dbt-cloud-${var.namespace}-${var.environment} --shared-password ${var.admin_console_password} --config-values ${local_file.config.0.filename}
+kubectl kots install dbt-cloud-v1${var.release_channel} --namespace ${var.existing_namespace ? var.custom_namespace : kubernetes_namespace.dbt_cloud.0.metadata.0.name} --shared-password ${var.admin_console_password} --config-values ${local_file.config.0.filename}
 EOT
 }
 

@@ -1,4 +1,5 @@
 resource "aws_security_group" "internal" {
+  count       = var.custom_internal_security_group_id == "" ? 1 : 0
   name        = "internal"
   description = "Allow all internal traffic"
   vpc_id      = var.vpc_id
@@ -39,7 +40,7 @@ module "efs" {
   region          = var.region
   vpc_id          = var.vpc_id
   subnets         = var.private_subnets
-  security_groups = [aws_security_group.internal.id]
+  security_groups = [var.custom_internal_security_group_id == "" ? aws_security_group.internal.0.id : var.custom_internal_security_group_id]
   encrypted       = true
   kms_key_id      = module.kms_key.key_arn
 
@@ -72,7 +73,7 @@ resource "aws_db_instance" "backend_postgres" {
   storage_encrypted      = true
   kms_key_id             = module.kms_key.key_arn
   db_subnet_group_name   = aws_db_subnet_group.private.name
-  vpc_security_group_ids = [aws_security_group.internal.id]
+  vpc_security_group_ids = [var.custom_internal_security_group_id == "" ? aws_security_group.internal.0.id : var.custom_internal_security_group_id]
 
   skip_final_snapshot = true
   deletion_protection = true
@@ -93,8 +94,9 @@ resource "aws_db_instance" "backend_postgres" {
 }
 
 resource "kubernetes_namespace" "dbt_cloud" {
+  count = var.existing_namespace ? 0 : 1
   metadata {
-    name = "dbt-cloud-${var.namespace}-${var.environment}"
+    name = var.custom_namespace == "" ? "dbt-cloud-${var.namespace}-${var.environment}" : var.custom_namespace
   }
 }
 
@@ -107,6 +109,7 @@ provider "kubernetes" {
 }
 
 module "eks" {
+  count   = var.create_eks_cluster ? 1 : 0
   source  = "terraform-aws-modules/eks/aws"
   version = "12.2.0"
 
@@ -122,7 +125,7 @@ module "eks" {
       name = "primary-worker-group-1-16-${var.k8s_node_size}"
 
       # override ami_id for this launch template
-      ami_id = data.aws_ami.eks_worker_ami_1_16.id
+      ami_id = data.aws_ami.eks_worker_ami_1_16.0.id
 
       instance_type        = var.k8s_node_size
       asg_desired_capacity = var.k8s_node_count
@@ -132,7 +135,7 @@ module "eks" {
       suspended_processes = ["AZRebalance"]
 
       key_name                      = "${var.namespace}-${var.environment}"
-      additional_security_group_ids = [aws_security_group.internal.id]
+      additional_security_group_ids = [var.custom_internal_security_group_id == "" ? aws_security_group.internal.0.id : var.custom_internal_security_group_id]
       kubelet_extra_args            = local.kubelet_extra_args
       pre_userdata                  = "${local.bionic_1_16_node_userdata}${var.additional_k8s_user_data}"
 

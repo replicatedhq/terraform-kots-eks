@@ -135,12 +135,12 @@ variable "app_replicas" {
 }
 variable "nginx_memory" {
   type        = string
-  default     = "500mi"
+  default     = "512Mi"
   description = "Admin Console Script - The amount of memory dedicated to nginx for dbt Cloud. This is added to the config that is automatically uploaded to the KOTS admin console via the script. This value should never be set to less than default. It is recommended that you reach out to Fishtown Analytics to complete the capacity planning exercise prior to modifying this."
 }
 variable "scheduler_memory" {
   type        = string
-  default     = "1Gi"
+  default     = "512Mi"
   description = "Admin Console Script - The amount of memory dedicated to the scheduler for dbt Cloud. This is added to the config that is automatically uploaded to the KOTS admin console via the script. This value should never be set to less than default. It is recommended that you reach out to Fishtown Analytics to complete the capacity planning exercise prior to modifying this."
 }
 variable "additional_k8s_user_data" {

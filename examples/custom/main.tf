@@ -58,5 +58,5 @@ module "single_tenant_staging" {
 
   # create an alias Route53 record
   create_alias_record = true
-  alias_domain_name   = "singletenant.getdbt.com"
+  alias_domain_name   = "dbt.example.com"
 }

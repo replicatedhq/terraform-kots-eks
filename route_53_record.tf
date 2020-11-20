@@ -12,9 +12,7 @@ resource "aws_route53_record" "getdbt_com" {
   records = [kubernetes_service.api_gateway_loadbalancer.0.load_balancer_ingress.0.hostname]
 }
 
-data "aws_elb" "elb" {
-  name = split("-", kubernetes_service.api_gateway_loadbalancer.0.load_balancer_ingress.0.hostname).0
-}
+data "aws_elb_hosted_zone_id" "main" {}
 
 resource "aws_route53_record" "alias" {
   count   = var.create_alias_record ? 1 : 0
@@ -25,6 +23,6 @@ resource "aws_route53_record" "alias" {
   alias {
     evaluate_target_health = true
     name                   = kubernetes_service.api_gateway_loadbalancer.0.load_balancer_ingress.0.hostname
-    zone_id                = data.aws_elb.elb.zone_id
+    zone_id                = data.aws_elb_hosted_zone_id.main.id
   }
 }

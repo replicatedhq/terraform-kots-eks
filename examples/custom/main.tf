@@ -55,4 +55,8 @@ module "single_tenant_staging" {
 
   # by default the RDS backup retention is set to 7 days, setting to 0 will disable automated backups
   rds_backup_retention_period = 0
+
+  # create an alias Route53 record
+  create_alias_record = true
+  alias_domain_name   = "dbt.example.com"
 }

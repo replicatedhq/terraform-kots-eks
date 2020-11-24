@@ -193,6 +193,16 @@ variable "custom_internal_security_group_id" {
   default     = ""
   description = "The ID of an existing custom security group attached to an existing K8s cluster. This security group enables communication between the EKS worker nodes, RDS database, and EFS file system. It should be modeled after the `aws_security_group.internal` resource in this module. "
 }
+variable "create_alias_record" {
+  type        = bool
+  default     = false
+  description = "Set to `true` to create an alias Route53 record. If set to `true` must enter a valid domain name in the `alias_domain_name` variable."
+}
+variable "alias_domain_name" {
+  type        = string
+  default     = ""
+  description = "A valid alias domain for corresponding Route53 record. Must be set if `create_alias_record` is set to `true`."
+}
 
 # locals
 data "aws_caller_identity" "current" {}

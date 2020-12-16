@@ -136,6 +136,7 @@ Note that the `kubectl kots install` will prompt the user for a password for the
 | postgres\_storage | The amount of storage allocated to the RDS database in GB. Generally 100 GB is standard but it is recommended that you reach out to Fishtown Analytics to complete the capacity planning exercise prior to setting this. | `string` | n/a | yes |
 | private\_subnets | The list of private subnets for the VPC that the infrastructure will be deployed in. | `list(string)` | n/a | yes |
 | rds\_backup\_retention\_period | The number of days for RDS to create automated snapshot backups. Set to a max of 35 or set to 0 to disable automated backups. | `number` | `7` | no |
+| rds\_multi\_az | Set to `false` to disable Multi-AZ deployment for Postgres RDS database. | `bool` | `true` | no |
 | rds\_password | Password for RDS database. It is highly recommended that a secure password be generated and stored in a vault. | `string` | n/a | yes |
 | region | The AWS region where the infrastructure will be deployed. For example 'us-east-1'. | `string` | n/a | yes |
 | release\_channel | Admin Console Script - The license channel for customer deployment. This should be left unset unless instructed by Fishtown Analytics. | `string` | `""` | no |

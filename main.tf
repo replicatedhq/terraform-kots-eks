@@ -71,6 +71,7 @@ resource "aws_db_instance" "backend_postgres" {
   username               = "${var.namespace}${var.environment}"
   password               = var.rds_password
   storage_encrypted      = true
+  multi_az               = var.rds_multi_az
   kms_key_id             = module.kms_key.key_arn
   db_subnet_group_name   = aws_db_subnet_group.private.name
   vpc_security_group_ids = [var.custom_internal_security_group_id == "" ? aws_security_group.internal.0.id : var.custom_internal_security_group_id]

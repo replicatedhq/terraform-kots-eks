@@ -203,6 +203,11 @@ variable "alias_domain_name" {
   default     = ""
   description = "A valid alias domain for corresponding Route53 record. Must be set if `create_alias_record` is set to `true`."
 }
+variable "rds_multi_az" {
+  type        = bool
+  default     = true
+  description = "Set to `false` to disable Multi-AZ deployment for Postgres RDS database."
+}
 
 # locals
 data "aws_caller_identity" "current" {}

@@ -208,6 +208,16 @@ variable "rds_multi_az" {
   default     = true
   description = "Set to `false` to disable Multi-AZ deployment for Postgres RDS database."
 }
+variable "enable_kube_cleanup_operator" {
+  type        = bool
+  default     = true
+  description = "Set to `false` to disable kube-cleanup-operator deployment."
+}
+variable "enable_reloader" {
+  type        = bool
+  default     = true
+  description = "Set to `false` to disable reloader."
+}
 
 # locals
 data "aws_caller_identity" "current" {}

@@ -119,6 +119,8 @@ Note that the `kubectl kots install` will prompt the user for a password for the
 | custom\_internal\_security\_group\_id | The ID of an existing custom security group attached to an existing K8s cluster. This security group enables communication between the EKS worker nodes, RDS database, and EFS file system. It should be modeled after the `aws_security_group.internal` resource in this module. | `string` | `""` | no |
 | custom\_namespace | If set this variable will create a custom K8s namespace for dbt Cloud. If not set the created namespace defaults to `dbt-cloud-<namespace>-<environment>`. | `string` | `""` | no |
 | datadog\_enabled | If set to `true` this will enable dbt Cloud to send metrics to Datadog. Note that this requires the installation of a Datadog Agent in the K8s cluster where dbt Cloud is deployed. | `bool` | `false` | no |
+| enable\_kube\_cleanup\_operator | Set to `false` to disable kube-cleanup-operator deployment. | `bool` | `true` | no |
+| enable\_reloader | Set to `false` to disable reloader. | `bool` | `true` | no |
 | enable\_ses | If set to `true` this will attempt to create an key pair for AWS Simple Email Service. If set to `true` a valid from email address must be set in the `ses_email` variable. | `bool` | `false` | no |
 | environment | The name of the environment for the deployment. For example: 'dev', 'prod', 'uat', 'standard', 'etc' | `string` | n/a | yes |
 | existing\_namespace | If set to `true`this will install dbt Cloud components into an existing namespace denoted by the `custom_namespace` field. This is not recommended as it is preferred to install dbt Cloud into a dedicated namespace. | `bool` | `false` | no |
@@ -150,8 +152,10 @@ Note that the `kubectl kots install` will prompt the user for a password for the
 
 | Name | Description |
 |------|-------------|
+| app\_memory\_bytes | The aggregate memory allocated to all app pods in the cluster in bytes. Used for setting monitoring thresholds. |
 | database\_hostname | The hostname (address) of the RDS database generated. This is required to be entered manually in the configuration console if not using the generated script. |
 | efs\_dns\_name | The DNS name generated for the EFS instance. This may be required if creating a custom EFS provisioner. |
 | efs\_id | The ID generated for the EFS instance. This may be required if creating a custom EFS provisioner. |
 | instance\_url | The URL where the dbt Cloud instance can be accessed. |
 | kms\_key\_arn | The ARN of the KMS key created. May be manually entered for encryption in the configuration console if not using the generated script. |
+| scheduler\_memory\_bytes | The aggregate memory allocated to all scheduler pods in the cluster in bytes. Used for setting monitoring thresholds. |

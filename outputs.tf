@@ -29,6 +29,6 @@ output "app_memory_bytes" {
 }
 
 output "scheduler_memory_bytes" {
-  value       = replace(var.scheduler_memory, "/[0-9]/", "") == "Gi" ? tonumber(replace(var.scheduler_memory, "/[A-Za-z]/", "")) * 1074000000 : tonumber(replace(var.scheduler_memory, "/[A-Za-z]/", "")) * 1049000
-  description = "The aggregate memory allocated to all scheduler pods in the cluster in bytes. Used for setting monitoring thresholds."
+  value       = replace(var.scheduler_memory, "/[0-9]/", "") == "Gi" ? tonumber(replace(var.scheduler_memory, "/[A-Za-z]/", "")) * 1074000000 * 3 : tonumber(replace(var.scheduler_memory, "/[A-Za-z]/", "")) * 1049000 * 3
+  description = "The aggregate memory allocated to all three containers in the scheduler pod in bytes. Used for setting monitoring thresholds."
 }

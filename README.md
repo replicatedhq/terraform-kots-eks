@@ -152,10 +152,8 @@ Note that the `kubectl kots install` will prompt the user for a password for the
 
 | Name | Description |
 |------|-------------|
-| app\_memory\_bytes | The aggregate memory allocated to all app pods in the cluster in bytes. Used for setting monitoring thresholds. |
 | database\_hostname | The hostname (address) of the RDS database generated. This is required to be entered manually in the configuration console if not using the generated script. |
 | efs\_dns\_name | The DNS name generated for the EFS instance. This may be required if creating a custom EFS provisioner. |
 | efs\_id | The ID generated for the EFS instance. This may be required if creating a custom EFS provisioner. |
 | instance\_url | The URL where the dbt Cloud instance can be accessed. |
 | kms\_key\_arn | The ARN of the KMS key created. May be manually entered for encryption in the configuration console if not using the generated script. |
-| scheduler\_memory\_bytes | The aggregate memory allocated to all three containers in the scheduler pod in bytes. Used for setting monitoring thresholds. |

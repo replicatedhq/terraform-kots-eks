@@ -56,3 +56,24 @@ resource "helm_release" "reloader" {
     value = "json"
   }
 }
+
+resource "helm_release" "datadog" {
+  count = var.enable_datadog ? 1 : 0
+
+  name       = "datadog"
+  repository = "https://helm.datadoghq.com"
+  chart      = "datadog"
+
+  namespace = var.existing_namespace ? var.custom_namespace : kubernetes_namespace.dbt_cloud.0.metadata.0.name
+
+  set_sensitive {
+    name  = "datadog.apiKey"
+    value = var.datadog_api_key
+  }
+
+  set {
+    name  = "datadog.apm.enabled"
+    value = var.enable_datadog_apm
+  }
+
+}

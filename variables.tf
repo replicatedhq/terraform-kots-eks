@@ -108,7 +108,7 @@ variable "superuser_password" {
   default     = "<ENTER_SUPER_USER_PASSWORD>"
   description = "Admin Console Script - The superuser password for the dbt Cloud application. This is added to the config that is automatically uploaded to the KOTS admin console via the script."
 }
-variable "datadog_enabled" {
+variable "enable_datadog" {
   type        = bool
   default     = false
   description = "If set to `true` this will enable dbt Cloud to send metrics to Datadog. Note that this requires the installation of a Datadog Agent in the K8s cluster where dbt Cloud is deployed."
@@ -217,6 +217,16 @@ variable "enable_reloader" {
   type        = bool
   default     = true
   description = "Set to `false` to disable reloader."
+}
+variable "datadog_api_key" {
+  type        = string
+  default     = ""
+  description = "Must be set if `enable_datadog` is set to `true`"
+}
+variable "enable_datadog_apm" {
+  type        = bool
+  default     = false
+  description = "Set to `true` to enable APM for Datadog. Will only take effect if `enable_datadog_agent` is also set to `true`."
 }
 
 # locals

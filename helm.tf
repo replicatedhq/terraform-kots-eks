@@ -60,7 +60,7 @@ resource "helm_release" "reloader" {
 resource "helm_release" "datadog" {
   count = var.enable_datadog ? 1 : 0
 
-  name       = "datadog"
+  name       = "datadog-agent"
   repository = "https://helm.datadoghq.com"
   chart      = "datadog"
 
@@ -74,6 +74,77 @@ resource "helm_release" "datadog" {
   set {
     name  = "datadog.apm.enabled"
     value = var.enable_datadog_apm
+  }
+
+  set {
+    name  = "datadog.logs.enabled"
+    value = true
+  }
+  set {
+    name  = "datadog.logs.containerCollectAll"
+    value = true
+  }
+  set {
+    name  = "datadog.leaderElection"
+    value = true
+  }
+  set {
+    name  = "datadog.collectEvents"
+    value = true
+  }
+
+  # agent memory
+  set {
+    name  = "agents.containers.agent.resources.limits.cpu"
+    value = "250m"
+  }
+  set {
+    name  = "agents.containers.agent.resources.limits.memory"
+    value = "512Mi"
+  }
+  set {
+    name  = "agents.containers.agent.resources.requests.cpu"
+    value = "250m"
+  }
+  set {
+    name  = "agents.containers.agent.resources.requests.memory"
+    value = "512Mi"
+  }
+
+  # process agent memory
+  set {
+    name  = "agents.containers.processAgent.resources.limits.cpu"
+    value = "250m"
+  }
+  set {
+    name  = "agents.containers.processAgent.resources.limits.memory"
+    value = "512Mi"
+  }
+  set {
+    name  = "agents.containers.processAgent.resources.requests.cpu"
+    value = "250m"
+  }
+  set {
+    name  = "agents.containers.processAgent.resources.requests.memory"
+    value = "512Mi"
+  }
+
+  # trace agent memory
+  set {
+    name  = "agents.containers.traceAgent.resources.limits.cpu"
+    value = "250m"
+  }
+  set {
+    name  = "agents.containers.traceAgent.resources.limits.memory"
+    value = "512Mi"
+  }
+  set {
+    name  = "agents.containers.traceAgent.resources.requests.cpu"
+    value = "250m"
+  }
+  set {
+    name  = "agents.containers.traceAgent.resources.requests.memory"
+    value = "512Mi"
   }
 
 }

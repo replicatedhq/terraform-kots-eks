@@ -56,3 +56,113 @@ resource "helm_release" "reloader" {
     value = "json"
   }
 }
+
+resource "helm_release" "datadog" {
+  count = var.enable_datadog ? 1 : 0
+
+  name       = "datadog-agent"
+  repository = "https://helm.datadoghq.com"
+  chart      = "datadog"
+
+  namespace = var.existing_namespace ? var.custom_namespace : kubernetes_namespace.dbt_cloud.0.metadata.0.name
+
+  set_sensitive {
+    name  = "datadog.apiKey"
+    value = var.datadog_api_key
+  }
+
+  # optional add ons
+  set {
+    name  = "datadog.apm.enabled"
+    value = var.enable_datadog_apm
+  }
+  set {
+    name  = "clusterAgent.enabled"
+    value = var.enable_datadog_cluster_agent
+  }
+  set {
+    name  = "datadog.kubeStateMetricsEnabled"
+    value = var.enable_datadog_kube_state_metrics
+  }
+  set {
+    name  = "datadog.processAgent.enabled"
+    value = var.enable_datadog_process_agent
+  }
+
+  # required settings
+  set {
+    name  = "datadog.logs.enabled"
+    value = true
+  }
+  set {
+    name  = "datadog.logs.containerCollectAll"
+    value = true
+  }
+  set {
+    name  = "datadog.leaderElection"
+    value = true
+  }
+  set {
+    name  = "datadog.collectEvents"
+    value = true
+  }
+  set {
+    name  = "datadog.dogstatsd.useHostPort"
+    value = true
+  }
+
+  # agent memory
+  set {
+    name  = "agents.containers.agent.resources.limits.cpu"
+    value = "500m"
+  }
+  set {
+    name  = "agents.containers.agent.resources.limits.memory"
+    value = var.datadog_agent_memory_limit
+  }
+  set {
+    name  = "agents.containers.agent.resources.requests.cpu"
+    value = "250m"
+  }
+  set {
+    name  = "agents.containers.agent.resources.requests.memory"
+    value = var.datadog_agent_memory_request
+  }
+
+  # process agent memory
+  set {
+    name  = "agents.containers.processAgent.resources.limits.cpu"
+    value = "250m"
+  }
+  set {
+    name  = "agents.containers.processAgent.resources.limits.memory"
+    value = "512Mi"
+  }
+  set {
+    name  = "agents.containers.processAgent.resources.requests.cpu"
+    value = "125m"
+  }
+  set {
+    name  = "agents.containers.processAgent.resources.requests.memory"
+    value = "256Mi"
+  }
+
+  # trace agent memory
+  set {
+    name  = "agents.containers.traceAgent.resources.limits.cpu"
+    value = "250m"
+  }
+  set {
+    name  = "agents.containers.traceAgent.resources.limits.memory"
+    value = "512Mi"
+  }
+  set {
+    name  = "agents.containers.traceAgent.resources.requests.cpu"
+    value = "125m"
+  }
+  set {
+    name  = "agents.containers.traceAgent.resources.requests.memory"
+    value = "256Mi"
+  }
+
+}

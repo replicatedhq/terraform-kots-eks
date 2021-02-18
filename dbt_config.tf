@@ -65,7 +65,7 @@ spec:
     database_user:
       value: "${var.namespace}${var.environment}"
     datadog_enabled:
-      value: "${var.datadog_enabled == true ? 1 : 0}"
+      value: "${var.enable_datadog == true ? 1 : 0}"
     db_type:
       default: external
       value: external

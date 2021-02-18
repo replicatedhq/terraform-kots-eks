@@ -108,7 +108,7 @@ variable "superuser_password" {
   default     = "<ENTER_SUPER_USER_PASSWORD>"
   description = "Admin Console Script - The superuser password for the dbt Cloud application. This is added to the config that is automatically uploaded to the KOTS admin console via the script."
 }
-variable "datadog_enabled" {
+variable "enable_datadog" {
   type        = bool
   default     = false
   description = "If set to `true` this will enable dbt Cloud to send metrics to Datadog. Note that this requires the installation of a Datadog Agent in the K8s cluster where dbt Cloud is deployed."
@@ -217,6 +217,42 @@ variable "enable_reloader" {
   type        = bool
   default     = true
   description = "Set to `false` to disable reloader."
+}
+variable "datadog_api_key" {
+  type        = string
+  default     = ""
+  description = "If `enable_datadog` is set to `true`, this variable must be set to valid API key of the destination Datadog account."
+}
+variable "enable_datadog_apm" {
+  type        = bool
+  default     = false
+  description = "Set to `true` to enable APM (tracer agent) for Datadog. Will only take effect if `enable_datadog_agent` is also set to `true`."
+}
+variable "enable_datadog_cluster_agent" {
+  type        = bool
+  default     = false
+  description = "Set to `true` to enable cluster agent for Datadog. Will only take effect if `enable_datadog_agent` is also set to `true`."
+}
+variable "enable_datadog_kube_state_metrics" {
+  type        = bool
+  default     = false
+  description = "Set to `true` to enable kube state metrics for Datadog. Will only take effect if `enable_datadog_agent` is also set to `true`."
+}
+variable "enable_datadog_process_agent" {
+  type        = bool
+  default     = false
+  description = "Set to `true` to enable process agent for Datadog. Will only take effect if `enable_datadog_agent` is also set to `true`."
+}
+variable "datadog_agent_memory_request" {
+  type        = string
+  default     = "256Mi"
+  description = "The resource memory request of the Datadog agent."
+}
+
+variable "datadog_agent_memory_limit" {
+  type        = string
+  default     = "512Mi"
+  description = "The resource memory limit of the Datadog agent."
 }
 
 # locals

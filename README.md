@@ -118,7 +118,14 @@ Note that the `kubectl kots install` will prompt the user for a password for the
 | creation\_role\_arn | Admin Console Script - The ARN of the Terraform Creation Role. This is added to the script and used when setting the K8s context. | `string` | `"<ENTER_CREATION_ROLE_ARN>"` | no |
 | custom\_internal\_security\_group\_id | The ID of an existing custom security group attached to an existing K8s cluster. This security group enables communication between the EKS worker nodes, RDS database, and EFS file system. It should be modeled after the `aws_security_group.internal` resource in this module. | `string` | `""` | no |
 | custom\_namespace | If set this variable will create a custom K8s namespace for dbt Cloud. If not set the created namespace defaults to `dbt-cloud-<namespace>-<environment>`. | `string` | `""` | no |
-| datadog\_enabled | If set to `true` this will enable dbt Cloud to send metrics to Datadog. Note that this requires the installation of a Datadog Agent in the K8s cluster where dbt Cloud is deployed. | `bool` | `false` | no |
+| datadog\_agent\_memory\_limit | The resource memory limit of the Datadog agent. | `string` | `"512Mi"` | no |
+| datadog\_agent\_memory\_request | The resource memory request of the Datadog agent. | `string` | `"256Mi"` | no |
+| datadog\_api\_key | Must be set if `enable_datadog` is set to `true` | `string` | `""` | no |
+| enable\_datadog | If set to `true` this will enable dbt Cloud to send metrics to Datadog. Note that this requires the installation of a Datadog Agent in the K8s cluster where dbt Cloud is deployed. | `bool` | `false` | no |
+| enable\_datadog\_apm | Set to `true` to enable APM (tracer agent) for Datadog. Will only take effect if `enable_datadog_agent` is also set to `true`. | `bool` | `false` | no |
+| enable\_datadog\_cluster\_agent | Set to `true` to enable cluster agent for Datadog. Will only take effect if `enable_datadog_agent` is also set to `true`. | `bool` | `false` | no |
+| enable\_datadog\_kube\_state\_metrics | Set to `true` to enable kube state metrics for Datadog. Will only take effect if `enable_datadog_agent` is also set to `true`. | `bool` | `false` | no |
+| enable\_datadog\_process\_agent | Set to `true` to enable process agent for Datadog. Will only take effect if `enable_datadog_agent` is also set to `true`. | `bool` | `false` | no |
 | enable\_kube\_cleanup\_operator | Set to `false` to disable kube-cleanup-operator deployment. | `bool` | `true` | no |
 | enable\_reloader | Set to `false` to disable reloader. | `bool` | `true` | no |
 | enable\_ses | If set to `true` this will attempt to create an key pair for AWS Simple Email Service. If set to `true` a valid from email address must be set in the `ses_email` variable. | `bool` | `false` | no |

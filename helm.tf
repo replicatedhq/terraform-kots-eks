@@ -71,11 +71,25 @@ resource "helm_release" "datadog" {
     value = var.datadog_api_key
   }
 
+  # optional add ons
   set {
     name  = "datadog.apm.enabled"
     value = var.enable_datadog_apm
   }
+  set {
+    name  = "clusterAgent.enabled"
+    value = var.enable_datadog_cluster_agent
+  }
+  set {
+    name  = "datadog.kubeStateMetricsEnabled"
+    value = var.enable_datadog_kube_state_metrics
+  }
+  set {
+    name  = "datadog.processAgent.enabled"
+    value = var.enable_datadog_process_agent
+  }
 
+  # required settings
   set {
     name  = "datadog.logs.enabled"
     value = true
@@ -92,15 +106,19 @@ resource "helm_release" "datadog" {
     name  = "datadog.collectEvents"
     value = true
   }
+  set {
+    name  = "datadog.dogstatsd.useHostPort"
+    value = true
+  }
 
   # agent memory
   set {
     name  = "agents.containers.agent.resources.limits.cpu"
-    value = "250m"
+    value = "500m"
   }
   set {
     name  = "agents.containers.agent.resources.limits.memory"
-    value = "512Mi"
+    value = var.datadog_agent_memory_limit
   }
   set {
     name  = "agents.containers.agent.resources.requests.cpu"
@@ -108,7 +126,7 @@ resource "helm_release" "datadog" {
   }
   set {
     name  = "agents.containers.agent.resources.requests.memory"
-    value = "512Mi"
+    value = var.datadog_agent_memory_request
   }
 
   # process agent memory
@@ -122,11 +140,11 @@ resource "helm_release" "datadog" {
   }
   set {
     name  = "agents.containers.processAgent.resources.requests.cpu"
-    value = "250m"
+    value = "125m"
   }
   set {
     name  = "agents.containers.processAgent.resources.requests.memory"
-    value = "512Mi"
+    value = "256Mi"
   }
 
   # trace agent memory
@@ -140,11 +158,11 @@ resource "helm_release" "datadog" {
   }
   set {
     name  = "agents.containers.traceAgent.resources.requests.cpu"
-    value = "250m"
+    value = "125m"
   }
   set {
     name  = "agents.containers.traceAgent.resources.requests.memory"
-    value = "512Mi"
+    value = "256Mi"
   }
 
 }

@@ -226,7 +226,33 @@ variable "datadog_api_key" {
 variable "enable_datadog_apm" {
   type        = bool
   default     = false
-  description = "Set to `true` to enable APM for Datadog. Will only take effect if `enable_datadog_agent` is also set to `true`."
+  description = "Set to `true` to enable APM (tracer agent) for Datadog. Will only take effect if `enable_datadog_agent` is also set to `true`."
+}
+variable "enable_datadog_cluster_agent" {
+  type        = bool
+  default     = false
+  description = "Set to `true` to enable cluster agent for Datadog. Will only take effect if `enable_datadog_agent` is also set to `true`."
+}
+variable "enable_datadog_kube_state_metrics" {
+  type        = bool
+  default     = false
+  description = "Set to `true` to enable kube state metrics for Datadog. Will only take effect if `enable_datadog_agent` is also set to `true`."
+}
+variable "enable_datadog_process_agent" {
+  type        = bool
+  default     = false
+  description = "Set to `true` to enable process agent for Datadog. Will only take effect if `enable_datadog_agent` is also set to `true`."
+}
+variable "datadog_agent_memory_request" {
+  type        = string
+  default     = "256Mi"
+  description = "The resource memory request of the Datadog agent."
+}
+
+variable "datadog_agent_memory_limit" {
+  type        = string
+  default     = "512Mi"
+  description = "The resource memory limit of the Datadog agent."
 }
 
 # locals

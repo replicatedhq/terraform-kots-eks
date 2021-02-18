@@ -221,7 +221,7 @@ variable "enable_reloader" {
 variable "datadog_api_key" {
   type        = string
   default     = ""
-  description = "Must be set if `enable_datadog` is set to `true`"
+  description = "If `enable_datadog` is set to `true`, this variable must be set to valid API key of the destination Datadog account."
 }
 variable "enable_datadog_apm" {
   type        = bool

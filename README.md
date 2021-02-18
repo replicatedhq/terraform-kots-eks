@@ -120,7 +120,7 @@ Note that the `kubectl kots install` will prompt the user for a password for the
 | custom\_namespace | If set this variable will create a custom K8s namespace for dbt Cloud. If not set the created namespace defaults to `dbt-cloud-<namespace>-<environment>`. | `string` | `""` | no |
 | datadog\_agent\_memory\_limit | The resource memory limit of the Datadog agent. | `string` | `"512Mi"` | no |
 | datadog\_agent\_memory\_request | The resource memory request of the Datadog agent. | `string` | `"256Mi"` | no |
-| datadog\_api\_key | Must be set if `enable_datadog` is set to `true` | `string` | `""` | no |
+| datadog\_api\_key | If `enable_datadog` is set to `true`, this variable must be set to valid API key of the destination Datadog account. | `string` | `""` | no |
 | enable\_datadog | If set to `true` this will enable dbt Cloud to send metrics to Datadog. Note that this requires the installation of a Datadog Agent in the K8s cluster where dbt Cloud is deployed. | `bool` | `false` | no |
 | enable\_datadog\_apm | Set to `true` to enable APM (tracer agent) for Datadog. Will only take effect if `enable_datadog_agent` is also set to `true`. | `bool` | `false` | no |
 | enable\_datadog\_cluster\_agent | Set to `true` to enable cluster agent for Datadog. Will only take effect if `enable_datadog_agent` is also set to `true`. | `bool` | `false` | no |

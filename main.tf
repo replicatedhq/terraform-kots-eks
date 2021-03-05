@@ -129,9 +129,9 @@ module "eks" {
       ami_id = data.aws_ami.eks_worker_ami_1_16.0.id
 
       instance_type        = var.k8s_node_size
-      asg_desired_capacity = var.k8s_node_count
-      asg_min_size         = var.k8s_node_count
-      asg_max_size         = var.k8s_node_count
+      asg_desired_capacity = 0
+      asg_min_size         = 0
+      asg_max_size         = 0
 
       suspended_processes = ["AZRebalance"]
 

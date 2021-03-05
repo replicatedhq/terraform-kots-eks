@@ -116,7 +116,7 @@ module "eks" {
 
   create_eks = true
 
-  cluster_version = "1.16"
+  cluster_version = "1.17"
   cluster_name    = "${var.namespace}-${var.environment}"
   vpc_id          = var.vpc_id
   subnets         = var.private_subnets

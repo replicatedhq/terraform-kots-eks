@@ -6,25 +6,6 @@ data "aws_eks_cluster_auth" "cluster" {
   name = var.create_eks_cluster ? module.eks.0.cluster_id : var.cluster_name
 }
 
-# old ami - remove after upgrade
-data "aws_ami" "eks_worker_ami_1_16" {
-  count = var.create_eks_cluster ? 1 : 0
-  filter {
-    name   = "name"
-    values = ["ubuntu-eks/k8s_1.16/images/*"]
-  }
-
-  most_recent = true
-  owners      = ["099720109477"]
-
-  tags = map(
-    "Name", "eks_worker_ami_1_16",
-    "Stack", "${var.namespace}-${var.environment}",
-    "Customer", var.namespace
-  )
-}
-
-# new ami - pin this to a local var after plan
 data "aws_ami" "eks_worker_ami_1_17" {
   count = var.create_eks_cluster ? 1 : 0
   filter {
@@ -57,16 +38,6 @@ locals {
 }
 
 locals {
-  # old - remove after upgrade
-  kubelet_extra_args = <<DATA
---cpu-cfs-quota=false
---kube-reserved 'cpu=250m,memory=1Gi,ephemeral-storage=1Gi'
---system-reserved 'cpu=250m,memory=0.5Gi,ephemeral-storage=1Gi'
---eviction-hard 'memory.available<0.1Gi,nodefs.available<10%'
---minimum-container-ttl-duration='5m'
-DATA
-
-  # new - adding enhanced gc thresholds
   kubelet_extra_args_1_17 = <<DATA
 --cpu-cfs-quota=false
 --kube-reserved 'cpu=250m,memory=1Gi,ephemeral-storage=1Gi'
@@ -77,62 +48,6 @@ DATA
 --image-gc-low-threshold='40'
 DATA
 
-  # old - remove after upgrade
-  bionic_1_16_node_userdata = <<USERDATA
-#!/bin/bash -xe
-
-# IMPORTANT NODE CONFIGURATION
-echo 30 > /proc/sys/net/ipv4/tcp_keepalive_time
-echo 30 > /proc/sys/net/ipv4/tcp_keepalive_intvl
-echo 10 > /proc/sys/net/ipv4/tcp_keepalive_probes
-
-
-# INSTALL IMPORTANT THINGS
-apt-get -y remove docker.io
-apt-get -y update
-apt-get -y install \
-  apt-transport-https \
-  binutils \
-  ca-certificates \
-  curl \
-  gnupg-agent \
-  software-properties-common
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
-add-apt-repository -y \
-  "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
-  $(lsb_release -cs) \
-  stable"
-apt-get -y install docker-ce docker-ce-cli containerd.io nfs-common
-echo '{"bridge":"none","log-driver":"json-file","log-opts":{"max-size":"10m","max-file":"10"},"live-restore":true,"max-concurrent-downloads":10}' > /etc/docker/daemon.json
-
-service docker restart
-
-
-# CONFIGURE UNATTENDED UPGRADES
-sed -i \
-  -e 's#//\(.*\)\("$${distro_id}:$${distro_codename}-updates";\)#  \1\2#' \
-  -e 's#//\(Unattended-Upgrade::Remove-Unused-Kernel-Packages \)"false";#\1"true";#' \
-  /etc/apt/apt.conf.d/50unattended-upgrades
-
-cat << EOF > /etc/apt/apt.conf.d/10periodic
-APT::Periodic::Update-Package-Lists "1";
-APT::Periodic::Download-Upgradeable-Packages "1";
-APT::Periodic::AutocleanInterval "7";
-EOF
-
-mkdir -p /etc/systemd/system/apt-daily-upgrade.timer.d
-cat << EOF > /etc/systemd/system/apt-daily-upgrade.timer.d/override.conf
-[Timer]
-OnCalendar=
-OnCalendar=Wed *-*-* 15:00:00 UTC
-RandomizedDelaySec=0
-EOF
-
-systemctl daemon-reload
-
-USERDATA
-
-  # new
   bionic_node_userdata = <<USERDATA
 #!/bin/bash -xe
 

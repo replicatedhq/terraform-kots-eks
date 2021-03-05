@@ -112,7 +112,7 @@ provider "kubernetes" {
 module "eks" {
   count   = var.create_eks_cluster ? 1 : 0
   source  = "terraform-aws-modules/eks/aws"
-  version = "12.2.0"
+  version = "13.0.0"
 
   create_eks = true
 
@@ -122,35 +122,6 @@ module "eks" {
   subnets         = var.private_subnets
 
   worker_groups_launch_template = [
-    {
-      name = "primary-worker-group-1-16-${var.k8s_node_size}"
-
-      # override ami_id for this launch template
-      ami_id = data.aws_ami.eks_worker_ami_1_16.0.id
-
-      instance_type        = var.k8s_node_size
-      asg_desired_capacity = 0
-      asg_min_size         = 0
-      asg_max_size         = 0
-
-      suspended_processes = ["AZRebalance"]
-
-      key_name                      = "${var.namespace}-${var.environment}"
-      additional_security_group_ids = [var.custom_internal_security_group_id == "" ? aws_security_group.internal.0.id : var.custom_internal_security_group_id]
-      kubelet_extra_args            = local.kubelet_extra_args
-      pre_userdata                  = "${local.bionic_1_16_node_userdata}${var.additional_k8s_user_data}"
-
-      enabled_metrics = [
-        "GroupStandbyInstances",
-        "GroupTotalInstances",
-        "GroupPendingInstances",
-        "GroupTerminatingInstances",
-        "GroupDesiredCapacity",
-        "GroupInServiceInstances",
-        "GroupMinSize",
-        "GroupMaxSize",
-      ]
-    },
     {
       name = "primary-worker-group-1-17-${var.k8s_node_size}"
 

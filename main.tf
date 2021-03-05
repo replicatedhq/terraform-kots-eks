@@ -151,6 +151,35 @@ module "eks" {
         "GroupMaxSize",
       ]
     },
+    {
+      name = "primary-worker-group-1-17-${var.k8s_node_size}"
+
+      # override ami_id for this launch template
+      ami_id = local.cluster_ami_id_1_17
+
+      instance_type        = var.k8s_node_size
+      asg_desired_capacity = var.k8s_node_count
+      asg_min_size         = var.k8s_node_count
+      asg_max_size         = var.k8s_node_count
+
+      suspended_processes = ["AZRebalance"]
+
+      key_name                      = "${var.namespace}-${var.environment}"
+      additional_security_group_ids = concat([var.custom_internal_security_group_id == "" ? aws_security_group.internal.0.id : var.custom_internal_security_group_id], var.additional_k8s_security_group_ids)
+      kubelet_extra_args            = local.kubelet_extra_args_1_17
+      pre_userdata                  = "${local.bionic_node_userdata}${var.additional_k8s_user_data}"
+
+      enabled_metrics = [
+        "GroupStandbyInstances",
+        "GroupTotalInstances",
+        "GroupPendingInstances",
+        "GroupTerminatingInstances",
+        "GroupDesiredCapacity",
+        "GroupInServiceInstances",
+        "GroupMinSize",
+        "GroupMaxSize",
+      ]
+    },
   ]
 
   workers_role_name           = "${var.namespace}-${var.environment}-workers-role"

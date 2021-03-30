@@ -136,7 +136,7 @@ module "eks" {
       suspended_processes = ["AZRebalance"]
 
       key_name                      = "${var.namespace}-${var.environment}"
-      additional_security_group_ids = concat([var.custom_internal_security_group_id == "" ? aws_security_group.internal.0.id : var.custom_internal_security_group_id], var.additional_k8s_security_group_ids)
+      additional_security_group_ids = [var.custom_internal_security_group_id == "" ? aws_security_group.internal.0.id : var.custom_internal_security_group_id]
       kubelet_extra_args            = local.kubelet_extra_args_1_17
       pre_userdata                  = "${local.bionic_node_userdata}${var.additional_k8s_user_data}"
 

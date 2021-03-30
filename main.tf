@@ -126,7 +126,7 @@ module "eks" {
       name = "primary-worker-group-1-17-${var.k8s_node_size}"
 
       # override ami_id for this launch template
-      ami_id = local.cluster_ami_id_1_17
+      ami_id = data.aws_ami.eks_worker_ami_1_17.0.id
 
       instance_type        = var.k8s_node_size
       asg_desired_capacity = var.k8s_node_count

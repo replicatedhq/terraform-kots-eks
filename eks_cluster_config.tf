@@ -24,10 +24,6 @@ data "aws_ami" "eks_worker_ami_1_17" {
 }
 
 locals {
-
-  # pin AMI ID to prevent node upgrade
-  cluster_ami_id_1_17 = "ami-08d7e36ebbcbd35c2" # ubuntu-eks/k8s_1.17/images/hvm-ssd/ubuntu-bionic-18.04-amd64-server-20210119.1
-  
   # use built-in policies when posssible
   aws_worker_policy_arns = [
     "arn:aws:iam::aws:policy/AmazonElasticFileSystemFullAccess",

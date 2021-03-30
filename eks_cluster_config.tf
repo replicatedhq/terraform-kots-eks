@@ -6,18 +6,18 @@ data "aws_eks_cluster_auth" "cluster" {
   name = var.create_eks_cluster ? module.eks.0.cluster_id : var.cluster_name
 }
 
-data "aws_ami" "eks_worker_ami_1_16" {
+data "aws_ami" "eks_worker_ami_1_17" {
   count = var.create_eks_cluster ? 1 : 0
   filter {
     name   = "name"
-    values = ["ubuntu-eks/k8s_1.16/images/*"]
+    values = ["ubuntu-eks/k8s_1.17/images/*"]
   }
 
   most_recent = true
   owners      = ["099720109477"]
 
   tags = map(
-    "Name", "eks_worker_ami_1_16",
+    "Name", "eks_worker_ami_1_17",
     "Stack", "${var.namespace}-${var.environment}",
     "Customer", var.namespace
   )
@@ -30,19 +30,21 @@ locals {
     "arn:aws:iam::aws:policy/CloudWatchFullAccess",
     "arn:aws:iam::aws:policy/AmazonS3FullAccess",
   ]
+
 }
 
 locals {
-  kubelet_extra_args = <<DATA
+  kubelet_extra_args_1_17 = <<DATA
 --cpu-cfs-quota=false
 --kube-reserved 'cpu=250m,memory=1Gi,ephemeral-storage=1Gi'
 --system-reserved 'cpu=250m,memory=0.5Gi,ephemeral-storage=1Gi'
 --eviction-hard 'memory.available<0.1Gi,nodefs.available<10%'
 --minimum-container-ttl-duration='5m'
+--image-gc-high-threshold='70'
+--image-gc-low-threshold='40'
 DATA
 
-
-  bionic_1_16_node_userdata = <<USERDATA
+  bionic_node_userdata = <<USERDATA
 #!/bin/bash -xe
 
 # IMPORTANT NODE CONFIGURATION

@@ -72,149 +72,95 @@ Note that the `kubectl kots install` will prompt the user for a password for the
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.13.0 |
-| <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | ~> 1.9 |
+| terraform | >= 0.13.0 |
+| aws | >= 2.0 |
+| local | >= 1.2 |
+| null | >= 2.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | n/a |
-| <a name="provider_helm"></a> [helm](#provider\_helm) | n/a |
-| <a name="provider_http"></a> [http](#provider\_http) | n/a |
-| <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | ~> 1.9 |
-| <a name="provider_local"></a> [local](#provider\_local) | n/a |
-| <a name="provider_tls"></a> [tls](#provider\_tls) | n/a |
+| hashicorp/aws | >= 2.0 |
+| hashicorp/random | >= 3.0.0 |
+| hashicorp/kubernetes | >= 1.9 |
+| hashicorp/tls | >= 3.0.0 |
 
-## Modules
+## Module Dependencies
 
-| Name | Source | Version |
-|------|--------|---------|
-| <a name="module_acm"></a> [acm](#module\_acm) | terraform-aws-modules/acm/aws | ~> v2.0 |
-| <a name="module_dbt_cloud_app_bucket"></a> [dbt\_cloud\_app\_bucket](#module\_dbt\_cloud\_app\_bucket) | terraform-aws-modules/s3-bucket/aws | 1.16.0 |
-| <a name="module_dbt_cloud_per_branch_app_bucket"></a> [dbt\_cloud\_per\_branch\_app\_bucket](#module\_dbt\_cloud\_per\_branch\_app\_bucket) | terraform-aws-modules/s3-bucket/aws | 1.16.0 |
-| <a name="module_efs"></a> [efs](#module\_efs) | cloudposse/efs/aws | 0.22.0 |
-| <a name="module_eks"></a> [eks](#module\_eks) | terraform-aws-modules/eks/aws | 13.0.0 |
-| <a name="module_key_pair"></a> [key\_pair](#module\_key\_pair) | terraform-aws-modules/key-pair/aws | 0.5.0 |
-| <a name="module_kms_key"></a> [kms\_key](#module\_kms\_key) | cloudposse/kms-key/aws | 0.7.0 |
-
-## Resources
-
-| Name | Type |
-|------|------|
-| [aws_db_instance.backend_postgres](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/db_instance) | resource |
-| [aws_db_subnet_group.private](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/db_subnet_group) | resource |
-| [aws_iam_access_key.ses_key](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_access_key) | resource |
-| [aws_iam_policy.nodes_kubernetes](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
-| [aws_iam_user.ses_user](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_user) | resource |
-| [aws_iam_user_policy.ses_user_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_user_policy) | resource |
-| [aws_instance.bastion](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance) | resource |
-| [aws_route53_record.alias](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
-| [aws_route53_record.getdbt_com](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
-| [aws_s3_bucket.bucket](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket) | resource |
-| [aws_s3_bucket_object.config](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_object) | resource |
-| [aws_s3_bucket_object.script](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_object) | resource |
-| [aws_s3_bucket_public_access_block.block_public_access](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_public_access_block) | resource |
-| [aws_secretsmanager_secret.rsa_key_pair](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret) | resource |
-| [aws_secretsmanager_secret_version.rsa_key_pair](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret_version) | resource |
-| [aws_security_group.bastion](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
-| [aws_security_group.internal](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
-| [aws_ses_email_identity.ses_email](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ses_email_identity) | resource |
-| [helm_release.datadog](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
-| [helm_release.kube_cleanup_operator](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
-| [helm_release.reloader](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
-| [kubernetes_cluster_role.efs_provisioner_runner](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/cluster_role) | resource |
-| [kubernetes_cluster_role_binding.run_efs_provisioner](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/cluster_role_binding) | resource |
-| [kubernetes_config_map.efs_provisioner](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/config_map) | resource |
-| [kubernetes_deployment.efs_provisioner](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/deployment) | resource |
-| [kubernetes_namespace.dbt_cloud](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/namespace) | resource |
-| [kubernetes_persistent_volume_claim.efs](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/persistent_volume_claim) | resource |
-| [kubernetes_role.leader_locking_efs_provisioner](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/role) | resource |
-| [kubernetes_role_binding.leader_locking_efs_provisioner](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/role_binding) | resource |
-| [kubernetes_service.api_gateway_loadbalancer](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/service) | resource |
-| [kubernetes_service_account.efs_provisioner](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/service_account) | resource |
-| [kubernetes_storage_class.aws_efs](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/storage_class) | resource |
-| [local_file.config](https://registry.terraform.io/providers/hashicorp/local/latest/docs/resources/file) | resource |
-| [local_file.script](https://registry.terraform.io/providers/hashicorp/local/latest/docs/resources/file) | resource |
-| [tls_private_key.rsa_key_pair](https://registry.terraform.io/providers/hashicorp/tls/latest/docs/resources/private_key) | resource |
-| [aws_ami.eks_worker_ami_1_17](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ami) | data source |
-| [aws_ami.ubuntu](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ami) | data source |
-| [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
-| [aws_eks_cluster.cluster](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/eks_cluster) | data source |
-| [aws_eks_cluster_auth.cluster](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/eks_cluster_auth) | data source |
-| [aws_elb_hosted_zone_id.main](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/elb_hosted_zone_id) | data source |
-| [aws_iam_policy_document.kms_key_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
-| [aws_iam_policy_document.nodes_kubernetes](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
-| [aws_iam_policy_document.ses_user_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
-| [aws_route53_zone.selected](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/route53_zone) | data source |
-| [http_http.bastion_allow_ip](https://registry.terraform.io/providers/hashicorp/http/latest/docs/data-sources/http) | data source |
+| Name | Version |
+|------|---------|
+| terraform-aws-modules/acm/aws | 2.12.0 |
+| terraform-aws-modules/s3-bucket/aws | 1.16.0 |
+| cloudposse/efs/aws | 0.22.0 |
+| terraform-aws-modules/eks/aws | 12.2.0 |
+| terraform-aws-modules/key-pair/aws | 0.5.0 |
+| cloudposse/kms-key/aws | 0.7.0 |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_additional_k8s_user_data"></a> [additional\_k8s\_user\_data](#input\_additional\_k8s\_user\_data) | Any additonal user data for K8s worker nodes. For example a curl script to install auditing software. | `string` | `""` | no |
-| <a name="input_admin_console_password"></a> [admin\_console\_password](#input\_admin\_console\_password) | Admin Console Script - The desired password for the KOTS admin console. This is added to the script and used when spinning the admin console. | `string` | `"<ENTER_ADMIN_CONSOLE_PASSWORD>"` | no |
-| <a name="input_alias_domain_name"></a> [alias\_domain\_name](#input\_alias\_domain\_name) | A valid alias domain for corresponding Route53 record. Must be set if `create_alias_record` is set to `true`. | `string` | `""` | no |
-| <a name="input_app_memory"></a> [app\_memory](#input\_app\_memory) | Admin Console Script - The memory dedicated to the application pods for dbt Cloud. This is added to the config that is automatically uploaded to the KOTS admin console via the script. This value should never be set to less than default. It is recommended that you reach out to Fishtown Analytics to complete the capacity planning exercise prior to modifying this. | `string` | `"1Gi"` | no |
-| <a name="input_app_replicas"></a> [app\_replicas](#input\_app\_replicas) | Admin Console Script - The number of application pods for dbt Cloud. This is added to the config that is automatically uploaded to the KOTS admin console via the script. This value should never be set to less than default. It is recommended that you reach out to Fishtown Analytics to complete the capacity planning exercise prior to modifying this. | `number` | `2` | no |
-| <a name="input_aws_access_key_id"></a> [aws\_access\_key\_id](#input\_aws\_access\_key\_id) | Admin Console Script - The AWS access key for an IAM identity with admin access that will be used for encryption. This is added to the config that is automatically uploaded to the KOTS admin console via the script. | `string` | `"<ENTER_AWS_ACCESS_KEY>"` | no |
-| <a name="input_aws_secret_access_key"></a> [aws\_secret\_access\_key](#input\_aws\_secret\_access\_key) | Admin Console Script - The AWS secret key for an IAM identity with admin access that will be used for encryption. This is added to the config that is automatically uploaded to the KOTS admin console via the script. | `string` | `"<ENTER_AWS_SECRET_KEY>"` | no |
-| <a name="input_cidr_block"></a> [cidr\_block](#input\_cidr\_block) | The CIDR block of the VPC that the infrastructure will be deployed in. | `string` | n/a | yes |
-| <a name="input_cluster_name"></a> [cluster\_name](#input\_cluster\_name) | Name of the cluster dbt Cloud will be installed into. Must be set if `create_eks_cluster` is set to `false`. | `string` | `""` | no |
-| <a name="input_create_admin_console_script"></a> [create\_admin\_console\_script](#input\_create\_admin\_console\_script) | If set to true will generate a script to automatically spin up the KOTS admin console with desired values and outputs from the module. The relevant variables below are suffixed with 'Admin Console Script' in their descriptions. These variables can also be left blank and manually entered into the script after applying if desired. | `bool` | `false` | no |
-| <a name="input_create_alias_record"></a> [create\_alias\_record](#input\_create\_alias\_record) | Set to `true` to create an alias Route53 record. If set to `true` must enter a valid domain name in the `alias_domain_name` variable. | `bool` | `false` | no |
-| <a name="input_create_efs_provisioner"></a> [create\_efs\_provisioner](#input\_create\_efs\_provisioner) | Set to `false` if creating a custom EFS provisioner storage class for the IDE. | `bool` | `true` | no |
-| <a name="input_create_eks_cluster"></a> [create\_eks\_cluster](#input\_create\_eks\_cluster) | Set to `false` if installing dbt Cloud into an existing EKS cluster. | `bool` | `true` | no |
-| <a name="input_create_loadbalancer"></a> [create\_loadbalancer](#input\_create\_loadbalancer) | Set to `false` if creating a customer load balancer or other networking device to route traffic within the cluster. | `bool` | `true` | no |
-| <a name="input_creation_role_arn"></a> [creation\_role\_arn](#input\_creation\_role\_arn) | Admin Console Script - The ARN of the Terraform Creation Role. This is added to the script and used when setting the K8s context. | `string` | `"<ENTER_CREATION_ROLE_ARN>"` | no |
-| <a name="input_custom_internal_security_group_id"></a> [custom\_internal\_security\_group\_id](#input\_custom\_internal\_security\_group\_id) | The ID of an existing custom security group attached to an existing K8s cluster. This security group enables communication between the EKS worker nodes, RDS database, and EFS file system. It should be modeled after the `aws_security_group.internal` resource in this module. | `string` | `""` | no |
-| <a name="input_custom_namespace"></a> [custom\_namespace](#input\_custom\_namespace) | If set this variable will create a custom K8s namespace for dbt Cloud. If not set the created namespace defaults to `dbt-cloud-<namespace>-<environment>`. | `string` | `""` | no |
-| <a name="input_datadog_agent_memory_limit"></a> [datadog\_agent\_memory\_limit](#input\_datadog\_agent\_memory\_limit) | The resource memory limit of the Datadog agent. | `string` | `"512Mi"` | no |
-| <a name="input_datadog_agent_memory_request"></a> [datadog\_agent\_memory\_request](#input\_datadog\_agent\_memory\_request) | The resource memory request of the Datadog agent. | `string` | `"256Mi"` | no |
-| <a name="input_datadog_api_key"></a> [datadog\_api\_key](#input\_datadog\_api\_key) | If `enable_datadog` is set to `true`, this variable must be set to valid API key of the destination Datadog account. | `string` | `""` | no |
-| <a name="input_enable_bastion"></a> [enable\_bastion](#input\_enable\_bastion) | n/a | `bool` | `false` | no |
-| <a name="input_enable_datadog"></a> [enable\_datadog](#input\_enable\_datadog) | If set to `true` this will enable dbt Cloud to send metrics to Datadog. Note that this requires the installation of a Datadog Agent in the K8s cluster where dbt Cloud is deployed. | `bool` | `false` | no |
-| <a name="input_enable_datadog_apm"></a> [enable\_datadog\_apm](#input\_enable\_datadog\_apm) | Set to `true` to enable APM (tracer agent) for Datadog. Will only take effect if `enable_datadog_agent` is also set to `true`. | `bool` | `false` | no |
-| <a name="input_enable_datadog_cluster_agent"></a> [enable\_datadog\_cluster\_agent](#input\_enable\_datadog\_cluster\_agent) | Set to `true` to enable cluster agent for Datadog. Will only take effect if `enable_datadog_agent` is also set to `true`. | `bool` | `false` | no |
-| <a name="input_enable_datadog_kube_state_metrics"></a> [enable\_datadog\_kube\_state\_metrics](#input\_enable\_datadog\_kube\_state\_metrics) | Set to `true` to enable kube state metrics for Datadog. Will only take effect if `enable_datadog_agent` is also set to `true`. | `bool` | `false` | no |
-| <a name="input_enable_datadog_process_agent"></a> [enable\_datadog\_process\_agent](#input\_enable\_datadog\_process\_agent) | Set to `true` to enable process agent for Datadog. Will only take effect if `enable_datadog_agent` is also set to `true`. | `bool` | `false` | no |
-| <a name="input_enable_kube_cleanup_operator"></a> [enable\_kube\_cleanup\_operator](#input\_enable\_kube\_cleanup\_operator) | Set to `false` to disable kube-cleanup-operator deployment. | `bool` | `true` | no |
-| <a name="input_enable_reloader"></a> [enable\_reloader](#input\_enable\_reloader) | Set to `false` to disable reloader. | `bool` | `true` | no |
-| <a name="input_enable_ses"></a> [enable\_ses](#input\_enable\_ses) | If set to `true` this will attempt to create an key pair for AWS Simple Email Service. If set to `true` a valid from email address must be set in the `ses_email` variable. | `bool` | `false` | no |
-| <a name="input_environment"></a> [environment](#input\_environment) | The name of the environment for the deployment. For example: 'dev', 'prod', 'uat', 'standard', 'etc' | `string` | n/a | yes |
-| <a name="input_existing_namespace"></a> [existing\_namespace](#input\_existing\_namespace) | If set to `true`this will install dbt Cloud components into an existing namespace denoted by the `custom_namespace` field. This is not recommended as it is preferred to install dbt Cloud into a dedicated namespace. | `bool` | `false` | no |
-| <a name="input_hosted_zone_name"></a> [hosted\_zone\_name](#input\_hosted\_zone\_name) | The root domain name of the hosted zone that will resolve to the dbt Cloud deployment. This should be a valid domain name that you own. | `string` | n/a | yes |
-| <a name="input_hostname_affix"></a> [hostname\_affix](#input\_hostname\_affix) | The affix of the URL, affixed to the `hosted_zone_name` variable, that the dbt Cloud deployment will resolve to. If left blank the affix will default to the value of the `environment` variable. | `string` | `""` | no |
-| <a name="input_ide_storage_class"></a> [ide\_storage\_class](#input\_ide\_storage\_class) | Admin Console Script - The EFS provisioner storage class name used for the IDE. Only change if creating a custom EFS provisioner. | `string` | `"aws-efs"` | no |
-| <a name="input_k8s_node_count"></a> [k8s\_node\_count](#input\_k8s\_node\_count) | The number of Kubernetes nodes that will be created for the EKS worker group. Generally 2 nodes are recommended but it is recommended that you reach out to Fishtown Analytics to complete the capacity planning exercise prior to setting this. | `number` | n/a | yes |
-| <a name="input_k8s_node_size"></a> [k8s\_node\_size](#input\_k8s\_node\_size) | The EC2 instance type of the Kubernetes nodes that will be created for the EKS worker group. It is recommended that you reach out to Fishtown Analytics to complete the capacity planning exercise prior to setting this. | `string` | n/a | yes |
-| <a name="input_key_admins"></a> [key\_admins](#input\_key\_admins) | Required list of admin users for KMS key creation. This list should include at least one valid admin user for the AWS account. | `list(string)` | n/a | yes |
-| <a name="input_key_users"></a> [key\_users](#input\_key\_users) | List of key users for the KMS key creation. This can be left as an empty list unless adding users to KMS key is desired. | `list(string)` | `[]` | no |
-| <a name="input_load_balancer_source_ranges"></a> [load\_balancer\_source\_ranges](#input\_load\_balancer\_source\_ranges) | A list of IP ranges in CIDR notation that will be whitelisted by the loadbalancer. If unset will default to allow all traffic. | `list(string)` | `[]` | no |
-| <a name="input_namespace"></a> [namespace](#input\_namespace) | Used as an identifier for various infrastructure components within the module. Usually single word that or the name of the organization. For exmaple: 'fishtownanalytics' | `string` | n/a | yes |
-| <a name="input_nginx_memory"></a> [nginx\_memory](#input\_nginx\_memory) | Admin Console Script - The amount of memory dedicated to nginx for dbt Cloud. This is added to the config that is automatically uploaded to the KOTS admin console via the script. This value should never be set to less than default. It is recommended that you reach out to Fishtown Analytics to complete the capacity planning exercise prior to modifying this. | `string` | `"512Mi"` | no |
-| <a name="input_postgres_instance_class"></a> [postgres\_instance\_class](#input\_postgres\_instance\_class) | The RDS Postgres instance type. It is recommended that you reach out to Fishtown Analytics to complete the capacity planning exercise prior to setting this. | `string` | n/a | yes |
-| <a name="input_postgres_storage"></a> [postgres\_storage](#input\_postgres\_storage) | The amount of storage allocated to the RDS database in GB. Generally 100 GB is standard but it is recommended that you reach out to Fishtown Analytics to complete the capacity planning exercise prior to setting this. | `string` | n/a | yes |
-| <a name="input_private_subnets"></a> [private\_subnets](#input\_private\_subnets) | The list of private subnets for the VPC that the infrastructure will be deployed in. | `list(string)` | n/a | yes |
-| <a name="input_public_subnets"></a> [public\_subnets](#input\_public\_subnets) | The list of public subnets for the VPC that the infrastructure will be deployed in. | `list(string)` | `[]` | no |
-| <a name="input_rds_backup_retention_period"></a> [rds\_backup\_retention\_period](#input\_rds\_backup\_retention\_period) | The number of days for RDS to create automated snapshot backups. Set to a max of 35 or set to 0 to disable automated backups. | `number` | `7` | no |
-| <a name="input_rds_multi_az"></a> [rds\_multi\_az](#input\_rds\_multi\_az) | Set to `false` to disable Multi-AZ deployment for Postgres RDS database. | `bool` | `true` | no |
-| <a name="input_rds_password"></a> [rds\_password](#input\_rds\_password) | Password for RDS database. It is highly recommended that a secure password be generated and stored in a vault. | `string` | n/a | yes |
-| <a name="input_region"></a> [region](#input\_region) | The AWS region where the infrastructure will be deployed. For example 'us-east-1'. | `string` | n/a | yes |
-| <a name="input_release_channel"></a> [release\_channel](#input\_release\_channel) | Admin Console Script - The license channel for customer deployment. This should be left unset unless instructed by Fishtown Analytics. | `string` | `""` | no |
-| <a name="input_scheduler_memory"></a> [scheduler\_memory](#input\_scheduler\_memory) | Admin Console Script - The amount of memory dedicated to the scheduler for dbt Cloud. This is added to the config that is automatically uploaded to the KOTS admin console via the script. This value should never be set to less than default. It is recommended that you reach out to Fishtown Analytics to complete the capacity planning exercise prior to modifying this. | `string` | `"512Mi"` | no |
-| <a name="input_ses_email"></a> [ses\_email](#input\_ses\_email) | A valid from email address to be used for AWS SES. This address will receive a validation email from AWS upon apply. | `string` | `""` | no |
-| <a name="input_ses_header"></a> [ses\_header](#input\_ses\_header) | The email header for notifications sent via SES. If left blank the header will simply display as the address set in the `ses_email` variable. | `string` | `""` | no |
-| <a name="input_superuser_password"></a> [superuser\_password](#input\_superuser\_password) | Admin Console Script - The superuser password for the dbt Cloud application. This is added to the config that is automatically uploaded to the KOTS admin console via the script. | `string` | `"<ENTER_SUPER_USER_PASSWORD>"` | no |
-| <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | The ID of the VPC that the infrastructure will be deployed in. | `string` | n/a | yes |
+| additional\_k8s\_user\_data | Any additonal user data for K8s worker nodes. For example a curl script to install auditing software. | `string` | `""` | no |
+| admin\_console\_password | Admin Console Script - The desired password for the KOTS admin console. This is added to the script and used when spinning the admin console. | `string` | `"<ENTER_ADMIN_CONSOLE_PASSWORD>"` | no |
+| alias\_domain\_name | A valid alias domain for corresponding Route53 record. Must be set if `create_alias_record` is set to `true`. | `string` | `""` | no |
+| app\_memory | Admin Console Script - The memory dedicated to the application pods for dbt Cloud. This is added to the config that is automatically uploaded to the KOTS admin console via the script. This value should never be set to less than default. It is recommended that you reach out to Fishtown Analytics to complete the capacity planning exercise prior to modifying this. | `string` | `"1Gi"` | no |
+| app\_replicas | Admin Console Script - The number of application pods for dbt Cloud. This is added to the config that is automatically uploaded to the KOTS admin console via the script. This value should never be set to less than default. It is recommended that you reach out to Fishtown Analytics to complete the capacity planning exercise prior to modifying this. | `number` | `2` | no |
+| aws\_access\_key\_id | Admin Console Script - The AWS access key for an IAM identity with admin access that will be used for encryption. This is added to the config that is automatically uploaded to the KOTS admin console via the script. | `string` | `"<ENTER_AWS_ACCESS_KEY>"` | no |
+| aws\_secret\_access\_key | Admin Console Script - The AWS secret key for an IAM identity with admin access that will be used for encryption. This is added to the config that is automatically uploaded to the KOTS admin console via the script. | `string` | `"<ENTER_AWS_SECRET_KEY>"` | no |
+| cidr\_block | The CIDR block of the VPC that the infrastructure will be deployed in. | `string` | n/a | yes |
+| cluster\_name | Name of the cluster dbt Cloud will be installed into. Must be set if `create_eks_cluster` is set to `false`. | `string` | `""` | no |
+| create\_admin\_console\_script | If set to true will generate a script to automatically spin up the KOTS admin console with desired values and outputs from the module. The relevant variables below are suffixed with 'Admin Console Script' in their descriptions. These variables can also be left blank and manually entered into the script after applying if desired. | `bool` | `false` | no |
+| create\_alias\_record | Set to `true` to create an alias Route53 record. If set to `true` must enter a valid domain name in the `alias_domain_name` variable. | `bool` | `false` | no |
+| create\_efs\_provisioner | Set to `false` if creating a custom EFS provisioner storage class for the IDE. | `bool` | `true` | no |
+| create\_eks\_cluster | Set to `false` if installing dbt Cloud into an existing EKS cluster. | `bool` | `true` | no |
+| create\_loadbalancer | Set to `false` if creating a customer load balancer or other networking device to route traffic within the cluster. | `bool` | `true` | no |
+| creation\_role\_arn | Admin Console Script - The ARN of the Terraform Creation Role. This is added to the script and used when setting the K8s context. | `string` | `"<ENTER_CREATION_ROLE_ARN>"` | no |
+| custom\_internal\_security\_group\_id | The ID of an existing custom security group attached to an existing K8s cluster. This security group enables communication between the EKS worker nodes, RDS database, and EFS file system. It should be modeled after the `aws_security_group.internal` resource in this module. | `string` | `""` | no |
+| custom\_namespace | If set this variable will create a custom K8s namespace for dbt Cloud. If not set the created namespace defaults to `dbt-cloud-<namespace>-<environment>`. | `string` | `""` | no |
+| datadog\_agent\_memory\_limit | The resource memory limit of the Datadog agent. | `string` | `"512Mi"` | no |
+| datadog\_agent\_memory\_request | The resource memory request of the Datadog agent. | `string` | `"256Mi"` | no |
+| datadog\_api\_key | If `enable_datadog` is set to `true`, this variable must be set to valid API key of the destination Datadog account. | `string` | `""` | no |
+| enable\_datadog | If set to `true` this will enable dbt Cloud to send metrics to Datadog. Note that this requires the installation of a Datadog Agent in the K8s cluster where dbt Cloud is deployed. | `bool` | `false` | no |
+| enable\_datadog\_apm | Set to `true` to enable APM (tracer agent) for Datadog. Will only take effect if `enable_datadog_agent` is also set to `true`. | `bool` | `false` | no |
+| enable\_datadog\_cluster\_agent | Set to `true` to enable cluster agent for Datadog. Will only take effect if `enable_datadog_agent` is also set to `true`. | `bool` | `false` | no |
+| enable\_datadog\_kube\_state\_metrics | Set to `true` to enable kube state metrics for Datadog. Will only take effect if `enable_datadog_agent` is also set to `true`. | `bool` | `false` | no |
+| enable\_datadog\_process\_agent | Set to `true` to enable process agent for Datadog. Will only take effect if `enable_datadog_agent` is also set to `true`. | `bool` | `false` | no |
+| enable\_kube\_cleanup\_operator | Set to `false` to disable kube-cleanup-operator deployment. | `bool` | `true` | no |
+| enable\_reloader | Set to `false` to disable reloader. | `bool` | `true` | no |
+| enable\_ses | If set to `true` this will attempt to create an key pair for AWS Simple Email Service. If set to `true` a valid from email address must be set in the `ses_email` variable. | `bool` | `false` | no |
+| environment | The name of the environment for the deployment. For example: 'dev', 'prod', 'uat', 'standard', 'etc' | `string` | n/a | yes |
+| existing\_namespace | If set to `true`this will install dbt Cloud components into an existing namespace denoted by the `custom_namespace` field. This is not recommended as it is preferred to install dbt Cloud into a dedicated namespace. | `bool` | `false` | no |
+| hosted\_zone\_name | The root domain name of the hosted zone that will resolve to the dbt Cloud deployment. This should be a valid domain name that you own. | `string` | n/a | yes |
+| hostname\_affix | The affix of the URL, affixed to the `hosted_zone_name` variable, that the dbt Cloud deployment will resolve to. If left blank the affix will default to the value of the `environment` variable. | `string` | `""` | no |
+| ide\_storage\_class | Admin Console Script - The EFS provisioner storage class name used for the IDE. Only change if creating a custom EFS provisioner. | `string` | `"aws-efs"` | no |
+| k8s\_node\_count | The number of Kubernetes nodes that will be created for the EKS worker group. Generally 2 nodes are recommended but it is recommended that you reach out to Fishtown Analytics to complete the capacity planning exercise prior to setting this. | `number` | n/a | yes |
+| k8s\_node\_size | The EC2 instance type of the Kubernetes nodes that will be created for the EKS worker group. It is recommended that you reach out to Fishtown Analytics to complete the capacity planning exercise prior to setting this. | `string` | n/a | yes |
+| key\_admins | Required list of admin users for KMS key creation. This list should include at least one valid admin user for the AWS account. | `list(string)` | n/a | yes |
+| key\_users | List of key users for the KMS key creation. This can be left as an empty list unless adding users to KMS key is desired. | `list(string)` | `[]` | no |
+| load\_balancer\_source\_ranges | A list of IP ranges in CIDR notation that will be whitelisted by the loadbalancer. If unset will default to allow all traffic. | `list(string)` | `[]` | no |
+| namespace | Used as an identifier for various infrastructure components within the module. Usually single word that or the name of the organization. For exmaple: 'fishtownanalytics' | `string` | n/a | yes |
+| nginx\_memory | Admin Console Script - The amount of memory dedicated to nginx for dbt Cloud. This is added to the config that is automatically uploaded to the KOTS admin console via the script. This value should never be set to less than default. It is recommended that you reach out to Fishtown Analytics to complete the capacity planning exercise prior to modifying this. | `string` | `"512Mi"` | no |
+| postgres\_instance\_class | The RDS Postgres instance type. It is recommended that you reach out to Fishtown Analytics to complete the capacity planning exercise prior to setting this. | `string` | n/a | yes |
+| postgres\_storage | The amount of storage allocated to the RDS database in GB. Generally 100 GB is standard but it is recommended that you reach out to Fishtown Analytics to complete the capacity planning exercise prior to setting this. | `string` | n/a | yes |
+| private\_subnets | The list of private subnets for the VPC that the infrastructure will be deployed in. | `list(string)` | n/a | yes |
+| rds\_backup\_retention\_period | The number of days for RDS to create automated snapshot backups. Set to a max of 35 or set to 0 to disable automated backups. | `number` | `7` | no |
+| rds\_multi\_az | Set to `false` to disable Multi-AZ deployment for Postgres RDS database. | `bool` | `true` | no |
+| rds\_password | Password for RDS database. It is highly recommended that a secure password be generated and stored in a vault. | `string` | n/a | yes |
+| region | The AWS region where the infrastructure will be deployed. For example 'us-east-1'. | `string` | n/a | yes |
+| release\_channel | Admin Console Script - The license channel for customer deployment. This should be left unset unless instructed by Fishtown Analytics. | `string` | `""` | no |
+| scheduler\_memory | Admin Console Script - The amount of memory dedicated to the scheduler for dbt Cloud. This is added to the config that is automatically uploaded to the KOTS admin console via the script. This value should never be set to less than default. It is recommended that you reach out to Fishtown Analytics to complete the capacity planning exercise prior to modifying this. | `string` | `"512Mi"` | no |
+| ses\_email | A valid from email address to be used for AWS SES. This address will receive a validation email from AWS upon apply. | `string` | `""` | no |
+| ses\_header | The email header for notifications sent via SES. If left blank the header will simply display as the address set in the `ses_email` variable. | `string` | `""` | no |
+| superuser\_password | Admin Console Script - The superuser password for the dbt Cloud application. This is added to the config that is automatically uploaded to the KOTS admin console via the script. | `string` | `"<ENTER_SUPER_USER_PASSWORD>"` | no |
+| vpc\_id | The ID of the VPC that the infrastructure will be deployed in. | `string` | n/a | yes |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| <a name="output_database_hostname"></a> [database\_hostname](#output\_database\_hostname) | The hostname (address) of the RDS database generated. This is required to be entered manually in the configuration console if not using the generated script. |
-| <a name="output_efs_dns_name"></a> [efs\_dns\_name](#output\_efs\_dns\_name) | The DNS name generated for the EFS instance. This may be required if creating a custom EFS provisioner. |
-| <a name="output_efs_id"></a> [efs\_id](#output\_efs\_id) | The ID generated for the EFS instance. This may be required if creating a custom EFS provisioner. |
-| <a name="output_instance_url"></a> [instance\_url](#output\_instance\_url) | The URL where the dbt Cloud instance can be accessed. |
-| <a name="output_kms_key_arn"></a> [kms\_key\_arn](#output\_kms\_key\_arn) | The ARN of the KMS key created. May be manually entered for encryption in the configuration console if not using the generated script. |
+| database\_hostname | The hostname (address) of the RDS database generated. This is required to be entered manually in the configuration console if not using the generated script. |
+| efs\_dns\_name | The DNS name generated for the EFS instance. This may be required if creating a custom EFS provisioner. |
+| efs\_id | The ID generated for the EFS instance. This may be required if creating a custom EFS provisioner. |
+| instance\_url | The URL where the dbt Cloud instance can be accessed. |
+| kms\_key\_arn | The ARN of the KMS key created. May be manually entered for encryption in the configuration console if not using the generated script. |

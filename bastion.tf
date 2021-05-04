@@ -6,13 +6,13 @@ data "http" "bastion_allow_ip" {
 
 
 resource "aws_security_group" "bastion" {
-  count       = var.enable_bastion == "" ? 1 : 0
+  count       = var.enable_bastion ? 1 : 0
   name        = "bastion"
   description = "Allow SSH access for debugging"
   vpc_id      = var.vpc_id
 
   ingress {
-    from_port   = 222
+    from_port   = 22
     to_port     = 22
     protocol    = "tcp"
     cidr_blocks = ["${data.http.bastion_allow_ip.body}/32"]
@@ -49,12 +49,13 @@ data "aws_ami" "ubuntu" {
 }
 
 resource "aws_instance" "bastion" {
-  count           = var.enable_bastion == "" ? 1 : 0
+  count                  = var.enable_bastion ? 1 : 0
 
-  ami             = data.aws_ami.ubuntu.id 
-  instance_type   = "t3.micro"
-  subnet_id       = var.public_subnets[0]
-  security_groups = [aws_security_group.bastion[0].id]
+  ami                    = data.aws_ami.ubuntu.id
+  instance_type          = "t3.micro"
+  subnet_id              = var.public_subnets[0]
+  vpc_security_group_ids = [aws_security_group.bastion[0].id]
+  key_name               = "${var.namespace}-${var.environment}"
  
   tags = {
     Name = "Bastion"

@@ -47,6 +47,11 @@ variable "private_subnets" {
   type        = list(string)
   description = "The list of private subnets for the VPC that the infrastructure will be deployed in."
 }
+variable "public_subnets" {
+  type        = list(string)
+  description = "The list of public subnets for the VPC that the infrastructure will be deployed in."
+  default     = []
+}
 variable "hosted_zone_name" {
   type        = string
   description = "The root domain name of the hosted zone that will resolve to the dbt Cloud deployment. This should be a valid domain name that you own."
@@ -253,6 +258,11 @@ variable "datadog_agent_memory_limit" {
   type        = string
   default     = "512Mi"
   description = "The resource memory limit of the Datadog agent."
+}
+
+variable "enable_bastion" {
+  type    = bool
+  default = false
 }
 
 # locals

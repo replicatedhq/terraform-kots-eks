@@ -1,5 +1,5 @@
 
-# TODO: Replace this with VPN IP address or SG
+# This will be replaced with VPN IP address or SG in the future
 data "http" "bastion_allow_ip" {
   url = "https://ifconfig.me"
 }

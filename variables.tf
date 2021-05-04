@@ -261,10 +261,16 @@ variable "datadog_agent_memory_limit" {
 }
 
 variable "enable_bastion" {
-  type    = bool
-  default = false
+  type        = bool
+  default     = false
+  description = "Enable bastion host that has ssh access to worker nodes."
 }
 
+variable "eks_ami" {
+  type       = string
+  default    = ""
+  description = "Default to pull the latest Ubuntu EKS AMI, otherwise use this one."
+}
 # locals
 data "aws_caller_identity" "current" {}
 locals {

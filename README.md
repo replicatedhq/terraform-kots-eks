@@ -121,7 +121,8 @@ Note that the `kubectl kots install` will prompt the user for a password for the
 | <a name="input_datadog_agent_memory_limit"></a> [datadog\_agent\_memory\_limit](#input\_datadog\_agent\_memory\_limit) | The resource memory limit of the Datadog agent. | `string` | `"512Mi"` | no |
 | <a name="input_datadog_agent_memory_request"></a> [datadog\_agent\_memory\_request](#input\_datadog\_agent\_memory\_request) | The resource memory request of the Datadog agent. | `string` | `"256Mi"` | no |
 | <a name="input_datadog_api_key"></a> [datadog\_api\_key](#input\_datadog\_api\_key) | If `enable_datadog` is set to `true`, this variable must be set to valid API key of the destination Datadog account. | `string` | `""` | no |
-| <a name="input_enable_bastion"></a> [enable\_bastion](#input\_enable\_bastion) | n/a | `bool` | `false` | no |
+| <a name="input_eks_ami"></a> [eks\_ami](#input\_eks\_ami) | Default to pull the latest Ubuntu EKS AMI, otherwise use this one. | `string` | `""` | no |
+| <a name="input_enable_bastion"></a> [enable\_bastion](#input\_enable\_bastion) | Enable bastion host that has ssh access to worker nodes. | `bool` | `false` | no |
 | <a name="input_enable_datadog"></a> [enable\_datadog](#input\_enable\_datadog) | If set to `true` this will enable dbt Cloud to send metrics to Datadog. Note that this requires the installation of a Datadog Agent in the K8s cluster where dbt Cloud is deployed. | `bool` | `false` | no |
 | <a name="input_enable_datadog_apm"></a> [enable\_datadog\_apm](#input\_enable\_datadog\_apm) | Set to `true` to enable APM (tracer agent) for Datadog. Will only take effect if `enable_datadog_agent` is also set to `true`. | `bool` | `false` | no |
 | <a name="input_enable_datadog_cluster_agent"></a> [enable\_datadog\_cluster\_agent](#input\_enable\_datadog\_cluster\_agent) | Set to `true` to enable cluster agent for Datadog. Will only take effect if `enable_datadog_agent` is also set to `true`. | `bool` | `false` | no |

@@ -24,6 +24,8 @@ data "aws_ami" "eks_worker_ami_1_17" {
 }
 
 locals {
+  eks_worker_ami = var.eks_ami != "" ? var.eks_ami : data.aws_ami.eks_worker_ami_1_17.0.id
+
   # use built-in policies when posssible
   aws_worker_policy_arns = [
     "arn:aws:iam::aws:policy/AmazonElasticFileSystemFullAccess",

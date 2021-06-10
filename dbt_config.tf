@@ -122,17 +122,17 @@ spec:
     smtp_auth_enabled:
       value: "1"
     smtp_enabled:
-      value: "${var.enable_ses ? 1 : 0}"
+      value: "1"
     smtp_host:
-      value: ${var.enable_ses ? "email-smtp.${var.region}.amazonaws.com" : ""}
+      value: ${var.enable_ses ? "email-smtp.${var.region}.amazonaws.com" : var.custom_smtp_host}
     smtp_password:
-      value: "${var.enable_ses ? aws_iam_access_key.ses_key.0.ses_smtp_password_v4 : ""}"
+      value: "${var.enable_ses ? aws_iam_access_key.ses_key.0.ses_smtp_password_v4 : var.custom_smtp_password}"
     smtp_port:
       value: "587"
     smtp_tls_enabled:
       value: "1"
     smtp_username:
-      value: ${var.enable_ses ? aws_iam_access_key.ses_key.0.id : ""}
+      value: ${var.enable_ses ? aws_iam_access_key.ses_key.0.id : var.custom_smtp_username}
     storage_method:
       default: s3
     system_from_email_address:

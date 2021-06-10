@@ -66,7 +66,7 @@ variable "key_users" {
 variable "enable_ses" {
   type        = bool
   default     = false
-  description = "If set to `true` this will attempt to create an key pair for AWS Simple Email Service. If set to `true` a valid from email address must be set in the `ses_email` variable."
+  description = "If set to `true`, this will attempt to create an key pair for AWS Simple Email Service. If set to `true`, a valid from email address must be set in the `ses_email` variable."
 }
 variable "ses_email" {
   type        = string
@@ -78,6 +78,24 @@ variable "ses_header" {
   default     = ""
   description = "The email header for notifications sent via SES. If left blank the header will simply display as the address set in the `ses_email` variable."
 }
+variable "custom_smtp_host" {
+  type        = string
+  default     = ""
+  description = "The host name of the custom (non-SES) SMTP server to use."
+}
+
+variable "custom_smtp_password" {
+  type        = string
+  default     = ""
+  description = "The password of the custom (non-SES) SMTP server to use."
+}
+
+variable "custom_smtp_username" {
+  type        = string
+  default     = ""
+  description = "The username of the custom (non-SES) SMTP server to use."
+}
+
 variable "load_balancer_source_ranges" {
   type        = list(string)
   default     = []
@@ -267,8 +285,8 @@ variable "enable_bastion" {
 }
 
 variable "eks_ami" {
-  type       = string
-  default    = ""
+  type        = string
+  default     = ""
   description = "Default to pull the latest Ubuntu EKS AMI, otherwise use this one."
 }
 # locals

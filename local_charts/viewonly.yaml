@@ -1,0 +1,15 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: viewonly-access-cluster-binding
+  labels:
+    {{- include "cluster_rbac.labels" . | nindent 4 }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: view # default group
+subjects:
+  - kind: Group
+    name: viewonlyusers
+  - kind: Group
+    name: powerusers

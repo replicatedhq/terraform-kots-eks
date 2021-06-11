@@ -56,17 +56,14 @@ variable "hosted_zone_name" {
   type        = string
   description = "The root domain name of the hosted zone that will resolve to the dbt Cloud deployment. This should be a valid domain name that you own."
 }
-
 variable "view_only_role_arn"{
   type = string
   description = "The role arn of the view only role to be added to the aws auth config map. "
 }
-
 variable "power_user_role_arn"{
   type = string
   description = "The role arn of the power user role to be added to the aws auth config map."
 }
-
 variable "admin_role_arn" {
   type = string
   description = "The role arn of the administrator role to be added to the aws auth config map."

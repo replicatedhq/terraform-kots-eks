@@ -167,16 +167,9 @@ resource "helm_release" "datadog" {
 
 }
 
-resource "helm_release" "poweruser" {
-  name       = "poweruser"
-  chart      = "./local_charts"
-
-  namespace = var.existing_namespace ? var.custom_namespace : kubernetes_namespace.dbt_cloud.0.metadata.0.name
-}
-
-resource "helm_release" "viewonly" {
-  name       = "viewonly"
-  chart      = "./local_charts"
+resource "helm_release" "cluster_rbac" {
+  name       = "cluster-rbac"
+  chart      = "./local_charts/cluster-rbac"
 
   namespace = var.existing_namespace ? var.custom_namespace : kubernetes_namespace.dbt_cloud.0.metadata.0.name
 }

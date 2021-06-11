@@ -66,17 +66,17 @@ variable "key_users" {
 variable "enable_ses" {
   type        = bool
   default     = false
-  description = "If set to `true`, this will attempt to create an key pair for AWS Simple Email Service. If set to `true`, a valid from email address must be set in the `ses_email` variable."
+  description = "If set to `true`, this will attempt to create an key pair for AWS Simple Email Service. If set to `true`, a valid from email address must be set in the `from_email` variable."
 }
-variable "ses_email" {
+variable "from_email" {
   type        = string
   default     = ""
-  description = "A valid from email address to be used for AWS SES. This address will receive a validation email from AWS upon apply."
+  description = "The email address the system will send emails from via SMTP server. If `enable_ses = true`, this address will receive a validation email from AWS upon apply."
 }
-variable "ses_header" {
+variable "from_header" {
   type        = string
   default     = ""
-  description = "The email header for notifications sent via SES. If left blank the header will simply display as the address set in the `ses_email` variable."
+  description = "The email header for notifications sent via SMTP server. If left blank the header will simply display as the address set in the `from_email` variable."
 }
 variable "custom_smtp_host" {
   type        = string

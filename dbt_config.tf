@@ -136,7 +136,7 @@ spec:
     storage_method:
       default: s3
     system_from_email_address:
-      value: "${var.enable_ses ? "${var.ses_header} <${var.ses_email}>" : ""}"
+      value: "${var.from_header} <${var.from_email}>""
 status: {}
 EOT
 }

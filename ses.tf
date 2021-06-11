@@ -1,6 +1,6 @@
 resource "aws_ses_email_identity" "ses_email" {
   count = var.enable_ses ? 1 : 0
-  email = var.ses_email
+  email = var.from_email
 }
 
 resource "aws_iam_access_key" "ses_key" {

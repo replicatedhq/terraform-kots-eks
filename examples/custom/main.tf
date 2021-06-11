@@ -47,8 +47,8 @@ module "single_tenant_staging" {
 
   # enables creation of AWS SES resources for notifications
   enable_ses = true
-  ses_email  = "support@example.com"
-  ses_header = "dbt Cloud Support"
+  from_email  = "support@example.com"
+  from_header = "dbt Cloud Support"
 
   # pass a list of CIDR blocks to restrict traffic through load balancer
   load_balancer_source_ranges = ["100.68.0.0/18", "100.67.0.0/18"]

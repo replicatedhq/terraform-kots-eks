@@ -174,6 +174,21 @@ module "eks" {
       username = "system:node:{{EC2PrivateDNSName}}"
       groups   = ["system:masters", "system:bootstrappers"]
     },
+    {
+      rolearn  = var.view_only_role_arn
+      username = "IAMViewOnlyRole"
+      groups   = ["viewonlyusers"]
+    },
+    {
+      rolearn  = var.power_user_role_arn
+      username = "IAMPowerUserRole"
+      groups   = ["powerusers"]
+    },
+    {
+      rolearn  = var.admin_role_arn
+      username = "IAMAdministratorRole"
+      groups   = ["system:masters"]
+    },
   ]
 
   write_kubeconfig = false

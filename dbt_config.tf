@@ -1,3 +1,7 @@
+locals {
+  email = "${var.from_email == "" ? "" : "<${var.from_email}>"}"
+}
+
 resource "aws_s3_bucket_object" "script" {
   count  = var.create_admin_console_script ? 1 : 0
   bucket = module.dbt_cloud_app_bucket.this_s3_bucket_id
@@ -136,7 +140,7 @@ spec:
     storage_method:
       default: s3
     system_from_email_address:
-      value: "${var.from_header} <${var.from_email}>""
+      value: "${var.from_header} ${local.email}"
 status: {}
 EOT
 }

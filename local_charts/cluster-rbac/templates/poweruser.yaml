@@ -2,7 +2,7 @@ kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: poweruser-access-role-namespace
-  namespace: {{ Values.rbacNamespace }}
+  namespace: {{ .Values.rbacNamespace }}
   labels:
     {{- include "cluster_rbac.labels" . | nindent 4 }}
 rules:
@@ -42,7 +42,7 @@ kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: poweruser-access-binding
-  namespace: {{ Values.rbacNamespace }}
+  namespace: {{ .Values.rbacNamespace }}
   labels:
     {{- include "cluster_rbac.labels" . | nindent 4 }}
 roleRef:

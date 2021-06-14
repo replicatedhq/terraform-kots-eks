@@ -172,4 +172,9 @@ resource "helm_release" "cluster_rbac" {
   chart = "${path.module}/local_charts/cluster-rbac"
 
   namespace = var.existing_namespace ? var.custom_namespace : kubernetes_namespace.dbt_cloud.0.metadata.0.name
+
+  set {
+    name  = "rbacNamespace"
+    value = var.existing_namespace ? var.custom_namespace : kubernetes_namespace.dbt_cloud.0.metadata.0.name
+  }
 }

@@ -109,6 +109,34 @@ provider "kubernetes" {
   version                = "~> 1.9"
 }
 
+locals {
+  map_roles_base = [
+    {
+      rolearn  = "arn:aws:iam::850607893674:role/${var.namespace}-${var.environment}-workers-role"
+      username = "system:node:{{EC2PrivateDNSName}}"
+      groups   = ["system:masters", "system:bootstrappers"]
+    },
+  ]
+
+  map_roles_sso = [
+    {
+      rolearn  = var.rbac_sso_view_only_role_arn
+      username = "IAMViewOnlyRole"
+      groups   = ["viewonlyusers"]
+    },
+    {
+      rolearn  = var.rbac_sso_power_user_role_arn
+      username = "IAMPowerUserRole"
+      groups   = ["powerusers"]
+    },
+    {
+      rolearn  = var.rbac_sso_admin_role_arn
+      username = "IAMAdministratorRole"
+      groups   = ["system:masters"]
+    },
+  ]
+}
+
 module "eks" {
   count   = var.create_eks_cluster ? 1 : 0
   source  = "terraform-aws-modules/eks/aws"
@@ -168,28 +196,7 @@ module "eks" {
   cluster_endpoint_private_access = true
 
   manage_aws_auth = true
-  map_roles = [
-    {
-      rolearn  = "arn:aws:iam::850607893674:role/${var.namespace}-${var.environment}-workers-role"
-      username = "system:node:{{EC2PrivateDNSName}}"
-      groups   = ["system:masters", "system:bootstrappers"]
-    },
-    {
-      rolearn  = var.view_only_role_arn
-      username = "IAMViewOnlyRole"
-      groups   = ["viewonlyusers"]
-    },
-    {
-      rolearn  = var.power_user_role_arn
-      username = "IAMPowerUserRole"
-      groups   = ["powerusers"]
-    },
-    {
-      rolearn  = var.admin_role_arn
-      username = "IAMAdministratorRole"
-      groups   = ["system:masters"]
-    },
-  ]
+  map_roles       = enable_rbac_sso == true ? concat(local.map_role_basic, local.map_role_sso) : local.map_role_basic
 
   write_kubeconfig = false
 

@@ -7,6 +7,7 @@ provider "helm" {
 }
 
 resource "helm_release" "cluster_rbac" {
+  count = var.enable_rbac_sso ? 1 : 0
   name  = "cluster-rbac"
   chart = "${path.module}/local_charts/cluster-rbac"
 

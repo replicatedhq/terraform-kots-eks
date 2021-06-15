@@ -196,7 +196,7 @@ module "eks" {
   cluster_endpoint_private_access = true
 
   manage_aws_auth = true
-  map_roles       = enable_rbac_sso == true ? concat(local.map_roles_base, local.map_roles_sso) : local.map_roles_base
+  map_roles       = var.enable_rbac_sso == true ? concat(local.map_roles_base, local.map_roles_sso) : local.map_roles_base
 
   write_kubeconfig = false
 

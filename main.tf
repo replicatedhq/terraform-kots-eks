@@ -110,14 +110,6 @@ provider "kubernetes" {
 }
 
 locals {
-  map_roles_base = [
-    {
-      rolearn  = "arn:aws:iam::850607893674:role/${var.namespace}-${var.environment}-workers-role"
-      username = "system:node:{{EC2PrivateDNSName}}"
-      groups   = ["system:masters", "system:bootstrappers"]
-    },
-  ]
-
   map_roles_sso = [
     {
       rolearn  = var.rbac_sso_view_only_role_arn
@@ -196,7 +188,7 @@ module "eks" {
   cluster_endpoint_private_access = true
 
   manage_aws_auth = true
-  map_roles       = var.enable_rbac_sso == true ? concat(local.map_roles_base, local.map_roles_sso) : local.map_roles_base
+  map_roles       = var.enable_rbac_sso == true ? local.map_roles_sso : []
 
   write_kubeconfig = false
 

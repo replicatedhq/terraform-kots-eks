@@ -44,8 +44,8 @@ module "single_tenant_existing" {
 
   # enables creation of AWS SES resources for notifications
   enable_ses = true
-  ses_email  = "support@example.com"
-  ses_header = "dbt Cloud Support"
+  from_email  = "support@example.com"
+  from_header = "dbt Cloud Support"
 
   # set to false to bypass EKS cluster creation and install into existing cluster
   create_eks_cluster = false

@@ -289,6 +289,27 @@ variable "eks_ami" {
   default     = ""
   description = "Default to pull the latest Ubuntu EKS AMI, otherwise use this one."
 }
+variable "enable_rbac_sso" {
+  type        = bool
+  default     = false
+  description = "Enable creation of RBAC for specific SSO roles to access the cluster. If set to `true`, the rbac_sso_*_role_arn variables need to be set."
+}
+variable "rbac_sso_view_only_role_arn" {
+  type        = string
+  default     = ""
+  description = "The role arn of the view only role to be added to the aws auth config map. "
+}
+variable "rbac_sso_power_user_role_arn" {
+  type        = string
+  default     = ""
+  description = "The role arn of the power user role to be added to the aws auth config map."
+}
+variable "rbac_sso_admin_role_arn" {
+  type        = string
+  default     = ""
+  description = "The role arn of the administrator role to be added to the aws auth config map."
+}
+
 # locals
 data "aws_caller_identity" "current" {}
 locals {

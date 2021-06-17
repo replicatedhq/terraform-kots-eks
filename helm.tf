@@ -6,6 +6,19 @@ provider "helm" {
   }
 }
 
+resource "helm_release" "cluster_rbac" {
+  count = var.enable_rbac_sso ? 1 : 0
+  name  = "cluster-rbac"
+  chart = "${path.module}/local_charts/cluster-rbac"
+
+  namespace = var.existing_namespace ? var.custom_namespace : kubernetes_namespace.dbt_cloud.0.metadata.0.name
+
+  set {
+    name  = "namespace"
+    value = var.existing_namespace ? var.custom_namespace : kubernetes_namespace.dbt_cloud.0.metadata.0.name
+  }
+}
+
 resource "helm_release" "kube_cleanup_operator" {
   count = var.enable_kube_cleanup_operator ? 1 : 0
 

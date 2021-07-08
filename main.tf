@@ -68,6 +68,8 @@ resource "aws_db_instance" "backend_postgres" {
   instance_class         = var.postgres_instance_class
   allocated_storage      = var.postgres_storage
   engine                 = "postgres"
+  engine_version         = var.postgres_engine_version
+  parameter_group_name   = var.db_parameter_group
   username               = "${var.namespace}${var.environment}"
   password               = var.rds_password
   storage_encrypted      = true
@@ -81,6 +83,8 @@ resource "aws_db_instance" "backend_postgres" {
 
   backup_retention_period  = var.rds_backup_retention_period
   delete_automated_backups = false
+
+  apply_immediately = var.db_apply_change_immediately
 
   lifecycle {
     ignore_changes = [password]

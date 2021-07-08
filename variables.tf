@@ -309,6 +309,21 @@ variable "rbac_sso_admin_role_arn" {
   default     = ""
   description = "The role arn of the administrator role to be added to the aws auth config map."
 }
+variable "postgres_engine_version" {
+  type        = string
+  default     = "12.5"
+  description = "The postgres engine version to use for the RDS database."
+}
+variable "db_parameter_group" {
+  type        = string
+  default     = "default.postgres12"
+  description = "The db parameter group to apply to the RDS database."
+}
+variable "db_apply_change_immediately" {
+  type        = bool
+  default     = true
+  description = "Set to `false` to apply RDS database changes at next scheduled maintenance window."
+}
 
 # locals
 data "aws_caller_identity" "current" {}

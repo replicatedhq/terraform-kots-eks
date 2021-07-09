@@ -277,6 +277,16 @@ variable "datadog_agent_memory_limit" {
   default     = "512Mi"
   description = "The resource memory limit of the Datadog agent."
 }
+variable "additional_k8s_security_group_ids" {
+  type        = list(string)
+  default     = []
+  description = "List of additional security group IDs to add to EKS cluster."
+}
+variable "additional_rds_security_group_ids" {
+  type        = list(string)
+  default     = []
+  description = "List of additional security group IDs to add to RDS database instance."
+}
 
 variable "enable_bastion" {
   type        = bool

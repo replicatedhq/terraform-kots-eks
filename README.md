@@ -163,6 +163,8 @@ Note that the `kubectl kots install` will prompt the user for a password for the
 | <a name="input_from_header"></a> [from\_header](#input\_from\_header) | The email header for notifications sent via SMTP server. If left blank the header will simply display as the address set in the `from_email` variable. | `string` | `""` | no |
 | <a name="input_superuser_password"></a> [superuser\_password](#input\_superuser\_password) | Admin Console Script - The superuser password for the dbt Cloud application. This is added to the config that is automatically uploaded to the KOTS admin console via the script. | `string` | `"<ENTER_SUPER_USER_PASSWORD>"` | no |
 | <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | The ID of the VPC that the infrastructure will be deployed in. | `string` | n/a | yes |
+| <a name="input_additional_k8s_security_group_ids"></a> [additional\_k8s\_security\_group\_ids](#input\_additional\_k8s\_security\_group\_ids) | List of additional security group IDs to add to EKS cluster. | `list(string)` | [] | no |
+| <a name="input_additional_rds_security_group_ids"></a> [additional\_rds\_security\_group\_ids](#input\_additional\_rds\_security\_group\_ids) | List of additional security group IDs to add to RDS database instance. | `list(string)` | [] | no |
 
 ## Outputs
 

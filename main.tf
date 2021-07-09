@@ -76,7 +76,7 @@ resource "aws_db_instance" "backend_postgres" {
   multi_az               = var.rds_multi_az
   kms_key_id             = module.kms_key.key_arn
   db_subnet_group_name   = aws_db_subnet_group.private.name
-  vpc_security_group_ids = [var.custom_internal_security_group_id == "" ? aws_security_group.internal.0.id : var.custom_internal_security_group_id]
+  vpc_security_group_ids = concat([var.custom_internal_security_group_id == "" ? aws_security_group.internal.0.id : var.custom_internal_security_group_id], var.additional_rds_security_group_ids)
 
   skip_final_snapshot = true
   deletion_protection = true
@@ -160,7 +160,7 @@ module "eks" {
       suspended_processes = ["AZRebalance"]
 
       key_name                      = "${var.namespace}-${var.environment}"
-      additional_security_group_ids = [var.custom_internal_security_group_id == "" ? aws_security_group.internal.0.id : var.custom_internal_security_group_id]
+      additional_security_group_ids = concat([var.custom_internal_security_group_id == "" ? aws_security_group.internal.0.id : var.custom_internal_security_group_id], var.additional_k8s_security_group_ids)
       kubelet_extra_args            = local.kubelet_extra_args_1_17
       pre_userdata                  = "${local.bionic_node_userdata}${var.additional_k8s_user_data}"
 

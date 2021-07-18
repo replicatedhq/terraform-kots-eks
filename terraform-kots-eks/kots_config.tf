@@ -1,21 +1,23 @@
-variable "this_s3_bucket_id" {
-  description = "placeholder"
-  default = "not an s3 bucket id"
-}
+// todo upload these later
 
-resource "aws_s3_bucket_object" "script" {
-  count  = var.create_admin_console_script ? 1 : 0
-  bucket = var.this_s3_bucket_id
-  key    = "terraform/config_script.sh"
-  source = local_file.script.0.filename
-}
-
-resource "aws_s3_bucket_object" "config" {
-  count  = var.create_admin_console_script ? 1 : 0
-  bucket = var.this_s3_bucket_id
-  key    = "terraform/config.yaml"
-  source = local_file.config.0.filename
-}
+//variable "this_s3_bucket_id" {
+//  description = "placeholder"
+//  default = "not an s3 bucket id"
+//}
+//
+//resource "aws_s3_bucket_object" "script" {
+//  count  = var.create_admin_console_script ? 1 : 0
+//  bucket = var.this_s3_bucket_id
+//  key    = "terraform/config_script.sh"
+//  source = local_file.script.0.filename
+//}
+//
+//resource "aws_s3_bucket_object" "config" {
+//  count  = var.create_admin_console_script ? 1 : 0
+//  bucket = var.this_s3_bucket_id
+//  key    = "terraform/config.yaml"
+//  source = local_file.config.0.filename
+//}
 
 resource "kubernetes_namespace" "kots_app" {
   count = var.existing_namespace ? 0 : 1

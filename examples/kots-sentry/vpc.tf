@@ -1,8 +1,9 @@
+# todo replace "Customer" with "User" or "Org" ??
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "~> v2.0"
 
-  name = "${var.namespace}-${var.environment}-vpc"
+  name = "${local.full_name}-vpc"
   cidr = var.cidr_block
 
   azs             = keys(var.subnets.private)
@@ -30,20 +31,20 @@ module "vpc" {
   create_flow_log_cloudwatch_iam_role  = true
 
   public_subnet_tags = {
-    "kubernetes.io/cluster/${var.namespace}-${var.environment}" = "shared"
+    "kubernetes.io/cluster/${local.full_name}" = "shared"
     "kubernetes.io/role/elb"                                    = "1"
     "Customer"                                                  = var.namespace
   }
 
   private_subnet_tags = {
-    "kubernetes.io/cluster/${var.namespace}-${var.environment}" = "shared"
+    "kubernetes.io/cluster/${local.full_name}" = "shared"
     "kubernetes.io/role/internal-elb"                           = "1"
     "Customer"                                                  = var.namespace
   }
 
   tags = map(
-    "Name", "vpc-${var.namespace}-${var.environment}",
-    "Stack", "${var.namespace}-${var.environment}",
+    "Name", "vpc-${local.full_name}",
+    "Stack", local.full_name,
     "Customer", var.namespace
   )
 }
@@ -52,8 +53,8 @@ resource "aws_eip" "nat_primary" {
   vpc = true
 
   tags = map(
-    "Name", "nat-primary-${var.namespace}-${var.environment}",
-    "Stack", "${var.namespace}-${var.environment}",
+    "Name", "nat-primary-${local.full_name}",
+    "Stack", local.full_name,
     "Customer", var.namespace
   )
 }

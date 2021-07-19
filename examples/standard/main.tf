@@ -5,7 +5,7 @@ provider "aws" {
 
 module "single_tenant_staging" {
 
-  source = "../../"
+  source = "../../dbt"
 
   namespace               = var.namespace
   environment             = var.environment

@@ -32,8 +32,8 @@ variable "k8s_node_count" {
 variable "k8s_node_size" {
   type        = string
   description = "The EC2 instance type of the Kubernetes nodes that will be created for the EKS worker group."
-
 }
+
 variable "region" {
   type        = string
   description = "The AWS region where the infrastructure will be deployed. For example 'us-east-1'."
@@ -143,4 +143,22 @@ variable "rbac_sso_admin_role_arn" {
   type        = string
   default     = ""
   description = "The role arn of the administrator role to be added to the aws auth config map."
+}
+
+
+
+# advanced
+
+
+variable "admin_console_config_yaml" {
+  default = <<EOT
+apiVersion: kots.io/v1beta1
+kind: ConfigValues
+metadata:
+  creationTimestamp: null
+  name: changeme
+spec:
+  values: {}
+status: {}
+EOT
 }

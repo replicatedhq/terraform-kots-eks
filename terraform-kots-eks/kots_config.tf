@@ -41,17 +41,9 @@ kubectl kots install ${local.app_and_channel} --namespace ${var.existing_namespa
 EOT
 }
 
+
 resource "local_file" "config" {
   count    = var.create_admin_console_script ? 1 : 0
   filename = "./config.yaml"
-  content  = <<EOT
-apiVersion: kots.io/v1beta1
-kind: ConfigValues
-metadata:
-  creationTimestamp: null
-  name: ${var.app_slug}
-spec:
-  values: {}
-status: {}
-EOT
+  content = var.admin_console_config_yaml
 }

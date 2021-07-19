@@ -1,4 +1,11 @@
 # required variables
+variable "postgres_instance_class" {
+  default = "db.t3.micro"
+}
+
+variable "postgres_storage" {
+  default = "100"
+}
 variable "namespace" {
   type        = string
   description = "Used as an identifier for various infrastructure components within the module. Usually single word that or the name of the organization. For exmaple: 'fishtownanalytics'"

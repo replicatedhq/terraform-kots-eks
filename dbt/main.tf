@@ -1,6 +1,25 @@
-module "terraform-kots-eks" {
+module "kots" {
 
-  source = "..\/terraform-kots-eks"
+  source = "../terraform-kots-eks"
+
+  region          = "us-east-1"
+  vpc_id          = var.vpc_id
+  cidr_block      = var.cidr_block
+  enable_bastion  = true
+  private_subnets = values(var.subnets.private)
+  public_subnets  = values(var.subnets.public)
+
+  app_slug    = "kots-sentry"
+  namespace   = "somebigbank"
+  environment = "prod"
+
+  k8s_node_count = 2
+  k8s_node_size  = "t3.xlarge"
+
+  custom_namespace       = var.k8s_namespace
+  existing_namespace     = var.create_k8s_namespace
+  license_file_path      = var.license_file_path
+  admin_console_password = var.admin_console_password
 }
 
 
@@ -15,14 +34,14 @@ module "efs" {
   region          = var.region
   vpc_id          = var.vpc_id
   subnets         = var.private_subnets
-  security_groups = [var.custom_internal_security_group_id == "" ? aws_security_group.internal.0.id : var.custom_internal_security_group_id]
+  security_groups = [var.custom_internal_security_group_id == "" ? module.kots.aws_security_group.internal.0.id : var.custom_internal_security_group_id]
   encrypted       = true
   kms_key_id      = module.kms_key.key_arn
 
   tags = map(
-  "Name", "efs-${var.namespace}-${var.environment}",
-  "Stack", "${var.namespace}-${var.environment}",
-  "Customer", var.namespace
+    "Name", "efs-${var.namespace}-${var.environment}",
+    "Stack", "${var.namespace}-${var.environment}",
+    "Customer", var.namespace
   )
 }
 
@@ -56,10 +75,10 @@ resource "aws_db_instance" "backend_postgres" {
   }
 
   tags = map(
-  "Name", "backend_postgres",
-  "workload-type", "other",
-  "Stack", "${var.namespace}-${var.environment}",
-  "Customer", var.namespace
+    "Name", "backend_postgres",
+    "workload-type", "other",
+    "Stack", "${var.namespace}-${var.environment}",
+    "Customer", var.namespace
   )
 }
 

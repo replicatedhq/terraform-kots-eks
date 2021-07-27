@@ -27,7 +27,7 @@ terraform apply
 ./kots_install.sh
 ```
 
-This will prompt for a password, so *if you want* you can pre-install kots CLI with
+This will prompt for a sudo password to copy the `kubectl-kots` binary to /usr/local/bin, so *if you want* you can pre-install kots CLI, either manually or with
 
 ```shell
 curl https://kots.io/install | bash

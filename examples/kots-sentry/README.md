@@ -32,3 +32,8 @@ This will prompt for a password, so *if you want* you can pre-install kots CLI w
 ```shell
 curl https://kots.io/install | bash
 ```
+
+### Troubleshooting
+
+This has only been tested end to end with terraform 0.13.7 -- you may be able to work around 
+M1 mac issues by using that version.

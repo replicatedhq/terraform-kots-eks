@@ -1,4 +1,4 @@
-# todo replace "Customer" with "User" or "Org" ??
+# todo replace "Customer"/"Namespace" parameter with "User" or "Org" ??
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "~> v2.0"
@@ -20,7 +20,7 @@ module "vpc" {
 
   # use custom EIP with lifecycle prevent destroy
   reuse_nat_ips       = true
-  external_nat_ip_ids = ["${aws_eip.nat_primary.id}"]
+  external_nat_ip_ids = [aws_eip.nat_primary.id]
 
   enable_vpn_gateway = false
 

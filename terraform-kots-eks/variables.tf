@@ -51,11 +51,11 @@ variable "vpc_id" {
 
 variable "private_subnets" {
   type        = list(string)
-  description = "The list of private subnets for the VPC that the infrastructure will be deployed in."
+  description = "The list of AWS subnet IDs for private subnets for the VPC that the infrastructure will be deployed in."
 }
 variable "public_subnets" {
   type        = list(string)
-  description = "The list of public subnets for the VPC that the infrastructure will be deployed in."
+  description = "The list of AWS subnet IDs for public subnets for the VPC that the infrastructure will be deployed in."
   default     = []
 }
 
@@ -117,6 +117,18 @@ variable "enable_bastion" {
   type        = bool
   default     = false
   description = "Enable bastion host that has ssh access to worker nodes."
+}
+
+variable "bastion_pubkey" {
+  type        = string
+  default     = ""
+  description = "Public key contents to use with bastion server. Leave blank to use an existing key pair named '$${var.namespace}-$${var.environment}'"
+}
+
+variable "bastion_subnet_id" {
+  type        = string
+  default     = ""
+  description = "Subnet ID for bastion (not a CIDR)"
 }
 
 variable "eks_ami" {

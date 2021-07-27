@@ -1,0 +1,35 @@
+name: Scan with KICS docker-runner
+
+on:
+  pull_request:
+    branches: [master,main]
+
+jobs:
+  kics-job:
+    runs-on: ubuntu-latest
+    name: kics-action
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+      - name: Mkdir results-dir
+        # make sure results dir is created
+        run: mkdir -p results-dir
+      - name: Run KICS Scan with SARIF result
+        uses: checkmarx/kics-action@v1.2
+        with:
+          # comma separated list of paths
+          path: 'terraform-kots-eks,examples/kots-sentry'
+          # when provided with a directory on output_path
+          # it will generate the specified reports file named 'results.{extension}'
+          # in this example it will generate:
+          # - results-dir/results.json
+          # - results-dir/results.sarif
+          output_path: results-dir
+          platform_type: terraform
+          # Will exit with status code 0 even if results are found
+          ignore_on_exit: results
+          output_formats: 'json,sarif'
+      - name: Show results
+        run: |
+          cat results-dir/results.sarif
+          cat results-dir/results.json

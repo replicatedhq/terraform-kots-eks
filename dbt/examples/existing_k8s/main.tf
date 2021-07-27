@@ -6,9 +6,18 @@ provider "aws" {
   }
 }
 
-module "single_tenant_staging" {
+# retrieve the subnet IDs corresponding to the private IP CIDR blocks
+data "aws_subnet_ids" "private" {
+  vpc_id = var.vpc_id
+  filter {
+    name   = "cidr-block"
+    values = values(var.subnets.private)
+  }
+}
 
-  source = "../../"
+module "single_tenant_existing" {
+
+  source = "..\/..\/.."
 
   namespace               = var.namespace
   environment             = var.environment
@@ -17,9 +26,9 @@ module "single_tenant_staging" {
   region                  = var.region
   postgres_instance_class = var.postgres_instance_class
   postgres_storage        = var.postgres_storage
-  cidr_block              = module.vpc.vpc_cidr_block
-  vpc_id                  = module.vpc.vpc_id
-  private_subnets         = module.vpc.private_subnets
+  cidr_block              = var.cidr_block
+  vpc_id                  = var.vpc_id
+  private_subnets         = data.aws_subnet_ids.private.ids # The private subnet IDs from the VPC
   key_admins              = var.key_admins
   hosted_zone_name        = "singletenant.getdbt.com"
   creation_role_arn       = var.creation_role_arn
@@ -33,30 +42,18 @@ module "single_tenant_staging" {
   superuser_password          = "<ENTER_SUPERUSER_PASSWORD>"
   admin_console_password      = "<ENTER_ADMIN_CONSOLE_PASSWORD>"
 
-  # allows user to set custom k8s user data
-  additional_k8s_user_data = <<-EOT
-  # Custom user data
-  EOT
-
-  # disables creation of efs provisioner if a custom provisioner is desired
-  create_efs_provisioner = false
-  ide_storage_class      = "custom-storage-class"
-
-  # disables creation of load balancer if a custom dns configuration is desired
-  create_loadbalancer = false
-
   # enables creation of AWS SES resources for notifications
   enable_ses = true
   from_email  = "support@example.com"
   from_header = "dbt Cloud Support"
 
-  # pass a list of CIDR blocks to restrict traffic through load balancer
-  load_balancer_source_ranges = ["100.68.0.0/18", "100.67.0.0/18"]
+  # set to false to bypass EKS cluster creation and install into existing cluster
+  create_eks_cluster = false
+  custom_namespace   = "<ENTER_CUSTOM_NAMESPACE>"
+  cluster_name       = "<ENTER_EXISTING_CLUSTER_NAME>"
 
-  # by default the RDS backup retention is set to 7 days, setting to 0 will disable automated backups
-  rds_backup_retention_period = 0
+  # set to true to install in existing namespace
+  existing_namespace = true
 
-  # create an alias Route53 record
-  create_alias_record = true
-  alias_domain_name   = "dbt.example.com"
+  custom_internal_security_group_id = "<ENTER_CUSTOM_CLUSTER_SECURITY_GROUP_ID>"
 }

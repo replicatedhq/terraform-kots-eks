@@ -3,9 +3,7 @@ provider "aws" {
   region  = var.region
 }
 
-terraform {
-  version = "0.13.7"
-}
+
 locals {
   full_name = "kots-sentry-${var.namespace}-${var.environment}"
 }

@@ -21,3 +21,14 @@ terraform init
 terraform apply
 ```
 
+#### kots install
+
+```shell
+./kots_install.sh
+```
+
+This will prompt for a password, so *if you want* you can pre-install kots CLI with
+
+```shell
+curl https://kots.io/install | bash
+```

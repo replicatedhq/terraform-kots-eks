@@ -12,6 +12,7 @@ tfplan.out
 
 # generated dbt config files
 dbt_config.sh
+kots_config.sh
 config.yaml
 
 .DS_Store

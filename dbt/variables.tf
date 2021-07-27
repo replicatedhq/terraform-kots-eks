@@ -1,4 +1,11 @@
 # required variables
+variable "postgres_instance_class" {
+  default = "db.t3.micro"
+}
+
+variable "postgres_storage" {
+  default = "100"
+}
 variable "namespace" {
   type        = string
   description = "Used as an identifier for various infrastructure components within the module. Usually single word that or the name of the organization. For exmaple: 'fishtownanalytics'"
@@ -9,23 +16,15 @@ variable "environment" {
 }
 variable "k8s_node_count" {
   type        = number
-  description = "The number of Kubernetes nodes that will be created for the EKS worker group. Generally 2 nodes are recommended but it is recommended that you reach out to Fishtown Analytics to complete the capacity planning exercise prior to setting this."
+  description = "The number of Kubernetes nodes that will be created for the EKS worker group."
 }
 variable "k8s_node_size" {
   type        = string
-  description = "The EC2 instance type of the Kubernetes nodes that will be created for the EKS worker group. It is recommended that you reach out to Fishtown Analytics to complete the capacity planning exercise prior to setting this."
+  description = "The EC2 instance type of the Kubernetes nodes that will be created for the EKS worker group."
 }
 variable "region" {
   type        = string
   description = "The AWS region where the infrastructure will be deployed. For example 'us-east-1'."
-}
-variable "postgres_instance_class" {
-  type        = string
-  description = "The RDS Postgres instance type. It is recommended that you reach out to Fishtown Analytics to complete the capacity planning exercise prior to setting this."
-}
-variable "postgres_storage" {
-  type        = string
-  description = "The amount of storage allocated to the RDS database in GB. Generally 100 GB is standard but it is recommended that you reach out to Fishtown Analytics to complete the capacity planning exercise prior to setting this."
 }
 variable "cidr_block" {
   type        = string

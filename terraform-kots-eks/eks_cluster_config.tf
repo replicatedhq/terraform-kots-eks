@@ -107,6 +107,8 @@ resource "aws_iam_policy" "nodes_kubernetes" {
   policy = data.aws_iam_policy_document.nodes_kubernetes.0.json
 }
 
+# TODO remove KMS allow statements, and allow consumer to
+# include additional arbitrary IAM statements via module vars
 data "aws_iam_policy_document" "nodes_kubernetes" {
   count = var.create_eks_cluster ? 1 : 0
   statement {

@@ -1,14 +1,11 @@
 provider "aws" {
-  profile = "dbt-cloud-single-tenant"
+  profile = "default"
   region  = var.region
-  assume_role {
-    role_arn = var.creation_role_arn
-  }
 }
 
 module "single_tenant_staging" {
 
-  source = "../../"
+  source = "..\/.."
 
   namespace               = var.namespace
   environment             = var.environment

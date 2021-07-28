@@ -35,8 +35,8 @@ variable "k8s_node_size" {
 }
 
 variable "region" {
-  type        = string
-  description = "The AWS region where the infrastructure will be deployed. For example 'us-east-1'."
+  type = string
+  description = "The AWS region"
 }
 
 variable "cidr_block" {

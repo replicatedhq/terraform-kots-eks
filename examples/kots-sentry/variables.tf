@@ -1,31 +1,41 @@
 variable "k8s_namespace" {
-  type = string
+  type    = string
   default = "kots-sentry"
 }
 
 variable "create_k8s_namespace" {
-  type = bool
+  type    = bool
   default = true
 }
+
 variable "license_file_path" {
-  type = string
+  type    = string
   default = "./kots-sentry.yaml"
 }
 
 variable "admin_console_password" {
-  type = string
+  type    = string
   default = "sooperSecret"
+}
+
+variable "sentry_admin_username" {
+  default = "admin@example.com"
+  description = "The admin username for the Sentry dashboard."
+}
+variable "sentry_admin_password" {
+  default = "sentry1@!"
+  description = "The admin password for the Sentry dashboard."
 }
 
 # NOT A K8S NAMESPACE -- more of an org identifier
 variable "namespace" {
   type = string
-  default = "bankgadol"
+  default = "somebigbank"
 }
 
 variable "environment" {
   type = string
-  default = "prods"
+  default = "prod"
 }
 
 variable "region" {

@@ -34,12 +34,30 @@ resource "local_file" "script" {
   count    = var.create_admin_console_script ? 1 : 0
   filename = "./kots_install.sh"
   content  = <<EOT
-aws eks update-kubeconfig --profile ${var.namespace}-dbt-cloud-single-tenant --name ${var.create_eks_cluster ? module.eks.0.cluster_id : var.cluster_name} --role-arn ${var.creation_role_arn != "" ? "--role-arn=": ""}${var.creation_role_arn}
+#!/bin/sh
+set -euo pipefail
+
+aws --region ${var.region} eks update-kubeconfig --name ${var.create_eks_cluster ? module.eks.0.cluster_id : var.cluster_name} ${var.creation_role_arn != "" ? "--role-arn ": ""}${var.creation_role_arn}
+
 kubectl config set-context --current --namespace=${var.existing_namespace ? var.custom_namespace : kubernetes_namespace.kots_app.0.metadata.0.name}
+
 [[ -x $(which kubectl-kots) ]] || curl https://kots.io/install | bash
-kubectl kots install ${local.app_and_channel} --namespace ${var.existing_namespace ? var.custom_namespace : kubernetes_namespace.kots_app.0.metadata.0.name} --license-file ${var.license_file_path} --shared-password ${var.admin_console_password} --config-values ${local_file.config.0.filename}
+
+set -v
+
+kubectl kots install ${local.app_and_channel} \
+  --namespace ${var.existing_namespace ? var.custom_namespace : kubernetes_namespace.kots_app.0.metadata.0.name} \
+  --license-file ${var.license_file_path} \
+  --shared-password ${var.admin_console_password} \
+  --config-values ${local_file.config.0.filename} \
+  --port-forward=false
+
 EOT
+  provisioner "local-exec" {
+    command = "./kots_install.sh"
+  }
 }
+
 
 
 resource "local_file" "config" {

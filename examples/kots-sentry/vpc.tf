@@ -26,20 +26,20 @@ module "vpc" {
 
   enable_s3_endpoint = true
 
-  enable_flow_log                      = true
-  create_flow_log_cloudwatch_log_group = true
-  create_flow_log_cloudwatch_iam_role  = true
+//  enable_flow_log                      = true
+//  create_flow_log_cloudwatch_log_group = true
+//  create_flow_log_cloudwatch_iam_role  = true
 
   public_subnet_tags = {
     "kubernetes.io/cluster/${local.full_name}" = "shared"
-    "kubernetes.io/role/elb"                                    = "1"
-    "Customer"                                                  = var.namespace
+    "kubernetes.io/role/elb"                   = "1"
+    "Customer"                                 = var.namespace
   }
 
   private_subnet_tags = {
     "kubernetes.io/cluster/${local.full_name}" = "shared"
-    "kubernetes.io/role/internal-elb"                           = "1"
-    "Customer"                                                  = var.namespace
+    "kubernetes.io/role/internal-elb"          = "1"
+    "Customer"                                 = var.namespace
   }
 
   tags = map(

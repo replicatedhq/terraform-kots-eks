@@ -15,14 +15,16 @@ variable "license_file_path" {
 
 variable "admin_console_password" {
   type    = string
-  default = "sooperSecret"
+  description = "The password to be used for the KOTS admin console web UI"
 }
 
 variable "sentry_admin_username" {
+  type    = string
   default = "admin@example.com"
   description = "The admin username for the Sentry dashboard."
 }
 variable "sentry_admin_password" {
+  type    = string
   default = "sentry1@!"
   description = "The admin password for the Sentry dashboard."
 }

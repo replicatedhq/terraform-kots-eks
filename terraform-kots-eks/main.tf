@@ -43,14 +43,14 @@ module "eks" {
 
   create_eks = true
 
-  cluster_version = "1.17"
+  cluster_version = "1.20"
   cluster_name    = "${var.namespace}-${var.environment}"
   vpc_id          = var.vpc_id
   subnets         = var.private_subnets
 
   worker_groups_launch_template = [
     {
-      name = "primary-worker-group-1-17-${var.k8s_node_size}"
+      name = "primary-worker-group-1-20-${var.k8s_node_size}"
 
       # override ami_id for this launch template
       ami_id = local.eks_worker_ami
@@ -64,8 +64,6 @@ module "eks" {
 
       key_name                      = "${var.namespace}-${var.environment}"
       additional_security_group_ids = concat([var.custom_internal_security_group_id == "" ? aws_security_group.internal.0.id : var.custom_internal_security_group_id], var.additional_k8s_security_group_ids)
-      kubelet_extra_args            = local.kubelet_extra_args_1_17
-      pre_userdata                  = "${local.bionic_node_userdata}${var.additional_k8s_user_data}"
 
       enabled_metrics = [
         "GroupStandbyInstances",

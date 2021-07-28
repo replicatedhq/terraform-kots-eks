@@ -20,17 +20,17 @@ variable "admin_console_password" {
 # NOT A K8S NAMESPACE -- more of an org identifier
 variable "namespace" {
   type = string
-  default = "somebigbank"
+  default = "bankgadol"
 }
 
 variable "environment" {
   type = string
-  default = "prod"
+  default = "prods"
 }
 
 variable "region" {
   type = string
-  default = "ca-central-1"
+  default = "eu-central-1"
 }
 
 variable "cidr_block" {
@@ -41,14 +41,14 @@ variable "cidr_block" {
 variable "subnets" {
   default = {
     private = {
-      ca-central-1a = "10.191.0.0/20"
-      ca-central-1b = "10.191.16.0/20"
-      ca-central-1d = "10.191.32.0/20"
+      eu-central-1a = "10.191.0.0/20"
+      eu-central-1b = "10.191.16.0/20"
+      eu-central-1c = "10.191.32.0/20"
     }
     public = {
-      ca-central-1a = "10.191.64.0/20"
-      ca-central-1b = "10.191.80.0/20"
-      ca-central-1d = "10.191.96.0/20"
+      eu-central-1a = "10.191.64.0/20"
+      eu-central-1b = "10.191.80.0/20"
+      eu-central-1c = "10.191.96.0/20"
     }
   }
 }

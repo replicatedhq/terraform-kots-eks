@@ -20,8 +20,8 @@ module "terraform-kots-eks" {
   public_subnets    = module.vpc.public_subnets
 
   app_slug    = "kots-sentry"
-  namespace   = "somebigbank"
-  environment = "prod"
+  namespace   = var.namespace
+  environment = var.environment
 
   k8s_node_count = 2
   k8s_node_size  = "t3.xlarge"

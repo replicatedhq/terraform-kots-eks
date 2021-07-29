@@ -1,4 +1,3 @@
-# TODO extend all var.namespace-var.enviroment with var.app_slug prefix
 resource "aws_secretsmanager_secret" "rsa_key_pair" {
   name = "opendbt-${var.namespace}-${var.environment}-ssh-rsa-key-pair-${formatdate("MMDDYYYYhhmmss", timestamp())}"
 

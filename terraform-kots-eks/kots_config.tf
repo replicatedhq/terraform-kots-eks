@@ -71,3 +71,11 @@ resource "local_file" "config" {
   filename = "./config.yaml"
   content = var.admin_console_config_yaml
 }
+
+output "config_file" {
+  value = local_file.config
+}
+
+output "install_script" {
+  value = local_file.script
+}

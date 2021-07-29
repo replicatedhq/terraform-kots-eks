@@ -1,31 +1,3 @@
-locals {
-  example_load_balancers = {
-    kots = {
-      port = 3000
-      selector = {
-        app = "kotsadm"
-      }
-    }
-  }
-}
-
-variable "load_balancers" {
-  default = {}
-}
-
-variable "hosted_zone_name" {
-  type        = string
-  description = "hosted zone to use for load balancer DNS record"
-  default     = ""
-}
-
-variable "load_balancer_source_ranges" {
-  type        = list(string)
-  description = "One or more CIDR blocks to allow load balancer traffic from"
-  default = [
-    "0.0.0.0/0"
-  ]
-}
 
 data "aws_route53_zone" "selected" {
   count = length(var.load_balancers) > 0 ? 1 : 0
@@ -75,7 +47,7 @@ resource "aws_route53_record" "kots_dns" {
   type     = "CNAME"
   ttl      = "60"
 
-  records = [lookup(kubernetes_service.api_gateway_loadbalancer, each.key, ).load_balancer_ingress.0.hostname]
+  records = [lookup(kubernetes_service.api_gateway_loadbalancer, each.key).load_balancer_ingress.0.hostname]
 }
 
 module "acm" {
@@ -99,4 +71,31 @@ output "ingress_lbs" {
     for record in values(aws_route53_record.kots_dns) :
     "https://${record.name}"
   ]
+}
+
+
+
+// Alias logic is untested
+
+locals {
+  alias_lbs = {
+    for name, lb in var.load_balancers :
+    name => lb
+    if lb.create_alias_record
+  }
+}
+
+data "aws_elb_hosted_zone_id" "main" {}
+
+resource "aws_route53_record" "alias" {
+  for_each = local.alias_lbs
+  zone_id  = data.aws_route53_zone.selected.zone_id
+  name     = each.value.alias_domain_name
+  type     = "A"
+
+  alias {
+    evaluate_target_health = true
+    name                   = lookup(kubernetes_service.api_gateway_loadbalancer, each.key).load_balancer_ingress.0.hostname
+    zone_id                = data.aws_elb_hosted_zone_id.main.id
+  }
 }

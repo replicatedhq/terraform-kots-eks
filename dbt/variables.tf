@@ -51,6 +51,11 @@ variable "public_subnets" {
   description = "The list of public subnets for the VPC that the infrastructure will be deployed in."
   default     = []
 }
+
+variable "license_file_path" {
+  type = string
+  description = "Path to a license file containing a DBT license"
+}
 variable "hosted_zone_name" {
   type        = string
   description = "The root domain name of the hosted zone that will resolve to the dbt Cloud deployment. This should be a valid domain name that you own."
@@ -170,6 +175,7 @@ variable "additional_k8s_user_data" {
   default     = ""
   description = "Any additonal user data for K8s worker nodes. For example a curl script to install auditing software."
 }
+
 variable "create_efs_provisioner" {
   type        = bool
   default     = true
@@ -185,6 +191,7 @@ variable "create_loadbalancer" {
   default     = true
   description = "Set to `false` if creating a customer load balancer or other networking device to route traffic within the cluster."
 }
+
 variable "rds_backup_retention_period" {
   type        = number
   default     = 7

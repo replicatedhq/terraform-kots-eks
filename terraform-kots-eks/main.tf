@@ -29,6 +29,10 @@ resource "aws_security_group" "internal" {
   )
 }
 
+output "aws_security_group_internal" {
+  value = aws_security_group.internal
+}
+
 provider "kubernetes" {
   host                   = data.aws_eks_cluster.cluster.endpoint
   cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority.0.data)
@@ -102,6 +106,14 @@ module "eks" {
   "Stack", "${var.namespace}-${var.environment}",
   "Customer", var.namespace
   )
+}
+
+output "eks_cluster" {
+  value = data.aws_eks_cluster.cluster
+}
+
+output "eks_cluster_auth" {
+  value = data.aws_eks_cluster_auth.cluster
 }
 
 locals {

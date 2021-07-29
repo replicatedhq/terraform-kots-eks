@@ -1,8 +1,13 @@
+locals {
+  k8s_namespace = var.existing_namespace ? var.custom_namespace : "dbt-cloud-${var.namespace}-${var.environment}"
+}
+
+
 resource "kubernetes_service_account" "efs_provisioner" {
   count = var.create_efs_provisioner ? 1 : 0
   metadata {
     name      = "efs-provisioner"
-    namespace = var.existing_namespace ? var.custom_namespace : kubernetes_namespace.dbt_cloud.0.metadata.0.name
+    namespace = local.k8s_namespace
   }
 
   automount_service_account_token = true
@@ -58,7 +63,7 @@ resource "kubernetes_cluster_role_binding" "run_efs_provisioner" {
   subject {
     kind      = "ServiceAccount"
     name      = "efs-provisioner"
-    namespace = var.existing_namespace ? var.custom_namespace : kubernetes_namespace.dbt_cloud.0.metadata.0.name
+    namespace = local.k8s_namespace
   }
 }
 
@@ -66,7 +71,7 @@ resource "kubernetes_role" "leader_locking_efs_provisioner" {
   count = var.create_efs_provisioner ? 1 : 0
   metadata {
     name      = "leader-locking-efs-provisioner"
-    namespace = var.existing_namespace ? var.custom_namespace : kubernetes_namespace.dbt_cloud.0.metadata.0.name
+    namespace = local.k8s_namespace
   }
   rule {
     api_groups = [""]
@@ -79,7 +84,7 @@ resource "kubernetes_role_binding" "leader_locking_efs_provisioner" {
   count = var.create_efs_provisioner ? 1 : 0
   metadata {
     name      = "leader-locking-efs-provisioner"
-    namespace = var.existing_namespace ? var.custom_namespace : kubernetes_namespace.dbt_cloud.0.metadata.0.name
+    namespace = local.k8s_namespace
   }
   role_ref {
     api_group = "rbac.authorization.k8s.io"
@@ -89,7 +94,7 @@ resource "kubernetes_role_binding" "leader_locking_efs_provisioner" {
   subject {
     kind      = "ServiceAccount"
     name      = "efs-provisioner"
-    namespace = var.existing_namespace ? var.custom_namespace : kubernetes_namespace.dbt_cloud.0.metadata.0.name
+    namespace = local.k8s_namespace
   }
   subject {
     kind      = "Group"
@@ -102,7 +107,7 @@ resource "kubernetes_config_map" "efs_provisioner" {
   count = var.create_efs_provisioner ? 1 : 0
   metadata {
     name      = "efs-provisioner"
-    namespace = var.existing_namespace ? var.custom_namespace : kubernetes_namespace.dbt_cloud.0.metadata.0.name
+    namespace = local.k8s_namespace
   }
 
   data = {
@@ -117,7 +122,7 @@ resource "kubernetes_deployment" "efs_provisioner" {
   count = var.create_efs_provisioner ? 1 : 0
   metadata {
     name      = "efs-provisioner"
-    namespace = var.existing_namespace ? var.custom_namespace : kubernetes_namespace.dbt_cloud.0.metadata.0.name
+    namespace = local.k8s_namespace
     labels = {
       name = "efs-provisioner"
     }
@@ -222,7 +227,7 @@ resource "kubernetes_persistent_volume_claim" "efs" {
     annotations = {
       "volume.beta.kubernetes.io/storage-class" = kubernetes_storage_class.aws_efs.0.metadata.0.name
     }
-    namespace = var.existing_namespace ? var.custom_namespace : kubernetes_namespace.dbt_cloud.0.metadata.0.name
+    namespace = local.k8s_namespace
   }
   spec {
     access_modes = ["ReadWriteMany"]

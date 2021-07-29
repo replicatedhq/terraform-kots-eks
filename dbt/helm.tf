@@ -1,8 +1,8 @@
 provider "helm" {
   kubernetes {
-    host                   = data.aws_eks_cluster.cluster.endpoint
-    cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority.0.data)
-    token                  = data.aws_eks_cluster_auth.cluster.token
+    host                   = module.kots.eks_cluster.endpoint
+    cluster_ca_certificate = base64decode(module.kots.eks_cluster.certificate_authority.0.data)
+    token                  = module.kots.eks_cluster_auth.token
   }
 }
 
@@ -11,11 +11,11 @@ resource "helm_release" "cluster_rbac" {
   name  = "cluster-rbac"
   chart = "${path.module}/local_charts/cluster-rbac"
 
-  namespace = var.existing_namespace ? var.custom_namespace : kubernetes_namespace.dbt_cloud.0.metadata.0.name
+  namespace = local.k8s_namespace
 
   set {
     name  = "namespace"
-    value = var.existing_namespace ? var.custom_namespace : kubernetes_namespace.dbt_cloud.0.metadata.0.name
+    value = local.k8s_namespace
   }
 }
 
@@ -27,7 +27,7 @@ resource "helm_release" "kube_cleanup_operator" {
   chart      = "kube-cleanup-operator"
   version    = "1.0.1"
 
-  namespace = var.existing_namespace ? var.custom_namespace : kubernetes_namespace.dbt_cloud.0.metadata.0.name
+  namespace = local.k8s_namespace
 
   values = [
     <<-EOT
@@ -40,7 +40,7 @@ resource "helm_release" "kube_cleanup_operator" {
         memory: 250Mi
 
     args:
-      - --namespace=${var.existing_namespace ? var.custom_namespace : kubernetes_namespace.dbt_cloud.0.metadata.0.name}
+      - --namespace=${local.k8s_namespace}
       - --dry-run=false
       - --delete-successful-after=1h
       - --delete-failed-after=1h
@@ -62,7 +62,7 @@ resource "helm_release" "reloader" {
   chart      = "reloader"
   version    = "0.0.75"
 
-  namespace = var.existing_namespace ? var.custom_namespace : kubernetes_namespace.dbt_cloud.0.metadata.0.name
+  namespace = local.k8s_namespace
 
   set {
     name  = "reloader.logFormat"
@@ -77,7 +77,7 @@ resource "helm_release" "datadog" {
   repository = "https://helm.datadoghq.com"
   chart      = "datadog"
 
-  namespace = var.existing_namespace ? var.custom_namespace : kubernetes_namespace.dbt_cloud.0.metadata.0.name
+  namespace = local.k8s_namespace
 
   set_sensitive {
     name  = "datadog.apiKey"

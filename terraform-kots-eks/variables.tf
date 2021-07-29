@@ -65,7 +65,6 @@ variable "create_admin_console_script" {
   description = "If set to true will generate a script to automatically spin up the KOTS admin console with desired values and outputs from the module. The relevant variables below are suffixed with 'Admin Console Script' in their descriptions. These variables can also be left blank and manually entered into the script after applying if desired."
 }
 
-# todo dex grok this
 variable "creation_role_arn" {
   type        = string
   default     = "<ENTER_CREATION_ROLE_ARN>"
@@ -77,6 +76,7 @@ variable "admin_console_password" {
   description = "Admin Console Script - The desired password for the KOTS admin console. This is added to the script and used when spinning the admin console."
 }
 
+// Todo consume this
 variable "additional_k8s_user_data" {
   type        = string
   default     = ""
@@ -155,6 +155,50 @@ variable "rbac_sso_admin_role_arn" {
 }
 
 
+# load balancer stuff
+
+locals {
+  example_load_balancers = {
+    kots = {
+      port = 3000
+      selector = {
+        app = "kotsadm"
+      }
+    }
+  }
+}
+
+variable "load_balancers" {
+  default = {}
+}
+
+variable "hosted_zone_name" {
+  type        = string
+  description = "hosted zone to use for load balancer DNS record"
+  default     = ""
+}
+
+variable "load_balancer_source_ranges" {
+  type        = list(string)
+  description = "One or more CIDR blocks to allow load balancer traffic from"
+  default = [
+    "0.0.0.0/0"
+  ]
+}
+
+variable "create_alias_record" {
+  default = ""
+}
+variable "alias_domain_name" {
+  default = ""
+}
+
+// Todo consume this
+variable "hostname_affix" {
+  type        = string
+  default     = ""
+  description = "The affix of the URL, affixed to the `hosted_zone_name` variable, that the dbt Cloud deployment will resolve to. If left blank the affix will default to the value of the `environment` variable."
+}
 
 # advanced
 

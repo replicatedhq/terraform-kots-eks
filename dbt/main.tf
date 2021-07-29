@@ -16,8 +16,8 @@ module "kots" {
   k8s_node_count = 2
   k8s_node_size  = "t3.xlarge"
 
-  custom_namespace       = var.k8s_namespace
-  existing_namespace     = var.create_k8s_namespace
+  k8s_namespace       = var.k8s_namespace
+  namespace_exists     = var.create_k8s_namespace
   license_file_path      = var.license_file_path
   admin_console_password = var.admin_console_password
 }

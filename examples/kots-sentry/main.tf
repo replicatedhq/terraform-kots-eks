@@ -14,7 +14,7 @@ module "terraform-kots-eks" {
   region            = var.region
   vpc_id            = module.vpc.vpc_id
   cidr_block        = var.cidr_block
-  enable_bastion    = true
+  enable_bastion    = false
   bastion_subnet_id = module.vpc.public_subnets[0]
   private_subnets   = module.vpc.private_subnets
   public_subnets    = module.vpc.public_subnets
@@ -49,10 +49,9 @@ EOT
 
 output "next_steps" {
   value = <<EOT
-Run
 
-    kubectl kots admin-console --namespace ${var.k8s_namespace}"
 
-To access the application
+    kubectl kots admin-console --namespace ${var.k8s_namespace}
+
 EOT
 }

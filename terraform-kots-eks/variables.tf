@@ -119,12 +119,6 @@ variable "enable_bastion" {
   description = "Enable bastion host that has ssh access to worker nodes."
 }
 
-variable "bastion_pubkey" {
-  type        = string
-  default     = ""
-  description = "Public key contents to use with bastion server. Leave blank to use an existing key pair named '$${var.namespace}-$${var.environment}'"
-}
-
 variable "bastion_subnet_id" {
   type        = string
   default     = ""

@@ -50,12 +50,16 @@ kubectl kots install ${local.app_and_channel} \
   --license-file ${var.license_file_path} \
   --shared-password ${var.admin_console_password} \
   --config-values ${local_file.config.0.filename} \
-  --port-forward=false
+  --port-forward=false \
+  --skip-preflights \
+  --wait-duration=10m
+
 
 EOT
   provisioner "local-exec" {
     command = "./kots_install.sh"
   }
+  depends_on = [module.eks]
 }
 
 

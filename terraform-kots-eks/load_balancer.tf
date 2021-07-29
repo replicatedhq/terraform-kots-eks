@@ -89,7 +89,7 @@ data "aws_elb_hosted_zone_id" "main" {}
 
 resource "aws_route53_record" "alias" {
   for_each = local.alias_lbs
-  zone_id  = data.aws_route53_zone.selected.zone_id
+  zone_id  = data.aws_route53_zone.selected.0.zone_id
   name     = each.value.alias_domain_name
   type     = "A"
 

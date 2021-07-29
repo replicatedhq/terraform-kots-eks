@@ -5,7 +5,7 @@ provider "aws" {
 
 module "single_tenant_staging" {
 
-  source = "..\/.."
+  source = "../.."
 
   namespace               = var.namespace
   environment             = var.environment
@@ -18,8 +18,9 @@ module "single_tenant_staging" {
   vpc_id                  = module.vpc.vpc_id
   private_subnets         = module.vpc.private_subnets
   key_admins              = var.key_admins
-  hosted_zone_name        = "singletenant.getdbt.com"
+  hosted_zone_name        = "testcluster.net"
   creation_role_arn       = var.creation_role_arn
+  license_file_path = ""
   # fill out with secure password before applying
   rds_password = ""
 

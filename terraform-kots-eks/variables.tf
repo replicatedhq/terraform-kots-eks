@@ -87,20 +87,23 @@ variable "create_eks_cluster" {
   default     = true
   description = "Set to `false` if installing the app into an existing EKS cluster."
 }
-variable "custom_namespace" {
+
+variable "namespace_exists" {
+  type = bool
+  default = false
+  description = "Set to true to skip creating the namespace"
+}
+
+variable "k8s_namespace" {
   type        = string
   default     = ""
   description = "If set this variable will create a custom K8s namespace for the App. If not set the created namespace defaults to `<app_slug>-<namespace>-<environment>`."
 }
+
 variable "cluster_name" {
   type        = string
   default     = ""
   description = "Name of the cluster the app will be installed into. Must be set if `create_eks_cluster` is set to `false`."
-}
-variable "existing_namespace" {
-  type        = bool
-  default     = false
-  description = "If set to `true` this will install the app into an existing namespace denoted by the `custom_namespace` field. It is preferred to install KOTS applications into a dedicated namespace with no other workloads running."
 }
 variable "custom_internal_security_group_id" {
   type        = string

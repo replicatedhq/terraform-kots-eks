@@ -60,3 +60,22 @@ variable "subnets" {
   }
 }
 
+# for load balancer usage
+variable "create_load_lbs_dns_and_certs" {
+  default = true
+  description = "Set to true to create load balancers, DNS records, and ACM certs"
+}
+
+variable "hosted_zone_name" {
+  type        = string
+  description = "hosted zone to use for load balancer DNS record"
+  default     = ""
+}
+
+variable "load_balancer_source_ranges" {
+  type        = list(string)
+  description = "One or more CIDR blocks to allow load balancer traffic from"
+  default = [
+    "0.0.0.0/0"
+  ]
+}

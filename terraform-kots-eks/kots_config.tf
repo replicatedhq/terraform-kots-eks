@@ -61,7 +61,7 @@ EOT
   provisioner "local-exec" {
     command = "./kots_install.sh"
   }
-  depends_on = [module.eks]
+  depends_on = [module.eks, local_file.config]
 }
 
 

@@ -5,6 +5,7 @@ provider "aws" {
 
 locals {
   full_name = "kots-sentry-${var.namespace}-${var.environment}"
+  cluster_name = "${var.namespace}-${var.environment}"
 }
 
 module "terraform-kots-eks" {
@@ -53,4 +54,11 @@ output "next_steps" {
     kubectl kots admin-console --namespace ${var.k8s_namespace}
 
 EOT
+}
+
+output "ingress_lbs" {
+  value = [
+   for record in values(aws_route53_record.kots_dns):
+   record.name
+  ]
 }

@@ -31,13 +31,13 @@ module "vpc" {
   //  create_flow_log_cloudwatch_iam_role  = true
 
   public_subnet_tags = {
-    "kubernetes.io/cluster/${local.full_name}" = "shared"
+    "kubernetes.io/cluster/${local.cluster_name}" = "shared"
     "kubernetes.io/role/elb"                   = "1"
     "Customer"                                 = var.namespace
   }
 
   private_subnet_tags = {
-    "kubernetes.io/cluster/${local.full_name}" = "shared"
+    "kubernetes.io/cluster/${local.cluster_name}" = "shared"
     "kubernetes.io/role/internal-elb"          = "1"
     "Customer"                                 = var.namespace
   }

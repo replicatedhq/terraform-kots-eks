@@ -51,7 +51,7 @@ output "next_steps" {
   value = <<EOT
 Run
 
-    kubectl kots admin-console --namespace ${var.k8s_namespace}"
+    kubectl kots admin-console --namespace ${var.k8s_namespace}
 
 To access the application
 EOT

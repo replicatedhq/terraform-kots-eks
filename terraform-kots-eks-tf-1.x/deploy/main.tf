@@ -52,6 +52,7 @@ resource "kubernetes_namespace" "kots_app" {
 resource "kubernetes_ingress" "kotsadm_ingress" {
   metadata {
     name = "kotsadm-ingress"
+    namespace = local.k8s_namespace
     annotations = {
       "kubernetes.io/ingress.class"                = "alb"
       "external-dns.alpha.kubernets.io/hostname"   = var.kotsadm_fqdn
@@ -82,6 +83,7 @@ resource "kubernetes_ingress" "kotsadm_ingress" {
 resource "kubernetes_ingress" "sentry_ingress" {
   metadata {
     name = "sentry-ingress"
+    namespace = local.k8s_namespace
     annotations = {
       "kubernetes.io/ingress.class"                = "alb"
       "external-dns.alpha.kubernets.io/hostname"   = var.sentry_fqdn

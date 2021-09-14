@@ -38,7 +38,7 @@ After running the Terraform plan you will have an AWS EKS cluster inside of a de
     hosted_zone_id              = "CHANGE_ME"
     hosted_zone_name            = "CHANGE_ME"
     instance_type               = "t2.xlarge"
-    k8s_namespace               = "default"
+    k8s_namespace               = "sentry-pro"
     kotsadm_fqdn                = "CHANGE_ME"
     license_file_path           = "./kots-license.yaml"
     load_balancer_source_ranges = "0.0.0.0/0"
@@ -66,7 +66,7 @@ After running the Terraform plan you will have an AWS EKS cluster inside of a de
 5. Run `terraform apply "eks-plan"` to start creating the infrastructure and install the KOTS sample application.
     - Get some coffee or water, it will take some time (approx 20 minutes) to create and deploy the application
 
-6. Once complete you should now be able to visit the KOTS Admin Console and Sentry Pro application URLs (i.e https://kotsadm.example.com and https://sentry.example.com)
+6. Once complete you should now be able to visit the KOTS Admin Console and Sentry Pro application URLs (i.e https://kotsadm.example.com and https://sentry.example.com). It can take up to 20 minutes for the A records to propagate.
 
 ## Using Docker To Deploy
 1. Navigate to **deploy** directory
@@ -83,5 +83,5 @@ After running the Terraform plan you will have an AWS EKS cluster inside of a de
 1. On the EKS cluster context delete the ingress(es)that were created.
     - `kubectl delete -n <namespace> ingress <ingress-kotsadm-name>`
     - Repeat for all ingress(es) created 
-2. Run `terraform destroy`
+2. Run `terraform destroy -var-file="kots-eks.tfvars"`
     - If using docker-compose.yaml follow step 1 above then run `docker-compose run --rm terraform destroy` from deploy directory

@@ -69,15 +69,14 @@ After running the Terraform plan you will have an AWS EKS cluster inside of a de
 6. Once complete you should now be able to visit the KOTS Admin Console and Sentry Pro application URLs (i.e https://kotsadm.example.com and https://sentry.example.com). It can take up to 20 minutes for the A records to propagate.
 
 ## Using Docker To Deploy
-1. Navigate to **deploy** directory
-2. Create environment variables for with your `export AWS_ACCESS_KEY_ID=<key>` and `export AWS_SECRET_ACCESS_KEY=<secret>`
-2. Update variables.tf file
-3. Comment out lines 138 - 159 in main.tf. 
+1. Create environment variables for with your `export AWS_ACCESS_KEY_ID=<key>` and `export AWS_SECRET_ACCESS_KEY=<secret>`
+1. Update variables.tf file
+1. Comment out lines 138 - 159 in main.tf. 
     - The `install.sh` and `patch_kots_service.sh` files are created during the terraform apply but are not mounted on the container during creation and will not be available to run.
-4. To initialize execute `docker-compose run --rm terraform init`
-5. To plan execute `docker-compose run --rm terraform plan`
-5. To run execute `docker-compose run --rm terraform apply`
-5. Copy and run contents of `install.sh` and `pactch_kots_service.sh` after EKS cluster is up
+1. To initialize execute `docker-compose run --rm terraform init`
+1. To plan execute `docker-compose run --rm terraform plan`
+1. To run execute `docker-compose run --rm terraform apply`
+1. Copy and run contents of `install.sh` and `pactch_kots_service.sh` after EKS cluster is up
 
 ## Clean Up
 1. On the EKS cluster context delete the ingress(es)that were created.

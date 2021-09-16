@@ -2,10 +2,10 @@ terraform {
   required_providers {
     kubernetes = {
       source  = "hashicorp/kubernetes"
-      version = "2.4.1"
+      version = "2.5.0"
     }
     helm = {
-      version = "1.3.1"
+      version = "2.3.0"
     }
   }
 }
@@ -50,6 +50,10 @@ resource "kubernetes_namespace" "kots_app" {
 
 ## KUBERNTES INGRESS FOR KOTS / APPLICATIONS
 resource "kubernetes_ingress" "kotsadm_ingress" {
+  depends_on = [
+    module.eks, helm_release.ingress
+  ]
+  wait_for_load_balancer = true
   metadata {
     name = "kotsadm-ingress"
     namespace = local.k8s_namespace
@@ -81,6 +85,10 @@ resource "kubernetes_ingress" "kotsadm_ingress" {
 }
 
 resource "kubernetes_ingress" "sentry_ingress" {
+  depends_on = [
+    module.eks, helm_release.ingress
+  ]
+  wait_for_load_balancer = true
   metadata {
     name = "sentry-ingress"
     namespace = local.k8s_namespace

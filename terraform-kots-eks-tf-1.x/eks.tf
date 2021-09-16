@@ -3,18 +3,11 @@ module "eks" {
   version = "17.18.0"
 
   cluster_name    = local.cluster_name
-  cluster_version = "1.19"
+  cluster_version = "1.21"
   subnets         = module.vpc.private_subnets
 
   vpc_id = module.vpc.vpc_id
 
-  node_groups = {
-    nodes = {
-      desired_capacity = 1  // Update this value to desired number of controlplane nodes
-      max_capacity     = 1
-      min_capacity     = 1
-    }
-  }
   worker_groups = [
     {
       instance_type        = var.instance_type

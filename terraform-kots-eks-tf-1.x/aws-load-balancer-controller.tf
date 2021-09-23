@@ -14,6 +14,7 @@ resource "helm_release" "ingress" {
   chart      = "aws-load-balancer-controller"
   repository = "https://aws.github.io/eks-charts"
   version    = "1.2.7"
+  namespace  = var.k8s_namespace
 
   set {
     name  = "autoDiscoverAwsRegion"

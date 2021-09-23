@@ -1,0 +1,5 @@
+eks-plan
+kots-eks.tfvars
+kots-license.yaml
+
+.terraform.lock.hcl

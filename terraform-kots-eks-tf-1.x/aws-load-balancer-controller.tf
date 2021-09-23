@@ -3,7 +3,6 @@ provider "helm" {
     host                   = data.aws_eks_cluster.cluster.endpoint
     cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority.0.data)
     token                  = data.aws_eks_cluster_auth.cluster.token
-    load_config_file       = false
   }
 }
 
@@ -14,7 +13,8 @@ resource "helm_release" "ingress" {
   name       = "ingress"
   chart      = "aws-load-balancer-controller"
   repository = "https://aws.github.io/eks-charts"
-  // version    = "chart version can be added (optional)"
+  version    = "1.2.7"
+  namespace  = var.k8s_namespace
 
   set {
     name  = "autoDiscoverAwsRegion"

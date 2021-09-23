@@ -1,13 +1,25 @@
-module "external-dns-aws" {
-  depends_on = [
-    module.eks, helm_release.ingress
-  ]
-  source  = "gitizenme/external-dns-aws/kubernetes"
-  version = "1.0.7"
+resource "helm_release" "external_dns" {
+  depends_on = [module.eks, helm_release.ingress]
+  name       = "external-dns"
+  namespace  = local.k8s_namespace
+  chart      = "external-dns"
+  repository = "https://kubernetes-sigs.github.io/external-dns"
+  version    = 1.20 # chart version can be added (optional)
 
-  domain           = var.hosted_zone_name
-  k8s_cluster_name = local.cluster_name
-  k8s_replicas     = 1
-  k8s_namespace    = var.k8s_namespace
-  hosted_zone_id   = var.hosted_zone_id
+  set {
+    name  = "txtOwnerId"
+    value = var.hosted_zone_id
+  }
+  set {
+    name  = "triggerLoopOnEvent"
+    value = true
+  }
+  set {
+    name  = "policy"
+    value = "sync"
+  }
+  set {
+    name  = "domainFilters"
+    value = "{${var.hosted_zone_name}}"
+  }
 }

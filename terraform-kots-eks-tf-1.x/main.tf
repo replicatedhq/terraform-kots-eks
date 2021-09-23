@@ -2,10 +2,10 @@ terraform {
   required_providers {
     kubernetes = {
       source  = "hashicorp/kubernetes"
-      version = "2.4.1"
+      version = "2.5.0"
     }
     helm = {
-      version = "1.3.1"
+      version = "2.3.0"
     }
   }
 }
@@ -46,12 +46,19 @@ resource "kubernetes_namespace" "kots_app" {
   metadata {
     name = local.k8s_namespace
   }
+  depends_on = [
+    module.eks
+  ]
 }
 
 ## KUBERNTES INGRESS FOR KOTS / APPLICATIONS
 resource "kubernetes_ingress" "kotsadm_ingress" {
+  depends_on = [
+    module.eks, helm_release.ingress, local_file.script, helm_release.external_dns
+  ]
   metadata {
     name = "kotsadm-ingress"
+    namespace = local.k8s_namespace
     annotations = {
       "kubernetes.io/ingress.class"                = "alb"
       "external-dns.alpha.kubernets.io/hostname"   = var.kotsadm_fqdn
@@ -80,8 +87,12 @@ resource "kubernetes_ingress" "kotsadm_ingress" {
 }
 
 resource "kubernetes_ingress" "sentry_ingress" {
+  depends_on = [
+    module.eks, helm_release.ingress, local_file.script, helm_release.external_dns
+  ]
   metadata {
     name = "sentry-ingress"
+    namespace = local.k8s_namespace
     annotations = {
       "kubernetes.io/ingress.class"                = "alb"
       "external-dns.alpha.kubernets.io/hostname"   = var.sentry_fqdn
@@ -138,7 +149,7 @@ EOT
   provisioner "local-exec" {
     command = "./kots_install.sh"
   }
-  depends_on = [module.eks, local_file.config]
+  depends_on = [module.eks, local_file.config, kubernetes_namespace.kots_app]
 }
 
 resource "local_file" "patch" {
@@ -149,14 +160,14 @@ resource "local_file" "patch" {
 set -euo pipefail
 
 kubectl patch service -n ${local.k8s_namespace} kotsadm -p '{"spec":{"type":"NodePort"}}'
-kubectl patch ingress -n ${local.k8s_namespace} kotsadm-ingress -p '{"spec":{"rules":[{"host":"${var.kotsadm_fqdn}","http":{"paths":[{"backend":{"serviceName":"kotsadm","servicePort":3000},"path":"/","pathType":"Prefix"}]}}]}}'
+kubectl patch ingress -n ${local.k8s_namespace} kotsadm-ingress -p '{"spec":{"rules":[{"host":"${var.kotsadm_fqdn}","http":{"paths":[{"backend":{"service":{"name":"kotsadm","port":{"number":3000}}},"path":"/","pathType":"Prefix"}]}}]}}'
 kubectl patch service -n ${local.k8s_namespace} sentry -p '{"spec":{"type":"NodePort"}}'
-kubectl patch ingress -n ${local.k8s_namespace} sentry-ingress -p '{"spec":{"rules":[{"host":"${var.sentry_fqdn}","http":{"paths":[{"backend":{"serviceName":"sentry","servicePort":9000},"path":"/","pathType":"Prefix"}]}}]}}'
+kubectl patch ingress -n ${local.k8s_namespace} sentry-ingress -p '{"spec":{"rules":[{"host":"${var.sentry_fqdn}","http":{"paths":[{"backend":{"service":{"name":"sentry","port":{"number":9000}}},"path":"/","pathType":"Prefix"}]}}]}}'
 EOT
   provisioner "local-exec" {
     command = "./patch_kots_service.sh"
   }
-  depends_on = [local_file.script]
+  depends_on = [local_file.script, kubernetes_ingress.sentry_ingress, kubernetes_ingress.kotsadm_ingress, helm_release.external_dns]
 }
 
 resource "local_file" "config" {

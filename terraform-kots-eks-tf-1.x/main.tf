@@ -54,7 +54,7 @@ resource "kubernetes_namespace" "kots_app" {
 ## KUBERNTES INGRESS FOR KOTS / APPLICATIONS
 resource "kubernetes_ingress" "kotsadm_ingress" {
   depends_on = [
-    module.eks, helm_release.ingress, local_file.script, module.external-dns-aws
+    module.eks, helm_release.ingress, local_file.script, helm_release.external_dns
   ]
   metadata {
     name = "kotsadm-ingress"
@@ -88,7 +88,7 @@ resource "kubernetes_ingress" "kotsadm_ingress" {
 
 resource "kubernetes_ingress" "sentry_ingress" {
   depends_on = [
-    module.eks, helm_release.ingress, local_file.script, module.external-dns-aws
+    module.eks, helm_release.ingress, local_file.script, helm_release.external_dns
   ]
   metadata {
     name = "sentry-ingress"
@@ -167,7 +167,7 @@ EOT
   provisioner "local-exec" {
     command = "./patch_kots_service.sh"
   }
-  depends_on = [local_file.script, kubernetes_ingress.sentry_ingress, kubernetes_ingress.kotsadm_ingress, module.external-dns-aws]
+  depends_on = [local_file.script, kubernetes_ingress.sentry_ingress, kubernetes_ingress.kotsadm_ingress, helm_release.external_dns]
 }
 
 resource "local_file" "config" {

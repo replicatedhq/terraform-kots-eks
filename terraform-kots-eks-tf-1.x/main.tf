@@ -1,133 +1,11 @@
-terraform {
-  required_providers {
-    kubernetes = {
-      source  = "hashicorp/kubernetes"
-      version = "2.5.0"
-    }
-    helm = {
-      version = "2.3.0"
-    }
-  }
-}
-
-provider "aws" {
-  region = var.aws_region
-}
-
-provider "kubernetes" {
-  host                   = data.aws_eks_cluster.cluster.endpoint
-  cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority.0.data)
-  token                  = data.aws_eks_cluster_auth.cluster.token
-}
-
-data "aws_eks_cluster" "cluster" {
-  name = module.eks.cluster_id
-}
-
-data "aws_eks_cluster_auth" "cluster" {
-  name = module.eks.cluster_id
-}
-
-data "aws_route53_zone" "selected" {
-  count = 1
-  name  = var.hosted_zone_name
-}
-
-data "aws_availability_zones" "available" {}
-
-locals {
-  cluster_name    = var.cluster_name
-  app_and_channel = "${var.app_slug}${var.release_channel != "" ? "/" : ""}${var.release_channel}"
-  k8s_namespace   = var.k8s_namespace == "" ? "${var.app_slug}-${var.k8s_namespace}" : var.k8s_namespace
-}
-
-resource "kubernetes_namespace" "kots_app" {
-  count = var.namespace_exists || var.k8s_namespace == "default" ? 0 : 1
-  metadata {
-    name = local.k8s_namespace
-  }
-  depends_on = [
-    module.eks
-  ]
-}
-
-## KUBERNTES INGRESS FOR KOTS / APPLICATIONS
-resource "kubernetes_ingress" "kotsadm_ingress" {
-  depends_on = [
-    module.eks, helm_release.ingress, local_file.script, helm_release.external_dns
-  ]
-  metadata {
-    name = "kotsadm-ingress"
-    namespace = local.k8s_namespace
-    annotations = {
-      "kubernetes.io/ingress.class"                = "alb"
-      "external-dns.alpha.kubernets.io/hostname"   = var.kotsadm_fqdn
-      "alb.ingress.kubernetes.io/scheme"           = "internet-facing"
-      "alb.ingress.kubernetes.io/backend-protocol" = "HTTP"
-      "alb.ingress.kubernetes.io/ssl-policy"       = "ELBSecurityPolicy-TLS-1-2-Ext-2018-06"
-      "alb.ingress.kubernetes.io/listen-ports"     = "[{\"HTTPS\": 443}]"
-      "alb.ingress.kubernetes.io/certificate-arn"  = aws_acm_certificate_validation.domain_validate.certificate_arn
-    }
-  }
-
-  spec {
-    rule {
-      host = var.kotsadm_fqdn
-      http {
-        path {
-          path = "/"
-          backend {
-            service_name = "kotsadm"
-            service_port = 3000
-          }
-        }
-      }
-    }
-  }
-}
-
-resource "kubernetes_ingress" "sentry_ingress" {
-  depends_on = [
-    module.eks, helm_release.ingress, local_file.script, helm_release.external_dns
-  ]
-  metadata {
-    name = "sentry-ingress"
-    namespace = local.k8s_namespace
-    annotations = {
-      "kubernetes.io/ingress.class"                = "alb"
-      "external-dns.alpha.kubernets.io/hostname"   = var.sentry_fqdn
-      "alb.ingress.kubernetes.io/scheme"           = "internet-facing"
-      "alb.ingress.kubernetes.io/backend-protocol" = "HTTP"
-      "alb.ingress.kubernetes.io/ssl-policy"       = "ELBSecurityPolicy-TLS-1-2-Ext-2018-06"
-      "alb.ingress.kubernetes.io/listen-ports"     = "[{\"HTTPS\": 443}]"
-      "alb.ingress.kubernetes.io/certificate-arn"  = aws_acm_certificate_validation.domain_validate.certificate_arn
-    }
-  }
-
-  spec {
-    rule {
-      host = var.sentry_fqdn
-      http {
-        path {
-          path = "/"
-          backend {
-            service_name = "sentry"
-            service_port = 9000
-          }
-        }
-      }
-    }
-  }
-}
-
 resource "local_file" "script" {
   count    = var.create_admin_console_script ? 1 : 0
   filename = "./kots_install.sh"
   content  = <<EOT
-#!/bin/sh
+#!/bin/bash
 set -euo pipefail
 
-aws eks --region ${var.aws_region} update-kubeconfig --name ${var.cluster_name}
+aws eks --region ${var.aws_region} update-kubeconfig --name ${local.cluster_name}
 
 kubectl config set-context --current --namespace=${local.k8s_namespace}
 
@@ -156,7 +34,7 @@ resource "local_file" "patch" {
   count    = 1
   filename = "./patch_kots_service.sh"
   content  = <<EOT
-#!/bin/sh
+#!/bin/bash
 set -euo pipefail
 
 kubectl patch service -n ${local.k8s_namespace} kotsadm -p '{"spec":{"type":"NodePort"}}'

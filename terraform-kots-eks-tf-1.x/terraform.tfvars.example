@@ -1,0 +1,3 @@
+app_slug          = ""
+aws_region        = ""
+route53_zone_name = ""

@@ -8,7 +8,7 @@ resource "helm_release" "external_dns" {
 
   set {
     name  = "txtOwnerId"
-    value = var.hosted_zone_id
+    value = data.aws_route53_zone.domain_zone.zone_id
   }
   set {
     name  = "triggerLoopOnEvent"
@@ -20,6 +20,6 @@ resource "helm_release" "external_dns" {
   }
   set {
     name  = "domainFilters"
-    value = "{${var.hosted_zone_name}}"
+    value = "{${var.route53_zone_name}}"
   }
 }

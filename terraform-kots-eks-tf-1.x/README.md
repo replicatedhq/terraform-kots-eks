@@ -27,42 +27,8 @@ After running the Terraform plan you will have an AWS EKS cluster inside of a de
 ## Deploying Infrastructure and KOTS
 1. Run `terraform init` to initialize workspace
 2. Add you KOTS application license file to root path i.e kots-license.yaml
-3. Create a file called `kots-eks.tfvars` with the following content (CHANGE_ME where needed):
-    ```
-    admin_console_config_yaml   = "apiVersion: kots.io/v1beta1\nkind: ConfigValues\nmetadata:\n  creationTimestamp: null\n  name: changeme\nspec:\n  values: {}\nstatus: {}\n"
-    admin_console_password      = "password@!"
-    app_slug                    = "CHANGE_ME"
-    aws_region                  = "CHANGE_ME"
-    cluster_name                = "CHANGE_ME"
-    create_admin_console_script = true
-    hosted_zone_id              = "CHANGE_ME"
-    hosted_zone_name            = "CHANGE_ME"
-    instance_type               = "t2.xlarge"
-    k8s_namespace               = "sentry-pro"
-    kotsadm_fqdn                = "CHANGE_ME"
-    license_file_path           = "./kots-license.yaml"
-    load_balancer_source_ranges = "0.0.0.0/0"
-    load_balancers              = {}
-    namespace_exists            = false
-    release_channel             = ""
-    sentry_admin_password       = "password"
-    sentry_admin_username       = "admin@example.com"
-    sentry_fqdn                 = "CHANGE_ME"
-    subject_alternative_names   = ["CHANGE_ME"]
-    vpc_cidr                    = "172.16.0.0/16"
-    vpc_name                    = "CHANGE_ME"
-    vpc_private_subnet = [
-      "172.16.1.0/24",
-      "172.16.2.0/24",
-      "172.16.3.0/24"
-    ]
-    vpc_public_subnet = [
-      "172.16.4.0/24",
-      "172.16.5.0/24",
-      "172.16.6.0/24"
-    ]
-    ```
-4. Run `terraform plan -var-file="kots-eks.tfvars" --out eks-plan` and input variable prompts (if not supplied in variables.tf)
+3. Copy `terraform.tfvars.example` to `terraform.tfvars` and add the missing values.  Review [variables.tf](/variables.tf) for other values that can be changed.
+4. Run `terraform plan --out eks-plan` and input variable prompts (if not supplied in variables.tf)
 5. Run `terraform apply "eks-plan"` to start creating the infrastructure and install the KOTS sample application.
     - Get some coffee or water, it will take some time (approx 20 minutes) to create and deploy the application
 
@@ -79,5 +45,5 @@ After running the Terraform plan you will have an AWS EKS cluster inside of a de
 1. Copy and run contents of `install.sh` and `pactch_kots_service.sh` after EKS cluster is up
 
 ## Clean Up
-1. Run `terraform destroy -var-file="kots-eks.tfvars"`
+1. Run `terraform destroy`
     - If using docker-compose.yaml follow step 1 above then run `docker-compose run --rm terraform destroy` from deploy directory

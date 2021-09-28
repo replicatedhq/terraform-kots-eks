@@ -45,5 +45,5 @@ After running the Terraform plan you will have an AWS EKS cluster inside of a de
 1. Copy and run contents of `install.sh` and `pactch_kots_service.sh` after EKS cluster is up
 
 ## Clean Up
-1. Run `terraform destroy -var-file="kots-eks.tfvars"`
+1. Run `terraform destroy`
     - If using docker-compose.yaml follow step 1 above then run `docker-compose run --rm terraform destroy` from deploy directory

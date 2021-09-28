@@ -3,7 +3,7 @@ locals {
   app_and_channel = "${var.app_slug}${var.release_channel != "" ? "/" : ""}${var.release_channel}"
   k8s_namespace   = var.k8s_namespace == "" ? "${var.app_slug}" : var.k8s_namespace
   kotsadm_fqdn    = var.kotsadm_fqdn == "" ? "${var.app_slug}-kotsadm.${var.route53_zone_name}" : var.kotsadm_fqdn
-  sentry_fqdn     = var.sentry_fqdn == "" ? "${var.app_slug}-kotsadm.${var.route53_zone_name}" : var.sentry_fqdn
+  sentry_fqdn     = var.sentry_fqdn == "" ? "${var.app_slug}-sentry.${var.route53_zone_name}" : var.sentry_fqdn
   vpc_name        = var.vpc_name == "" ? var.app_slug : var.vpc_name
 }
 

@@ -1,5 +1,5 @@
 resource "kubernetes_namespace" "kots_app" {
-  count = var.namespace_exists || var.k8s_namespace == "default" ? 0 : 1
+  count = var.namespace_exists || local.k8s_namespace == "default" ? 0 : 1
   metadata {
     name = local.k8s_namespace
   }
@@ -18,7 +18,7 @@ resource "kubernetes_ingress" "kotsadm_ingress" {
     namespace = local.k8s_namespace
     annotations = {
       "kubernetes.io/ingress.class"                = "alb"
-      "external-dns.alpha.kubernets.io/hostname"   = var.kotsadm_fqdn
+      "external-dns.alpha.kubernets.io/hostname"   = local.kotsadm_fqdn
       "alb.ingress.kubernetes.io/scheme"           = "internet-facing"
       "alb.ingress.kubernetes.io/backend-protocol" = "HTTP"
       "alb.ingress.kubernetes.io/ssl-policy"       = "ELBSecurityPolicy-TLS-1-2-Ext-2018-06"
@@ -29,7 +29,7 @@ resource "kubernetes_ingress" "kotsadm_ingress" {
 
   spec {
     rule {
-      host = var.kotsadm_fqdn
+      host = local.kotsadm_fqdn
       http {
         path {
           path = "/"
@@ -52,7 +52,7 @@ resource "kubernetes_ingress" "sentry_ingress" {
     namespace = local.k8s_namespace
     annotations = {
       "kubernetes.io/ingress.class"                = "alb"
-      "external-dns.alpha.kubernets.io/hostname"   = var.sentry_fqdn
+      "external-dns.alpha.kubernets.io/hostname"   = local.sentry_fqdn
       "alb.ingress.kubernetes.io/scheme"           = "internet-facing"
       "alb.ingress.kubernetes.io/backend-protocol" = "HTTP"
       "alb.ingress.kubernetes.io/ssl-policy"       = "ELBSecurityPolicy-TLS-1-2-Ext-2018-06"
@@ -63,7 +63,7 @@ resource "kubernetes_ingress" "sentry_ingress" {
 
   spec {
     rule {
-      host = var.sentry_fqdn
+      host = local.sentry_fqdn
       http {
         path {
           path = "/"

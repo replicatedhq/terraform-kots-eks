@@ -20,7 +20,7 @@ kubectl kots install ${local.app_and_channel} \
   --config-values ${local_file.config.0.filename} \
   --port-forward=false \
   --skip-preflights \
-  --wait-duration=10m
+  --wait-duration=10m || true
 
 
 EOT
@@ -38,9 +38,9 @@ resource "local_file" "patch" {
 set -euo pipefail
 
 kubectl patch service -n ${local.k8s_namespace} kotsadm -p '{"spec":{"type":"NodePort"}}'
-kubectl patch ingress -n ${local.k8s_namespace} kotsadm-ingress -p '{"spec":{"rules":[{"host":"${var.kotsadm_fqdn}","http":{"paths":[{"backend":{"service":{"name":"kotsadm","port":{"number":3000}}},"path":"/","pathType":"Prefix"}]}}]}}'
+kubectl patch ingress -n ${local.k8s_namespace} kotsadm-ingress -p '{"spec":{"rules":[{"host":"${local.kotsadm_fqdn}","http":{"paths":[{"backend":{"service":{"name":"kotsadm","port":{"number":3000}}},"path":"/","pathType":"Prefix"}]}}]}}'
 kubectl patch service -n ${local.k8s_namespace} sentry -p '{"spec":{"type":"NodePort"}}'
-kubectl patch ingress -n ${local.k8s_namespace} sentry-ingress -p '{"spec":{"rules":[{"host":"${var.sentry_fqdn}","http":{"paths":[{"backend":{"service":{"name":"sentry","port":{"number":9000}}},"path":"/","pathType":"Prefix"}]}}]}}'
+kubectl patch ingress -n ${local.k8s_namespace} sentry-ingress -p '{"spec":{"rules":[{"host":"${local.sentry_fqdn}","http":{"paths":[{"backend":{"service":{"name":"sentry","port":{"number":9000}}},"path":"/","pathType":"Prefix"}]}}]}}'
 EOT
   provisioner "local-exec" {
     command = "./patch_kots_service.sh"

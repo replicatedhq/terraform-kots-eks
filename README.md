@@ -1,6 +1,6 @@
 # terraform-kots-eks
 
-A terraform module for deploying KOTS applications in managed EKS clusters in a uniform way.
+A terraform module for deploying KOTS applications in managed EKS clusters in a uniform way. This is a module for building modules - you can use it to create a terraform module that deploys your app in an EKS cluster with ACM Certs, DNS, and load balancers.
 
 The module itself is in `terraform-kots-eks`.
 A working example is in `examples/kots-sentry`

@@ -1,5 +1,11 @@
 # terraform-kots-eks
 
+This is an example project showcasing what's possible. It is not officially supported by Replicated.
+
+For an example, see: https://github.com/replicatedhq/terraform-kots-eks/tree/master/examples/kots-sentry
+
+* * * 
+
 A terraform module for deploying KOTS applications in managed EKS clusters in a uniform way. This is a module for building modules - you can use it to create a terraform module that deploys your app in an EKS cluster with ACM Certs, DNS, and load balancers.
 
 The module itself is in `terraform-kots-eks`.
